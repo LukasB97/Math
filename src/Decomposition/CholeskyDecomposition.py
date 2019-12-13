@@ -8,7 +8,6 @@ from src.Decomposition.DecompositionStrategy import DecompositionStrategy
 
 class CholeskyDecomposition(DecompositionStrategy):
 
-
     def decompose(self, matrix):
         L = zeros((matrix.get_row_count, matrix.get_row_count))
         for j in range(matrix.get_row_count):
@@ -16,7 +15,7 @@ class CholeskyDecomposition(DecompositionStrategy):
                 if i < j:
                     L[i][j] = 0
                 elif i == j:
-                    L[i][j] =  CholeskyDecomposition.calc_diagonal_elem(matrix, L, i, j)
+                    L[i][j] = CholeskyDecomposition.calc_diagonal_elem(matrix, L, i, j)
                 else:
                     L[i][j] = CholeskyDecomposition.calc_lower_triangle(matrix, L, i, j)
         L = Matrix(L)
@@ -35,4 +34,3 @@ class CholeskyDecomposition(DecompositionStrategy):
         for k in range(i):
             series += L[i][k] ** 2
         return sqrt(A[i][i] - series)
-

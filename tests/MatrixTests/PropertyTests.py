@@ -1,6 +1,7 @@
 import unittest
 
 from src.AlgebraicStructures.Matrix.Matrix import Matrix
+from src.AlgebraicStructures.Matrix.MatrixProperties.Eigenvectors import Eigenvectors
 from src.AlgebraicStructures.Matrix.MatrixProperties.MainDiagonalProduct import MainDiagonalProduct
 
 
@@ -23,7 +24,7 @@ class PropertyTests(unittest.TestCase):
         )
         self.assertEqual(matrix_a.evaluate_property(MainDiagonalProduct()), 3)
         self.assertEqual(matrix_b.evaluate_property(MainDiagonalProduct()), -30)
-        
+
     def test_determinant(self):
         matrix = Matrix(
             [
@@ -40,6 +41,15 @@ class PropertyTests(unittest.TestCase):
             ]
         )
 
+    def test_eigenvectors(self):
+        matrix = Matrix(
+            [
+                [1, 3, 6],
+                [9, 3, -6],
+                [5, 8, 1]
+            ]
+        )
+        print(matrix.evaluate_property(Eigenvectors()))
 
 if __name__ == '__main__':
     unittest.main()

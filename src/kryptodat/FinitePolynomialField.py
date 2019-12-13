@@ -3,6 +3,9 @@ import numpy
 
 class FinitePolynomialField:
 
+    def __index__(self):
+        return self.value
+
     @property
     def value(self):
         return int("".join(str(x) for x in self.bits)[::-1], 2)
@@ -17,7 +20,7 @@ class FinitePolynomialField:
         self.factory = factory
 
     def __add__(self, other):
-        bits = self.bits+other.bits
+        bits = self.bits + other.bits
         for i in range(len(bits)):
             bits[i] = bits[i] % 2
         return self.factory.create(bits=bits)
@@ -36,4 +39,4 @@ class FinitePolynomialField:
         return self.factory.create(bits=bits)
 
     def __eq__(self, other):
-        return (self.bits==other.bits).all()
+        return (self.bits == other.bits).all()

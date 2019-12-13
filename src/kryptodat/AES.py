@@ -27,14 +27,14 @@ factory = FinitePolynomialFieldFactory(8, numpy.array([1, 1, 0, 1, 1, 0, 0, 0, 1
 
 # Eingabe ist der AES-Schluessel K (4x4 Matrix ueber F256)
 # Ausgabe ist eine Liste L, die die 11 Schluessel L[0], ..., L[10] enthaelt (4x4 Matrizen ueber F256)
-def KeyExpansion(K):
+def KeyExpansion(key):
     R = [0, 0x1000000, 0x2000000, 0x4000000, 0x8000000, 0x10000000, 0x20000000, 0x40000000,
          0x80000000, 0x1b000000, 0x36000000]
     w = [0] * 44
-    w[0] = K[0][0] * 0x1000000 + K[1][0] * 0x10000 + K[2][0] * 0x100 + K[3][0]
-    w[1] = K[0][1] * 0x1000000 + K[1][1] * 0x10000 + K[2][1] * 0x100 + K[3][1]
-    w[2] = K[0][2] * 0x1000000 + K[1][2] * 0x10000 + K[2][2] * 0x100 + K[3][2]
-    w[3] = K[0][3] * 0x1000000 + K[1][3] * 0x10000 + K[2][3] * 0x100 + K[3][3]
+    w[0] = key[0][0] * 0x1000000 + key[1][0] * 0x10000 + key[2][0] * 0x100 + key[3][0]
+    w[1] = key[0][1] * 0x1000000 + key[1][1] * 0x10000 + key[2][1] * 0x100 + key[3][1]
+    w[2] = key[0][2] * 0x1000000 + key[1][2] * 0x10000 + key[2][2] * 0x100 + key[3][2]
+    w[3] = key[0][3] * 0x1000000 + key[1][3] * 0x10000 + key[2][3] * 0x100 + key[3][3]
     i = 4
     while i < 44:
         t = w[i - 1]
@@ -45,34 +45,15 @@ def KeyExpansion(K):
         i = i + 1
     L = []
     for r in range(0, 11):
-        K = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+        key = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
         for i in range(0, 4):
             for j in range(0, 4):
-                K[i][j] = (w[4 * r + j] >> (8 * (3 - i))) & 0xff
-        L = L + [K]
+                key[i][j] = (w[4 * r + j] >> (8 * (3 - i))) & 0xff
+        L = L + [key]
     return L
 
 
-# Addition in F256
-def F256Add(x, y):
-    return x ^ y
-
-
-# Multiplikation in F256
-def F256Mul(x, y):
-    p = 0  # zuerst Produkt der Polynome bilden
-    while y > 0:
-        if y & 1 == 1:
-            p = p ^ x
-        x = x << 1
-        y = y >> 1
-    f = 0b100011011  # jetzt modulo f(x)=x^8+x^4+x^3+x+1 rechnen
-    while len(bin(p)) >= 11:
-        p = p ^ (f << (len(bin(p)) - 11))
-    return p
-
-
-def SubByte(A):
+def sub_bytes(A):
     B = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
     for i in range(0, 4):
         for j in range(0, 4):
@@ -81,16 +62,17 @@ def SubByte(A):
     return Matrix(B)
 
 
-def ShiftRow(A):
+def shift_row(A):
     return Matrix([
-    A.matrix_vectors[0],
-    [A[1,1], A[1, 2], A[1,3], A[1,0]],
-    [A[2,2], A[2, 3], A[2,0], A[2,1]],
-    [A[3,3], A[3,0], A[3,1], A[3,2]]
+        A.matrix_vectors[0],
+        [A[1, 1], A[1, 2], A[1, 3], A[1, 0]],
+        [A[2, 2], A[2, 3], A[2, 0], A[2, 1]],
+        [A[3, 3], A[3, 0], A[3, 1], A[3, 2]]
     ]
     )
 
-def MixCol(A):
+
+def mix_col(A):
     one = factory.create(value=1)
     two = factory.create(value=2)
     three = factory.create(value=3)
@@ -106,7 +88,7 @@ def MixCol(A):
 
 
 # addiert den Schluessel K zu den Daten A
-def AddKey(A, K):
+def add_key(A, K):
     # A = zu verschluesselnde Daten (4x4 Matrix ueber F256)
     # K = Schluessel (4x4 Matrix ueber F256)
     B = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
@@ -115,7 +97,7 @@ def AddKey(A, K):
 
 
 # eine AES-Runde bestehend aus SubByte, ShiftRow, MixCol und AddKey
-def AESRound(A, K):
+def aes_round(A, K):
     # A = zu verschluesselnde Daten (4x4 Matrix ueber F256)
     # K = Schluessel (4x4 Matrix ueber F256)
     ...
@@ -123,95 +105,47 @@ def AESRound(A, K):
 
 
 # gesamtes AES bestehend aus 11 Runden
-def AES(P, K):
+def AES(data, key):
     # P = zu verschluesselnde Daten (4x4 Matrix ueber F256)
     # K = Schluessel (4x4 Matrix ueber F256)
-    K = KeyExpansion(K)
+    key = KeyExpansion(key)
     # K[0], ..., K[10] sind die Schluessel fuer die Runden 0-10 (4x4 Matrizen ueber F256)
     ...
     return ...
 
 
-# es folgen einige Tests fuer die obigen Funktionen
 def AESTests():
-    if F256Add(123, 45) != 86: print("Fehler in F256Add")
     #
-    if F256Mul(123, 45) != 128: print("Fehler in F256Mul")
+    A = Matrix([[0xe1, 0x19, 0xb3, 0xf7], [0x6c, 0x8e, 0x56, 0xb2], [0x13, 0x7f, 0x9a, 0x1b], [0xe3, 0x41, 0xe1, 0xad]],
+               factory.create)
+    B = Matrix([[0x9d, 0x85, 0xfc, 0x8e], [0xef, 0xde, 0x4b, 0x08], [0x95, 0xaa, 0xf2, 0x9f], [0x9a, 0x58, 0xdb, 0xea]],
+               factory.create)
+    if mix_col(A) != B: print("Fehler in MixCol")
     #
-    A = Matrix([[factory.create(0xe1), factory.create(0x19), factory.create(0xb3), factory.create(0xf7)],
-                [factory.create(0x6c), factory.create(0x8e), factory.create(0x56), factory.create(0xb2)],
-                [factory.create(0x13), factory.create(0x7f), factory.create(0x9a), factory.create(0x1b)],
-                [factory.create(0xe3), factory.create(0x41), factory.create(0xe1), factory.create(0xad)]])
-    B = Matrix([[factory.create(0x9d), factory.create(0x85), factory.create(0xfc), factory.create(0x8e)],
-                [factory.create(0xef), factory.create(0xde), factory.create(0x4b), factory.create(0x08)],
-                [factory.create(0x95), factory.create(0xaa), factory.create(0xf2), factory.create(0x9f)],
-                [factory.create(0x9a), factory.create(0x58), factory.create(0xdb), factory.create(0xea)]
-                ])
-    mc = MixCol(A)
-    if MixCol(A) != B: print("Fehler in MixCol")
+    A = Matrix([[0x76, 0xbd, 0xec, 0xed], [0x27, 0xe5, 0xb0, 0x20], [0x20, 0xa5, 0xe6, 0x35], [0x87, 0xb7, 0xe7, 0x9e]],
+               factory.create)
+    B = Matrix([[0x38, 0x7a, 0xce, 0x55], [0xcc, 0xd9, 0xe7, 0xb7], [0xb7, 0x06, 0x8e, 0x96], [0x17, 0xa9, 0x94, 0x0b]],
+               factory.create)
+    if sub_bytes(A) != B: print("Fehler in SubByte")
     #
-    A = Matrix([
-        [factory.create(0x76), factory.create(0xbd), factory.create(0xec), factory.create(0xed)],
-        [factory.create(0x27), factory.create(0xe5), factory.create(0xb0), factory.create(0x20)],
-        [factory.create(0x20), factory.create(0xa5), factory.create(0xe6), factory.create(0x35)],
-        [factory.create(0x87), factory.create(0xb7), factory.create(0xe7), factory.create(0x9e)]
-    ])
-    B = Matrix([
-        [factory.create(0x38), factory.create(0x7a), factory.create(0xce), factory.create(0x55)],
-        [factory.create(0xcc), factory.create(0xd9), factory.create(0xe7), factory.create(0xb7)],
-        [factory.create(0xb7), factory.create(0x06), factory.create(0x8e), factory.create(0x96)],
-        [factory.create(0x17), factory.create(0xa9), factory.create(0x94), factory.create(0x0b)]
-    ])
-    if SubByte(A) != B: print("Fehler in SubByte")
+    A = Matrix([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]], factory.create)
+    B = Matrix([[1, 2, 3, 4], [6, 7, 8, 5], [11, 12, 9, 10], [16, 13, 14, 15]], factory.create)
+    if shift_row(A) != B: print("Fehler in ShiftRow")
     #
-    A = Matrix([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]], factory)
-    B = Matrix([[1, 2, 3, 4], [6, 7, 8, 5], [11, 12, 9, 10], [16, 13, 14, 15]], factory)
-    if ShiftRow(A) != B: print("Fehler in ShiftRow")
+    A = Matrix([[0x76, 0xbd, 0xec, 0xed], [0x27, 0xe5, 0xb0, 0x20], [0x20, 0xa5, 0xe6, 0x35], [0x87, 0xb7, 0xe7, 0x9e]],
+               factory.create)
+    K = Matrix([[0xe6, 0x04, 0x51, 0x24], [0xdc, 0xfd, 0x58, 0xc3], [0x49, 0xe6, 0x59, 0x79], [0x51, 0xcd, 0x99, 0x2a]],
+               factory.create)
+    B = Matrix([[0x63, 0x43, 0x0a, 0x53], [0xcf, 0xe4, 0x88, 0x8b], [0xb2, 0x75, 0xb5, 0x4b], [0x58, 0x1c, 0x99, 0x2c]],
+               factory.create)
+    if aes_round(A, K) != B: print("Fehler in AESRound")
     #
-    A = [[factory.create(0x76), factory.create(0xbd), factory.create(0xec), factory.create(0xed)], [
-        factory.create(0x27), factory.create(0xe5), factory.create(0xb0), factory.create(0x20)], [factory.create(0x20),
-                                                                                                  factory.create(0xa5),
-                                                                                                  factory.create(0xe6),
-                                                                                                  factory.create(
-                                                                                                      0x35)], [
-        factory.create(0x87), factory.create(0xb7), factory.create(0xe7), factory.create(0x9e)]]
-    K = [[factory.create(0xe6), factory.create(0x04), factory.create(0x51), factory.create(0x24)], [
-        factory.create(0xdc), factory.create(0xfd), factory.create(0x58), factory.create(0xc3)], [factory.create(0x49),
-                                                                                                  factory.create(0xe6),
-                                                                                                  factory.create(0x59),
-                                                                                                  factory.create(
-                                                                                                      0x79)], [
-        factory.create(0x51), factory.create(0xcd), factory.create(0x99), factory.create(0x2a)]]
-    B = [[factory.create(0x63), factory.create(0x43), factory.create(0x0a), factory.create(0x53)], [
-        factory.create(0xcf), factory.create(0xe4), factory.create(0x88), factory.create(0x8b)], [factory.create(0xb2),
-                                                                                                  factory.create(0x75),
-                                                                                                  factory.create(0xb5),
-                                                                                                  factory.create(
-                                                                                                      0x4b)], [
-        factory.create(0x58), factory.create(0x1c), factory.create(0x99), factory.create(0x2c)]]
-    if AESRound(A, K) != B: print("Fehler in AESRound")
-    #
-    P = [[factory.create(0x32), factory.create(0x88), factory.create(0x31), factory.create(0xe0)], [
-        factory.create(0x43), factory.create(0x5a), factory.create(0x31), factory.create(0x37)], [factory.create(0xf6),
-                                                                                                  factory.create(0x30),
-                                                                                                  factory.create(0x98),
-                                                                                                  factory.create(
-                                                                                                      0x07)], [
-        factory.create(0xa8), factory.create(0x8d), factory.create(0xa2), factory.create(0x34)]]
-    K = [[factory.create(0x2b), factory.create(0x28), factory.create(0xab), factory.create(0x09)], [
-        factory.create(0x7e), factory.create(0xae), factory.create(0xf7), factory.create(0xcf)], [factory.create(0x15),
-                                                                                                  factory.create(0xd2),
-                                                                                                  factory.create(0x15),
-                                                                                                  factory.create(
-                                                                                                      0x4f)], [
-        factory.create(0x16), factory.create(0xa6), factory.create(0x88), factory.create(0x3c)]]
-    C = [[factory.create(0x39), factory.create(0x02), factory.create(0xdc), factory.create(0x19)], [
-        factory.create(0x25), factory.create(0xdc), factory.create(0x11), factory.create(0x6a)], [factory.create(0x84),
-                                                                                                  factory.create(0x09),
-                                                                                                  factory.create(0x85),
-                                                                                                  factory.create(
-                                                                                                      0x0b)], [
-        factory.create(0x1d), factory.create(0xfb), factory.create(0x97), factory.create(0x32)]]
+    P = Matrix([[0x32, 0x88, 0x31, 0xe0], [0x43, 0x5a, 0x31, 0x37], [0xf6, 0x30, 0x98, 0x07], [0xa8, 0x8d, 0xa2, 0x34]],
+               factory.create)
+    K = Matrix([[0x2b, 0x28, 0xab, 0x09], [0x7e, 0xae, 0xf7, 0xcf], [0x15, 0xd2, 0x15, 0x4f], [0x16, 0xa6, 0x88, 0x3c]],
+               factory.create)
+    C = Matrix([[0x39, 0x02, 0xdc, 0x19], [0x25, 0xdc, 0x11, 0x6a], [0x84, 0x09, 0x85, 0x0b], [0x1d, 0xfb, 0x97, 0x32]],
+               factory.create)
     if AES(P, K) != C: print("Fehler in AES")
     return
 

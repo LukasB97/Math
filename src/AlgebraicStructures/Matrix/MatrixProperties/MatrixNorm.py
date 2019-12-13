@@ -6,3 +6,4 @@ from src.AlgebraicStructures.Matrix.MatrixProperties.MatrixProperty import Matri
 class MatrixNorm(MatrixProperty):
 
     def evaluate(self, matrix: Matrix) -> PropertyResult:
+        pass

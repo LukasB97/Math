@@ -1,32 +1,3 @@
-import random
-
-
-def IsPrime(n, s=50):  # Miller-Rabin-Primzahltest
-    # Aufruf: IsPrime(n,s) mit natuerlichen Zahlen n,s
-    # Ausgabe: True oder False
-    #     n prim => Ausgabe True mit Wkt. 1
-    #     n nicht prim => Ausgabe True mit Wkt. <= 1/(2**s)
-    # Laufzeit bei Eingabe (n,s): O(s * |n|**2)
-    if n < 2: return False
-    for j in range(1, s + 1):
-        a = random.randint(1, n - 1)
-        i = n - 1
-        b = []
-        while (i > 0):
-            b.append(i % 2)
-            i = i // 2
-        d = 1
-        for i in range(len(b) - 1, -1, -1):
-            x = d
-            d = (d * d) % n
-            if d == 1 and x != 1 and x != n - 1:
-                return False
-            if b[i] == 1:
-                d = (d * a) % n
-        if d != 1:
-            return False
-    return True
-
 
 def egcd(ld, d):  # erweiterter Euklidischer Algorithmus
     # Aufruf: egcd(a,b) mit natuerlichen Zahlen a,b>0
@@ -40,8 +11,7 @@ def egcd(ld, d):  # erweiterter Euklidischer Algorithmus
         (d, ld) = (ld % d, d)
         (x, lx) = (lx - q * x, x)
         (y, ly) = (ly - q * y, y)
-    return (ld, lx, ly)
-
+    return ld, lx, ly
 
 
 def ModInv(e, n):  # Inverses mod n
@@ -76,20 +46,21 @@ def RSAKeyGen(r=1024):
     p = primes[0]
     q = primes[1]
     n = q * p
-    phin = (q-1)*(p-1)
+    phin = (q - 1) * (p - 1)
     while egcd(e := random.randint(2, phin), phin)[0] != 1:
         pass
     return (n, e), (n, ModInv(e, phin))
 
+
 def power(g_base, a, p_mod):
-  x=1
-  bits = "{0:b}".format(a)
-  for i, bit in enumerate(bits):
-    if bit=='1': x = (((x**2)*g_base)%p_mod)
-    elif bit=='0': x = ((x**2)%p_mod)
-  return x%p_mod
-
-
+    x = 1
+    bits = "{0:b}".format(a)
+    for i, bit in enumerate(bits):
+        if bit == '1':
+            x = (((x ** 2) * g_base) % p_mod)
+        elif bit == '0':
+            x = ((x ** 2) % p_mod)
+    return x % p_mod
 
 
 def RSAEncrypt(pk, m):
@@ -117,7 +88,7 @@ def int2str(x):  # codiert eine Zahl als String (zum Testen von RSA)
     # Aufruf: int2str(23268733837745479405720608239248647353390)
     # Ausgabe: 'Das ist ein Test.'
     s = ''
-    while (x > 0):
+    while x > 0:
         s = chr(x & 255) + s
         x = x >> 8
     return s
@@ -143,5 +114,6 @@ def RSATest():
     print("entschl. Text als String: " + bs)
     print("entschl. Text als Zahl:   " + str(b))
     return
+
 
 RSATest()

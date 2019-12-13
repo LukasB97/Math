@@ -14,16 +14,16 @@ class TriangularProperty(Enum):
 
 class Triangular(MatrixProperty):
 
-    def evaluate(self, matrix: Matrix) -> PropertyResult:
+    def evaluate(self, matrix: Matrix) -> TriangularProperty:
         upper_triangular = Triangular.evaluate_upper_triangle(matrix)
         lower_triangular = Triangular.evaluate_upper_triangle(matrix)
         if lower_triangular:
             if upper_triangular:
-                return PropertyResult(TriangularProperty.DIAGONAL)
-            return PropertyResult(TriangularProperty.LOWER_TRIANGULAR)
+                return TriangularProperty.DIAGONAL
+            return TriangularProperty.LOWER_TRIANGULAR
         if upper_triangular:
-            return PropertyResult(TriangularProperty.UPPER_TRIANGULAR)
-        return PropertyResult(TriangularProperty.NOT_TRIANGULAR)
+            return TriangularProperty.UPPER_TRIANGULAR
+        return TriangularProperty.NOT_TRIANGULAR
 
     @classmethod
     def evaluate_upper_triangle(cls, matrix: Matrix):

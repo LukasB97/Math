@@ -1,15 +1,26 @@
-from numpy import array, transpose
-from numbers import Number
 from abc import ABC, abstractmethod
+from dataclasses import dataclass, field
+from numbers import Number
+
+from numpy import array, transpose
 
 
-
+@dataclass(frozen=True, eq=False, repr=False)
 class BaseMatrix(ABC):
+
+    matrix_vectors: array
+
+    def __repr__(self):
+        return str(self.matrix_vectors)
+
+    @property
+    def get_value_type(self) -> type:
+        return type(self.matrix_vectors[0, 0])
 
     @property
     def get_row_count(self):
         return len(self.matrix_vectors)
-    
+
     @property
     def get_column_count(self):
         return len(self.matrix_vectors[0])
@@ -17,7 +28,7 @@ class BaseMatrix(ABC):
     def get_column_vector(self, j, start=0, end=-1):
         if end == -1:
             end = len(self.matrix_vectors)
-        b= self.new(self.matrix_vectors[:, j][start:end].reshape((end-start, 1)))
+        b = self.new(self.matrix_vectors[:, j][start:end].reshape((end - start, 1)))
         return b
 
     def get_row_vector(self, i, start=0, end=-1):
@@ -58,19 +69,9 @@ class BaseMatrix(ABC):
             return self[0, item[0]]
         raise ValueError()
 
-    def __setitem__(self, key, value):
-        raise PermissionError("const")
-
-    def __init__(self, matrix_vectors, value_factory, *args, **kwargs):
-        if value_factory is not None:
-            for i in range(len(matrix_vectors)):
-                for j in range(len(matrix_vectors[0])):
-                    matrix_vectors[i][j] = value_factory.create(matrix_vectors[i][j])
-        self.matrix_vectors: array = array(matrix_vectors)
-        
     def __mul__(self, other):
-        if self.get_row_count == self.get_column_count == 1:
-            return self[0, 0] * other
+   #     if self.get_row_count == self.get_column_count == 1:
+      #      return self[0, 0] * other
         if isinstance(other, Number):
             return self.scalar_multiplication(other)
         if isinstance(other, BaseMatrix):
@@ -78,26 +79,25 @@ class BaseMatrix(ABC):
         return self.vector_multiplication(other.transpose().transpose())
 
     def __rmul__(self, other):
-        if self.get_row_count == self.get_column_count == 1:
-            return other * self[0, 0]
+   #     if self.get_row_count == self.get_column_count == 1:
+   #         return other * self[0, 0]
         if isinstance(other, Number):
             return self.scalar_multiplication(other)
-        return self.vector_multiplication()
 
     def __add__(self, other):
-        if self.get_row_count == self.get_column_count == 1:
-            return self[0, 0] + other
+    #    if self.get_row_count == self.get_column_count == 1:
+   #         return self[0, 0] + other
         if isinstance(other, BaseMatrix):
             if (other.get_row_count != self.get_row_count) or (other.get_column_count != self.get_column_count):
-                raise ValueError("Cannot add matricies of different dimensions")
+                raise ValueError("Cannot add matrices of different dimensions")
             return self.new(self.matrix_vectors + other.matrix_vectors)
 
     def __sub__(self, other):
-        if self.get_row_count == self.get_column_count == 1:
-            return self[0, 0] - other
+    #    if self.get_row_count == self.get_column_count == 1:
+    #        return self[0, 0] - other
         if isinstance(other, BaseMatrix):
             if (other.get_row_count != self.get_row_count) or (other.get_column_count != self.get_column_count):
-                raise ValueError("Cannot add matricies of different dimensions")
+                raise ValueError("Cannot add matrices of different dimensions")
             return self.new(self.matrix_vectors - other.matrix_vectors)
 
     def __eq__(self, other):
@@ -110,9 +110,5 @@ class BaseMatrix(ABC):
         except Exception:
             return False
 
-    def __repr__(self):
-        return str(self.matrix_vectors)
-
     def transpose(self) -> 'Matrix':
         return self.new(transpose(self.matrix_vectors))
-

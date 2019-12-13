@@ -5,9 +5,9 @@ from src.AlgebraicStructures.Matrix.MatrixProperties.MatrixProperty import Matri
 
 
 class Orthogonality(MatrixProperty):
-
     """
     Q^T*Q = I <=> Q orthogonal
     """
+
     def evaluate(self, matrix: Matrix) -> PropertyResult:
         return (matrix.transpose() * matrix).evaluate_property(Identity())

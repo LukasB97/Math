@@ -26,12 +26,10 @@ class QRDecomposition(DecompositionStrategy):
         v = v * (1 / Norm.euclidean_norm(v))
         return self.create_householder_matrix(v)
 
-
     def decompose(self, matrix):
-        R = zeros((matrix.get_row_count, matrix.get_row_count))
         Q = DiagonalMatrix(size=matrix.get_row_count)
         for j in range(matrix.get_column_count):
-            e = numpy.zeros((matrix.get_column_count-j, 1))
+            e = numpy.zeros((matrix.get_column_count - j, 1))
             e[0, 0] = 1
             e = Matrix(e)
             h = self.create_householder_reflection(matrix.get_column_vector(j, j), e)
@@ -40,7 +38,7 @@ class QRDecomposition(DecompositionStrategy):
                 h.matrix_vectors[i, i] = 1
             matrix = h * matrix
             Q = h * Q
-        return matrix, Q.transpose()
+        return Q.transpose(), matrix
 
     @classmethod
     def calc_lower_triangle(cls, A, L, i, j):
@@ -55,4 +53,3 @@ class QRDecomposition(DecompositionStrategy):
         for k in range(i):
             series += L[i][k] ** 2
         return sqrt(A[i][i] - series)
-

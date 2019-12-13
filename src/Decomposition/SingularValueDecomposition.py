@@ -1,8 +1,5 @@
 from math import sqrt
 
-from numpy import zeros
-from math import sqrt
-from src.AlgebraicStructures.Matrix import Matrix
 from src.Decomposition import DecompositionStrategy
 from src.Decomposition.QRDecomposition import QRDecomposition
 
@@ -14,8 +11,6 @@ class SingularValueDecomposition(DecompositionStrategy):
         for i in range(triangular_matrix.get_row_count):
             singular_values.append(sqrt(triangular_matrix[i, i]))
         return singular_values
-
-
 
     def decompose(self, matrix):
         ATA = matrix.transpose() * matrix
@@ -37,4 +32,3 @@ class SingularValueDecomposition(DecompositionStrategy):
         for k in range(i):
             series += L[i][k] ** 2
         return sqrt(A[i][i] - series)
-

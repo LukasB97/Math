@@ -1,6 +1,5 @@
-from src.AlgebraicStructures.Matrix import Matrix
-from src.AlgebraicStructures.Matrix import MatrixProperty
-
+from src.AlgebraicStructures.Matrix.Matrix import Matrix
+from src.AlgebraicStructures.Matrix.MatrixProperties.MatrixProperty import MatrixProperty
 
 class SymmetricProperty(MatrixProperty):
 

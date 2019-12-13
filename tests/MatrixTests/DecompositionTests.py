@@ -1,12 +1,7 @@
 import unittest
 
-from src import HouseholderTransformation, LR
 from src.AlgebraicStructures.Matrix.Matrix import Matrix
-from src.AlgebraicStructures.Matrix.MatrixProperties.MatrixExtension import MatrixExtension
-from src.AlgebraicStructures.Vector import Vector
 from src.BackwardsSubstitution import substitute_backwards
-from src.Decomposition.CholeskyDecomposition import CholeskyDecomposition
-from src.Decomposition.LeftRightDecomposition import LeftRightDecomposition
 from src.Decomposition.QRDecomposition import QRDecomposition
 
 
@@ -29,7 +24,6 @@ class DecompositionTests(unittest.TestCase):
         )
         self.assertEqual(matrix_a, matrix_b)
 
-        
     def test_transpose(self):
         matrix = Matrix(
             [
@@ -55,12 +49,11 @@ class DecompositionTests(unittest.TestCase):
                 [5, 8, 1]
             ]
         )
-        r, q = matrix.decompose(QRDecomposition())
+        q, r = matrix.decompose(QRDecomposition())
         print(r)
         print(q)
-        print(q*q.transpose())
-        print(q*r)
-
+        print(q * q.transpose())
+        print(q * r)
 
     def test_lr(self):
         matrix = Matrix(
@@ -77,7 +70,7 @@ class DecompositionTests(unittest.TestCase):
                 [5]
             ]
         )
-        r, q = matrix.decompose(QRDecomposition())
+        q, r= matrix.decompose(QRDecomposition())
         print(substitute_backwards(r, q.transpose() * b))
 
 

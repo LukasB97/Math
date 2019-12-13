@@ -1,5 +1,7 @@
-from src.AlgebraicStructures.Matrix .Matrix import Matrix
 from numpy import zeros
+
+from src.AlgebraicStructures.Matrix.Matrix import Matrix
+
 
 class MatrixFactory:
 
@@ -8,4 +10,3 @@ class MatrixFactory:
         for i in range(size):
             v[i][i] = 1
         return Matrix(v)
-
