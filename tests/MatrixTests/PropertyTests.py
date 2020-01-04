@@ -1,6 +1,7 @@
 import unittest
 
 from src.AlgebraicStructures.Matrix.Matrix import Matrix
+from src.AlgebraicStructures.Matrix.MatrixProperties.EigenvalueAlgorithm.QRAlgorithm import QRAlgorithm
 from src.AlgebraicStructures.Matrix.MatrixProperties.Eigenvectors import Eigenvectors
 from src.AlgebraicStructures.Matrix.MatrixProperties.MainDiagonalProduct import MainDiagonalProduct
 
@@ -50,6 +51,17 @@ class PropertyTests(unittest.TestCase):
             ]
         )
         print(matrix.evaluate_property(Eigenvectors()))
+
+
+    def test_eigenvalues(self):
+        matrix = Matrix(
+            [
+                [-2, -4, 2],
+                [-2, 1, 2],
+                [4, 2, 5]
+            ]
+        )
+        print(matrix.evaluate_property(QRAlgorithm()))
 
 if __name__ == '__main__':
     unittest.main()

@@ -6,8 +6,7 @@ from src.AlgebraicStructures.Function.Variable import Variable
 
 @dataclass
 class ComputationalGraphPart:
-
-    operation: Callable[[List['ComputationalGraphPart']],  float]
+    operation: Callable[[List['ComputationalGraphPart']], float]
     operands: List['ComputationalGraphPart']
 
     @property
@@ -19,7 +18,3 @@ class ComputationalGraphPart:
 
     def evaluate(self, variables: Dict[str, float]) -> float:
         return self.operation(self.operands, variables)
-
-
-
-

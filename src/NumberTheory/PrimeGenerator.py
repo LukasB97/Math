@@ -27,12 +27,12 @@ class PrimeGenerator:
 
     def generate_safe_prime(self, from_inclusive, to_inclusive) -> int:
         prime = self.generate_prime(from_inclusive, to_inclusive)
-        while not self.prime_test((prime-1) // 2):
+        while not self.prime_test((prime - 1) // 2):
             prime = self.generate_prime(from_inclusive, to_inclusive)
         return prime
 
     def generate_sophie_germain_prime(self, from_inclusive, to_inclusive):
         prime = self.generate_prime(from_inclusive, to_inclusive)
-        while not self.prime_test(2*prime + 1):
+        while not self.prime_test(2 * prime + 1):
             prime = self.generate_prime(from_inclusive, to_inclusive)
         return prime

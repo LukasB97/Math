@@ -1,39 +1,42 @@
 from math import sqrt
 
 import numpy
-from numpy import zeros
 
 from src.AlgebraicStructures.Function.Norm import Norm
-from src.AlgebraicStructures.Matrix.DiagonalMatrix import DiagonalMatrix
 from src.AlgebraicStructures.Matrix.Matrix import Matrix
 from src.AlgebraicStructures.Matrix.MatrixProperties.MatrixExtension import MatrixExtension
 from src.Decomposition.DecompositionStrategy import DecompositionStrategy
-from src.MatrixFactory import MatrixFactory
+from src.AlgebraicStructures.Matrix.MatrixFactory import MatrixFactory
 
 
 class QRDecomposition(DecompositionStrategy):
 
     def create_householder_matrix(self, v):
-        i = MatrixFactory().create_identity_matrix(v.get_row_count)
-        orthogonal_projection = (2 / ((v.transpose() * v)[0, 0])) * (v * v.transpose())
-        return i - orthogonal_projection
+        i = MatrixFactory().create_identity_matrix(v.row_count)
+        orthogonal_projection = (2 / (v.transpose() * v)) * (v * v.transpose())
+        res = i - orthogonal_projection
+        return res
 
-    def create_householder_reflection(self, a, e):
-        l = Norm.euclidean_norm(a)
-        if a[0, 0] < 0:
+    def create_householder_reflection(self, to_project, project_onto):
+        assert Norm.euclidean_norm(project_onto) != 0
+        assert Norm.euclidean_norm(to_project) != 0
+        l = Norm.euclidean_norm(to_project)
+        if to_project[0, 0] < 0:
             l *= (-1)
-        v = a + l * e
+        v = to_project + l * project_onto
+        if Norm.euclidean_norm(v) == 0:
+            xxx = 1
         v = v * (1 / Norm.euclidean_norm(v))
         return self.create_householder_matrix(v)
 
     def decompose(self, matrix):
-        Q = DiagonalMatrix(size=matrix.get_row_count)
-        for j in range(matrix.get_column_count):
-            e = numpy.zeros((matrix.get_column_count - j, 1))
+        Q = MatrixFactory.create_identity_matrix(size=matrix.row_count)
+        for j in range(matrix.column_count - 1):
+            e = numpy.zeros((matrix.column_count - j, 1))
             e[0, 0] = 1
             e = Matrix(e)
             h = self.create_householder_reflection(matrix.get_column_vector(j, j), e)
-            h = h.evaluate_property(MatrixExtension(j, True))
+            h = MatrixFactory.build_block_matrix(d=h, row_count=Q.row_count, col_count=Q.row_count)
             for i in range(j):
                 h.matrix_vectors[i, i] = 1
             matrix = h * matrix

@@ -8,7 +8,7 @@ class SingularValueDecomposition(DecompositionStrategy):
 
     def get_singular_values(self, triangular_matrix):
         singular_values = []
-        for i in range(triangular_matrix.get_row_count):
+        for i in range(triangular_matrix.row_count):
             singular_values.append(sqrt(triangular_matrix[i, i]))
         return singular_values
 

@@ -1,9 +1,41 @@
 import unittest
 
 from src.AlgebraicStructures.Matrix.Matrix import Matrix
+from src.AlgebraicStructures.Matrix.MatrixFactory import MatrixFactory
+from src.AlgebraicStructures.Matrix.MatrixProperties.Triangular import Triangular, TriangularProperty
 
 
 class MyTestCase(unittest.TestCase):
+
+    def test_block_matrix(self):
+        a = Matrix([
+            [1,2],
+            [2,3]
+        ])
+        b = Matrix([
+            [3, 2, 6],
+            [2, 3, -10]
+        ])
+        c = Matrix([
+            [1,2],
+            [2,3],
+            [7,7]
+        ])
+        d = Matrix([
+            [1,2,9],
+            [2,3,69],
+            [56,2,67]
+        ])
+        res = MatrixFactory.build_block_matrix(a=a, b=b, c=c, d=d, row_count=5, col_count=5)
+        res1 = Matrix([
+            [1, 2, 3, 2, 6],
+            [2, 3, 2, 3, -10],
+            [1, 2, 1,2,9],
+            [2, 3, 2,3,69],
+            [7, 7, 56,2,67]
+
+        ])
+        self.assertEqual(res, res1)
 
     def test_equal(self):
         matrix_a = Matrix(
@@ -13,6 +45,7 @@ class MyTestCase(unittest.TestCase):
                 [5, 7.0, 1]
             ]
         )
+        matrix_a.invert()
         matrix_b = Matrix(
             [
                 [1.0, 3, 2.0],
@@ -82,7 +115,30 @@ class MyTestCase(unittest.TestCase):
                 ]
             )
         )
+        mm = Matrix([
+            [0,2],
+            [-1,1],
+            [1,1]
+        ])
+        print(mm.transpose()*mm)
 
+    def test_triangular(self):
+        matrix_a = Matrix(
+            [
+                [1, 3, 2],
+                [0, 3, -3.0],
+                [0, 0, 1]
+            ]
+        )
+        matrix_b = Matrix(
+            [
+                [1.0, 0, 2.0],
+                [-5, 3, 0],
+                [5, 7.0, 1]
+            ]
+        )
+        self.assertEqual(matrix_a.evaluate_property(Triangular()), TriangularProperty.UPPER_TRIANGULAR)
+        self.assertEqual(matrix_b.evaluate_property(Triangular()), TriangularProperty.NOT_TRIANGULAR)
 
 if __name__ == '__main__':
     unittest.main()

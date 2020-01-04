@@ -1,9 +1,9 @@
 from src.AlgebraicStructures.Function.Norm import Norm
-from src.MatrixFactory import MatrixFactory
+from src.AlgebraicStructures.Matrix.MatrixFactory import MatrixFactory
 
 
 def create_householder_matrix(v):
-    i = MatrixFactory().create_identity_matrix(v.get_row_count)
+    i = MatrixFactory().create_identity_matrix(v.row_count)
     orthogonal_projection = (2 / ((v.transpose() * v)[0, 0])) * (v * v.transpose())
     return i - orthogonal_projection
 

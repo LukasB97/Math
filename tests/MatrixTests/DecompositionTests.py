@@ -1,7 +1,9 @@
 import unittest
 
 from src.AlgebraicStructures.Matrix.Matrix import Matrix
+from src.Algorithms.LinearAlgebra.ConjugatedGradientMethod import ConjugatedGradientMethod
 from src.BackwardsSubstitution import substitute_backwards
+from src.Decomposition.CholeskyDecomposition import CholeskyDecomposition
 from src.Decomposition.QRDecomposition import QRDecomposition
 
 
@@ -72,6 +74,48 @@ class DecompositionTests(unittest.TestCase):
         )
         q, r= matrix.decompose(QRDecomposition())
         print(substitute_backwards(r, q.transpose() * b))
+
+
+    def test_it(self):
+        matrix = Matrix(
+            [
+                [1, 0, 1],
+                [0, 2, 3],
+                [1, 3, 2]
+            ]
+        )
+        b = Matrix(
+            [
+                [3],
+                [4],
+                [5]
+            ]
+        )
+        q, r = matrix.decompose(QRDecomposition())
+        x1 = substitute_backwards(r, q.transpose() * b)
+        x2 = ConjugatedGradientMethod().solve(matrix, b)
+        self.assertEqual(x1, x2)
+
+
+    def test_cholesky(self, a=0):
+        matrix = Matrix(
+            [
+                [1, 0, 1],
+                [0, 9, a],
+                [1, a, 2]
+            ]
+        )
+        b = Matrix(
+            [
+                [3],
+                [4],
+                [5]
+            ]
+        )
+        L, LT = matrix.decompose(CholeskyDecomposition())
+        self.assertEqual(L*LT, matrix)
+
+
 
 
 if __name__ == '__main__':

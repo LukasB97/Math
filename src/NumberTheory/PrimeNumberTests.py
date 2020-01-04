@@ -4,6 +4,7 @@ import random
 def AKS(n: int) -> bool:
     pass
 
+
 def MillerRabinTest(n, s=50):
     if n < 2: return False
     for j in range(1, s + 1):

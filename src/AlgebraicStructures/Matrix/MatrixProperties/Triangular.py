@@ -2,7 +2,6 @@ from enum import Enum
 
 from src.AlgebraicStructures.Matrix import Matrix
 from src.AlgebraicStructures.Matrix.MatrixProperties.MatrixProperty import MatrixProperty
-from src.AlgebraicStructures.Matrix.MatrixProperties.PropertyResult import PropertyResult
 
 
 class TriangularProperty(Enum):
@@ -16,7 +15,7 @@ class Triangular(MatrixProperty):
 
     def evaluate(self, matrix: Matrix) -> TriangularProperty:
         upper_triangular = Triangular.evaluate_upper_triangle(matrix)
-        lower_triangular = Triangular.evaluate_upper_triangle(matrix)
+        lower_triangular = Triangular.evaluate_lower_triangle(matrix)
         if lower_triangular:
             if upper_triangular:
                 return TriangularProperty.DIAGONAL
@@ -27,18 +26,16 @@ class Triangular(MatrixProperty):
 
     @classmethod
     def evaluate_upper_triangle(cls, matrix: Matrix):
-        for i in range(matrix.get_row_count):
-            for j in range(matrix.get_column_count):
-                if i > j:
-                    if matrix[i, j] != 0:
-                        return False
+        for i in range(matrix.row_count):
+            for j in range(i):
+                if round(matrix[i, j], 5) != 0:
+                    return False
         return True
 
     @classmethod
     def evaluate_lower_triangle(cls, matrix: Matrix):
-        for i in range(matrix.get_row_count):
-            for j in range(matrix.get_column_count):
-                if i < j:
-                    if matrix[i, j] != 0:
-                        return False
+        for i in range(matrix.row_count):
+            for j in range(i + 1, matrix.column_count):
+                if round(matrix[i, j], 5) != 0:
+                    return False
         return True

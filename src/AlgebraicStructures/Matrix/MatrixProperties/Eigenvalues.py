@@ -13,8 +13,6 @@ class Eigenvalues(MatrixProperty):
         if triangular_property is TriangularProperty.NOT_TRIANGULAR:
             q, r = matrix.decompose(QRDecomposition())
         eigenvalues = []
-        for i in range(matrix.get_column_count):
+        for i in range(matrix.column_count):
             eigenvalues.append(r[i, i])
         return eigenvalues
-
-

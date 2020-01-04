@@ -12,8 +12,8 @@ class MatrixExtension(MatrixProperty):
         self.start = start
 
     def evaluate(self, matrix: Matrix) -> PropertyResult:
-        vectors = numpy.zeros((matrix.get_row_count + self.size, matrix.get_column_count + self.size))
-        for i in range(matrix.get_row_count):
-            for j in range(matrix.get_column_count):
+        vectors = numpy.zeros((matrix.row_count + self.size, matrix.column_count + self.size))
+        for i in range(matrix.row_count):
+            for j in range(matrix.column_count):
                 vectors[i + self.size, j + self.size] = matrix[i, j]
         return Matrix.Matrix(vectors)

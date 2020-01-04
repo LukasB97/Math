@@ -1,7 +1,6 @@
 from typing import List, Dict
 
 from src.AlgebraicStructures.Function.ComputationalGraphPart import ComputationalGraphPart
-from src.AlgebraicStructures.Function.Variable import Variable
 
 
 class Operations:
