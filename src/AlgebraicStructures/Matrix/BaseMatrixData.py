@@ -9,10 +9,10 @@ class BaseMatrixData(ABC):
     data_type: type = None
 
     def __init__(self, matrix_vectors, *args, **kwargs):
-        if (data_type:= kwargs.get("data_type")) is None:
+        if (data_type := kwargs.get("data_type")) is None:
             data_type = float
         self.data_type = data_type
-        if (value_creator:= kwargs.get("value_creator")) is not None:
+        if (value_creator := kwargs.get("value_creator")) is not None:
             c = numpy.empty(matrix_vectors.shape, dtype=self.value_type)
             for i in range(len(c)):
                 for j in range(len(c[0])):
@@ -42,8 +42,11 @@ class BaseMatrixData(ABC):
         try:
             for i in range(self.row_count):
                 for j in range(self.column_count):
-                    if self.matrix_vectors[i, j] != other.matrix_vectors[i, j]:
+                    if not self.value_equality(self.matrix_vectors[i, j], other.matrix_vectors[i, j]):
                         return False
             return True
         except IndexError:
             return False
+
+    def value_equality(self, a, b) -> bool:
+        return numpy.equal(a, b)

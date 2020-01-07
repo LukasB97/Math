@@ -2,12 +2,29 @@ import unittest
 
 from src.AlgebraicStructures.Matrix.Matrix import Matrix
 from src.Algorithms.LinearAlgebra.ConjugatedGradientMethod import ConjugatedGradientMethod
-from src.BackwardsSubstitution import substitute_backwards
+from src.Decomposition.LRDecomposition import LRDecomposition
+from src.Substitution import substitute_backwards
 from src.Decomposition.CholeskyDecomposition import CholeskyDecomposition
 from src.Decomposition.QRDecomposition import QRDecomposition
+from tests.MatrixTests import MatrixCollection
 
 
 class DecompositionTests(unittest.TestCase):
+
+    def test_decomposition(self, matrix, decomposition, round_digits=None):
+        decomposed_matrices = matrix.decompose(decomposition)
+        decomposed_product = decomposed_matrices[0] * decomposed_matrices[1]
+        for i in range(2, len(decomposed_matrices)):
+            decomposed_product *= decomposed_matrices[i]
+        if round_digits is not None:
+            decomposed_product = round(decomposed_product, round_digits)
+        self.assertEqual(matrix, decomposed_product)
+        for i in range(20):
+            b = MatrixCollection.create_target_vector(matrix.column_count)
+            solution_vector = decomposition.solve(matrix, b)
+            if round_digits is not None:
+                solution_vector = round(solution_vector, round_digits)
+            self.assertEqual(matrix * solution_vector, b)
 
     def test_equal(self):
         matrix_a = Matrix(
@@ -57,63 +74,22 @@ class DecompositionTests(unittest.TestCase):
         print(q * q.transpose())
         print(q * r)
 
+    def test_qr(self):
+        decomposition = QRDecomposition()
+        for A in MatrixCollection.regular:
+            self.test_decomposition(A, decomposition, 8)
+
+
     def test_lr(self):
-        matrix = Matrix(
-            [
-                [1, 3, 6],
-                [9, 3, -6],
-                [5, 8, 1]
-            ]
-        )
-        b = Matrix(
-            [
-                [3],
-                [4],
-                [5]
-            ]
-        )
-        q, r= matrix.decompose(QRDecomposition())
-        print(substitute_backwards(r, q.transpose() * b))
+        decomposition = LRDecomposition()
 
 
-    def test_it(self):
-        matrix = Matrix(
-            [
-                [1, 0, 1],
-                [0, 2, 3],
-                [1, 3, 2]
-            ]
-        )
-        b = Matrix(
-            [
-                [3],
-                [4],
-                [5]
-            ]
-        )
-        q, r = matrix.decompose(QRDecomposition())
-        x1 = substitute_backwards(r, q.transpose() * b)
-        x2 = ConjugatedGradientMethod().solve(matrix, b)
-        self.assertEqual(x1, x2)
+    def test_cholesky(self):
+        decomposition = CholeskyDecomposition()
+        for A in MatrixCollection.positive_definite.intersection(MatrixCollection.symmetric):
+            self.test_decomposition(A, decomposition, 8)
 
 
-    def test_cholesky(self, a=0):
-        matrix = Matrix(
-            [
-                [1, 0, 1],
-                [0, 9, a],
-                [1, a, 2]
-            ]
-        )
-        b = Matrix(
-            [
-                [3],
-                [4],
-                [5]
-            ]
-        )
-        L, LT = matrix.decompose(CholeskyDecomposition())
-        self.assertEqual(L*LT, matrix)
 
 
 

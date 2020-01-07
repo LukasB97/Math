@@ -1,9 +1,5 @@
-import math
-
 import numpy
-from numpy import array
 
-from src.AbstractFactory import AbstractFactory
 from src.AlgebraicStructures.Matrix.BaseMatrix import BaseMatrix
 from src.Decomposition import DecompositionStrategy
 
@@ -45,3 +41,6 @@ class Matrix(BaseMatrix):
 
     def decompose(self, decomposition_strategy: DecompositionStrategy):
         return decomposition_strategy.decompose(self.copy())
+
+    def __round__(self, n=6):
+        return self.create(numpy.round(self.matrix_vectors, n))

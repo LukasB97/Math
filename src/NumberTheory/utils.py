@@ -4,6 +4,7 @@ from src.NumberTheory.EuclideanAlgorithm import extended_euclidean_algorithm
 def square_multiply():
     pass
 
+
 def get_inverse_element(e, n):  # Inverses mod n
     # Aufruf: ModInv(e,n) mit natuerlichen Zahlen e,n>0 und ggT(e,n)=1
     # Ausgabe: d aus {1,...,n-1} mit (d*e)%n = 1

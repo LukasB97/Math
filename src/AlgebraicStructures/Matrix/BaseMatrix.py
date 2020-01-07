@@ -1,7 +1,6 @@
 from abc import abstractmethod
 from numbers import Number
 
-import numpy
 from numpy import transpose
 
 from src.AbstractFactory import AbstractFactory
@@ -33,8 +32,6 @@ class BaseMatrix(BaseMatrixData):
     def is_quadratic(self) -> bool:
         return self.row_count == self.column_count
 
-
-
     def __mul__(self, other):
         if isinstance(other, BaseMatrix):
             return self.matrix_multiplication(other)
@@ -56,7 +53,6 @@ class BaseMatrix(BaseMatrixData):
             if self.row_count == self.column_count == 1:
                 return self[0, 0] - other[0, 0]
             return self.create(self.matrix_vectors - other.matrix_vectors)
-
 
     def __repr__(self):
         return str(self.matrix_vectors)
@@ -87,3 +83,6 @@ class BaseMatrix(BaseMatrixData):
 
     def transpose(self) -> 'BaseMatrix':
         return type(self)(transpose(self.matrix_vectors))
+
+    def __hash__(self):
+        return hash(self.matrix_vectors.tostring())

@@ -1,11 +1,14 @@
 from src.ElementarMatrix import create_frobenius_matrix
 
 from src.AlgebraicStructures.Matrix import Matrix
-from src.Decomposition.DecompositionStrategy import DecompositionStrategy
 from src.AlgebraicStructures.Matrix.MatrixFactory import MatrixFactory
+from src.Decomposition.DecompositionStrategy import DecompositionStrategy
 
 
-class LeftRightDecomposition(DecompositionStrategy):
+class LRDecomposition(DecompositionStrategy):
+
+    def solve(self, matrix, target_vector):
+        l, r = self.decompose(matrix)
 
     def __init__(self, pivot_strategy):
         pass

@@ -1,13 +1,12 @@
 import numpy
 
-from src import BackwardsSubstitution
+from src import Substitution
 from src.AlgebraicStructures.Matrix.Matrix import Matrix
+from src.AlgebraicStructures.Matrix.MatrixFactory import MatrixFactory
 from src.AlgebraicStructures.Matrix.MatrixProperties import PropertyResult
 from src.AlgebraicStructures.Matrix.MatrixProperties.EigenvalueAlgorithm.QRAlgorithm import QRAlgorithm
-from src.AlgebraicStructures.Matrix.MatrixProperties.Eigenvalues import Eigenvalues
 from src.AlgebraicStructures.Matrix.MatrixProperties.MatrixProperty import MatrixProperty
 from src.Decomposition.QRDecomposition import QRDecomposition
-from src.AlgebraicStructures.Matrix.MatrixFactory import MatrixFactory
 
 
 class Eigenvectors(MatrixProperty):

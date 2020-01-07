@@ -8,7 +8,7 @@ from src.NumberTheory.PrimeGenerator import PrimeGenerator
 
 class RSA(Cipher):
 
-    def __init__(self, r=None, sk=None, *args, **kwargs):
+    def __init__(self, r=None, sk=None, pk=None, *args, **kwargs):
         if sk is None:
             sk, self.pk = self.create_key(r)
         super().__init__(sk, *args, **kwargs)
@@ -24,7 +24,7 @@ class RSA(Cipher):
         l = (r + 2) // 2
         prime_generator = PrimeGenerator.std_insecure()
         p = prime_generator.generate_prime(2 ** l, 2 ** (l + 1) - 1)
-        while (q:= prime_generator.generate_prime(2 ** l, 2 ** (l + 1) - 1)) == p:
+        while (q := prime_generator.generate_prime(2 ** l, 2 ** (l + 1) - 1)) == p:
             pass
         n = q * p
         phin = (q - 1) * (p - 1)
@@ -33,14 +33,11 @@ class RSA(Cipher):
         return (n, e), (n, utils.get_inverse_element(e, phin))
 
 
-
-
 def RSATest():
-
     ms = 'NSA aus USA hasst RSA.'
     m = ms
     print("Klartext als String:      " + ms)
-    r = 1024#len() - 2  # Laenge des Klartexts bestimmen
+    r = 1024  # len() - 2  # Laenge des Klartexts bestimmen
     rsa = RSA(r)
     c = rsa.encrypt(m)
     print("Chiffretext als Zahl:     " + str(c))

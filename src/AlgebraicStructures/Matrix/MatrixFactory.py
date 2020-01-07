@@ -1,4 +1,3 @@
-
 from numpy import zeros, random
 
 from src.AbstractFactory import AbstractFactory
@@ -20,7 +19,6 @@ class MatrixFactory(AbstractFactory):
     @classmethod
     def create_random(cls, rows, columns, lower_bound=0, upper_bound=1):
         return Matrix(random.uniform(low=lower_bound, high=upper_bound, size=(rows, columns)))
-
 
     @classmethod
     def build_block_matrix(cls, a=None, b=None, c=None, d=None, row_count=None, col_count=None) -> Matrix:

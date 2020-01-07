@@ -4,9 +4,23 @@ from numpy import zeros
 
 from src.AlgebraicStructures.Matrix.Matrix import Matrix
 from src.Decomposition.DecompositionStrategy import DecompositionStrategy
+from src.Substitution import substitute_backwards
+from src.Substitution import substitute_forward
 
 
 class CholeskyDecomposition(DecompositionStrategy):
+
+    def solve(self, matrix, target_vector):
+        """
+        A = L*Lt => Ax = b <=> Lz = b, Ltx = z
+        :param matrix:
+        :param target_vector:
+        :return:
+        """
+        lower, upper = self.decompose(matrix)
+        z = substitute_forward(lower, target_vector)
+        x = substitute_backwards(upper, z)
+        return x
 
     def decompose(self, matrix):
         L = zeros((matrix.row_count, matrix.row_count))
@@ -33,7 +47,7 @@ class CholeskyDecomposition(DecompositionStrategy):
         series = 0
         for k in range(i):
             series += L[i, k] ** 2
-        to_square = A[i,i] - series
+        to_square = A[i, i] - series
         if to_square < 0:
             raise ValueError("Matrix is not positive definite")
         return sqrt(to_square)

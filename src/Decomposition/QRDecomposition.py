@@ -4,12 +4,16 @@ import numpy
 
 from src.AlgebraicStructures.Function.Norm import Norm
 from src.AlgebraicStructures.Matrix.Matrix import Matrix
-from src.AlgebraicStructures.Matrix.MatrixProperties.MatrixExtension import MatrixExtension
-from src.Decomposition.DecompositionStrategy import DecompositionStrategy
 from src.AlgebraicStructures.Matrix.MatrixFactory import MatrixFactory
+from src.Decomposition.DecompositionStrategy import DecompositionStrategy
+from src.Substitution import substitute_backwards
 
 
 class QRDecomposition(DecompositionStrategy):
+
+    def solve(self, matrix, target_vector):
+        q, r = self.decompose(matrix)
+        return substitute_backwards(r, q.transpose() * target_vector)
 
     def create_householder_matrix(self, v):
         i = MatrixFactory().create_identity_matrix(v.row_count)

@@ -12,11 +12,14 @@ class SingularValueDecomposition(DecompositionStrategy):
             singular_values.append(sqrt(triangular_matrix[i, i]))
         return singular_values
 
+    def build_diagonal_matrix(self, singular_values):
+        pass
+
+    def 
+
     def decompose(self, matrix):
         ATA = matrix.transpose() * matrix
-        Q, R = ATA.deccompose(QRDecomposition())
-        singular_values = self.get_singular_values(R)
-
+        singular_values = self.get_singular_values(ATA)
         return L, L.transpose()
 
     @classmethod

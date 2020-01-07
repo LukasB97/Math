@@ -1,15 +1,12 @@
 from typing import List
 
 from src.AlgebraicStructures.Function.Evaluable import Evaluable
-from src.AlgebraicStructures.Function.Operator1 import Operator
 
 
 class AbstractFunction(Evaluable):
 
     def derive(self, variable) -> 'AbstractFunction':
         return self.operator.derive(self.operands)
-
-
 
     def evaluate(self, *args, **kwargs) -> float:
         values = list()

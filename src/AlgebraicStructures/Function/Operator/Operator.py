@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
 from src.AlgebraicStructures.Function.Evaluable import Evaluable
 
@@ -23,4 +23,3 @@ class Operator(Evaluable):
     @abstractmethod
     def derive(self, variable, operands: list):
         pass
-

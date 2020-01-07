@@ -7,7 +7,7 @@ class QRAlgorithm:
     def evaluate(self, matrix, digits=5):
         temp = matrix
         i = 0
-        while (True):
+        while True:
             Q, R = temp.decompose(QRDecomposition())
             temp = R * Q
             a = temp.evaluate_property(Triangular())

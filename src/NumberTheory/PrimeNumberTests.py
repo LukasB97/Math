@@ -6,7 +6,8 @@ def AKS(n: int) -> bool:
 
 
 def MillerRabinTest(n, s=50):
-    if n < 2: return False
+    if n < 2:
+        return False
     for j in range(1, s + 1):
         a = random.randint(1, n - 1)
         i = n - 1

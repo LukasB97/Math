@@ -1,5 +1,4 @@
-import hashlib
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
 from src.Cryptography.CryptographicScheme import CryptographicScheme
 
@@ -11,7 +10,7 @@ class Cipher(CryptographicScheme):
         pass
 
     @abstractmethod
-    def decrypt(self, message):
+    def decrypt(self, chiffretext):
         pass
 
     def str2int(self, s):  # codiert einen String als Zahl (zum Testen von RSA)
@@ -30,4 +29,3 @@ class Cipher(CryptographicScheme):
             s = chr(x & 255) + s
             x = x >> 8
         return s
-

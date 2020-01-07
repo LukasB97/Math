@@ -10,7 +10,7 @@ def extended_euclidean_algorithm(ld, d):  # erweiterter Euklidischer Algorithmus
         (d, ld) = (ld % d, d)
         (x, lx) = (lx - q * x, x)
         (y, ly) = (ly - q * y, y)
-    return (ld, lx, ly)
+    return ld, lx, ly
 
 
 def greatest_common_divisor(a, b):  # groesster gemeinsamer Teiler

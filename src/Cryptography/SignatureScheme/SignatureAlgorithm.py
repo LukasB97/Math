@@ -1,5 +1,5 @@
 import hashlib
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
 from src.Cryptography.CryptographicScheme import CryptographicScheme
 
@@ -11,7 +11,7 @@ class SignatureAlgorithm(CryptographicScheme):
         pass
 
     @abstractmethod
-    def verify_signature(self, message, signature):
+    def verify_signature(self, message, signature) -> bool:
         pass
 
     def hash(self, message):

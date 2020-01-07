@@ -1,26 +1,23 @@
-import hashlib
+from idlelib.multicall import r
 
+from src.Cryptography.Ciphers.Asymmetric.Elgamal import Elgamal
 from src.Cryptography.SignatureScheme.SignatureAlgorithm import SignatureAlgorithm
 
 
-class ElgamalSignature(SignatureAlgorithm):
+class ElgamalSignature(SignatureAlgorithm, Elgamal):
 
+    def create_signature(self, message):
+        pass
 
-  def create_key(self, *args, **kwargs):
-    pass
-
-  def create_signature(self, message):
-    pass
-
-  def verify_signature(self, message, signature):
-    pass
+    def verify_signature(self, message, signature):
+        pass
 
 
 def create_signature(sk, m):  # signiert eine Nachricht m
     # Aufruf: ElgamalSignature(sk,m) mit secure key sk und Nachricht m (String)
     # Ausgabe: signierte Nachricht sig = (m,r,s)
     ...
-    return (m, r, s)
+    return m, r, s
 
 
 def verify_signature(pk, sig):  # ueberprueft Signatur einer Nachricht

@@ -22,15 +22,7 @@ class ConjugatedGradientMethod:
             r_i_new = r_i - distance_i * z_i
             direction_i = self.calculate_new_direction(r_i_new, r_i, direction_i)
             r_i = r_i_new
-            n =  Norm.euclidean_norm(r_i)
+            n = Norm.euclidean_norm(r_i)
             if n < tolerance:
                 break
         return x_i
-
-
-
-
-
-
-
-
