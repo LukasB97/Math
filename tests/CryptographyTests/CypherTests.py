@@ -1,8 +1,6 @@
 import unittest
 
-from src.AlgebraicStructures.Matrix.Matrix import Matrix
-from src.BackwardsSubstitution import substitute_backwards
-from src.Decomposition.QRDecomposition import QRDecomposition
+from src.Algebra.Structures import Matrix
 
 
 class CypherTests(unittest.TestCase):
@@ -70,7 +68,7 @@ class CypherTests(unittest.TestCase):
                 [5]
             ]
         )
-        q, r= matrix.decompose(QRDecomposition())
+        q, r = matrix.decompose(QRDecomposition())
         print(substitute_backwards(r, q.transpose() * b))
 
 
