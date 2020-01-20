@@ -1,6 +1,6 @@
 import numpy
 
-from src.AlgebraicStructures.Matrix.Matrix import Matrix
+from src.Algebra.Structures import Matrix
 
 
 def substitute_backwards(a, b):

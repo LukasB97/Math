@@ -1,9 +1,9 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 
 from src.Cryptography.CryptographicScheme import CryptographicScheme
 
 
-class Cipher(CryptographicScheme):
+class Cipher(CryptographicScheme, ABC):
 
     @abstractmethod
     def encrypt(self, message):

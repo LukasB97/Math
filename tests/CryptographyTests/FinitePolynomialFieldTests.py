@@ -1,8 +1,9 @@
 import unittest
 
-from src.AlgebraicStructures.Matrix.Matrix import Matrix
 from src.BackwardsSubstitution import substitute_backwards
-from src.Decomposition.QRDecomposition import QRDecomposition
+
+from src.Algebra.Structures import Matrix
+from src.Algebra.LinearAlgebra.Decomposition import QRDecomposition
 
 
 class FinitePolynomialFieldTests(unittest.TestCase):
@@ -70,7 +71,7 @@ class FinitePolynomialFieldTests(unittest.TestCase):
                 [5]
             ]
         )
-        q, r= matrix.decompose(QRDecomposition())
+        q, r = matrix.decompose(QRDecomposition())
         print(substitute_backwards(r, q.transpose() * b))
 
 
