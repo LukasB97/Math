@@ -1,21 +1,22 @@
+from typing import List
 
+from src.Algebra.Structures.Function.Operator import OperatorMapping
+from src.Algebra.Structures.Function.Operator.ComputationalGraphPart import ComputationalGraphPart
 from src.Algebra.Structures.Function.Variable import Variable
-from src.Algebra.Structures.Function.Function import Function
-from src.Algebra.Structures.Function.Operator1 import Operator
 
 
 class FunctionParser:
 
     @classmethod
-    def parse_brackets(cls, definition_input: list) -> list:
+    def parse_brackets(cls, definition_input: list) -> List[ComputationalGraphPart]:
         definition = list()
         last_end = 0
         while "(" in definition_input[last_end:]:
             start = definition_input.index("(", last_end)
-            bracket_section = cls.get_bracket_section(definition_input, start)
+            end_index = cls.get_bracket_section(definition_input, start)
             definition += definition_input[last_end:start]
-            last_end = start + len(bracket_section) + 1
-            definition.append(cls.parse_list(bracket_section))
+            last_end = start + end_index + 1
+            definition.append(cls.parse_list(definition_input[start + 1: end_index]))
         definition += definition_input[last_end + 1:]
         assert "(" not in definition and ")" not in definition
         return definition
@@ -26,14 +27,14 @@ class FunctionParser:
         definition = cls.build_definition_list(definition_string)
         if "(" in definition_string:
             definition = cls.parse_brackets(definition)
-        definition = cls.build_graph(definition)
+        definition = cls.build_section_graph(definition)
         return definition[0]
 
     @classmethod
     def parse_list(cls, definition):
         if "(" in definition:
             definition = cls.parse_brackets(definition)
-        definition = cls.build_graph(definition)
+        definition = cls.build_section_graph(definition)
         return definition[0]
 
     @classmethod
@@ -49,8 +50,8 @@ class FunctionParser:
                 is_number = False
                 definition.append(float(number))
                 number = ""
-            if definition_string[i] in ["*", "/", "+", "-", "^"]:
-                definition.append(Operator.get(definition_string[i]))
+            elif definition_string[i] in OperatorMapping.operator_mapping:
+                definition.append(definition_string[i])
             elif definition_string[i].isalpha():
                 definition.append(Variable(definition_string[i]))
             elif definition_string[i] in ["(", ")"]:
@@ -80,39 +81,41 @@ class FunctionParser:
                     break
         return definition_string
 
-    @classmethod
-    def build_graph(cls, definition: list):
-        definition = cls.build_for_operator(definition, Operator.POW)
-        definition = cls.build_for_operator(definition, Operator.DIV)
-        definition = cls.build_for_operator(definition, Operator.MUL)
-        definition = cls.build_for_operator(definition, Operator.SUB)
-        definition = cls.build_for_operator(definition, Operator.ADD)
-        return definition
 
     @classmethod
-    def build_part(cls, op_1, operator, op2):
-        return Function(operator, [op_1, op2])
+    def get_highest_priority_operation_index(cls, definition: list):
+        for i in range(len(OperatorMapping.operator_priority)):
+            if OperatorMapping.operator_priority[i] in definition:
+                return definition.index(OperatorMapping.operator_priority[i])
+        raise RuntimeError(definition)
 
     @classmethod
-    def build_for_operator(cls, definition: list, op: Operator):
-        new_definition = list()
-        last_end = -1
-        while op in definition:
-            start = definition.index(op) - 1
-            new_definition += definition[last_end + 1:start]
-            last_end = start + 1
-            part = cls.build_part(definition[start], op, definition[start + 2])
-            new_definition.append(part)
-            definition.pop(start)
-            definition.pop(start)
-            definition.pop(start)
-            definition.insert(start, part)
-        new_definition += definition[last_end + 1:]
-        # return new_definition
-        return definition
+    def build_section_graph(cls, definition: list):
+        assert "(" not in definition
+        while len(definition) > 1:
+            highest_priority = cls.get_highest_priority_operation_index(definition)
+            op = cls.build_operation(*definition[highest_priority - 1: highest_priority + 2])
+            definition[highest_priority] = op
+            del definition[highest_priority + 1]
+            del definition[highest_priority - 1]
+        assert len(definition) == 1
+        return definition[0]
+
+
+    @classmethod
+    def build_operation(cls, left_op, operation, right_op):
+        return OperatorMapping.operator_mapping[operation](left_op, right_op)
+
+
+
 
     @classmethod
     def get_bracket_section(cls, definition: list, start_index):
+        """
+        :param definition:
+        :param start_index:
+        :return: index of the bracket, closing the secction that was opened by the start index
+        """
         assert definition[start_index] == "("
         opening_count = 1
         closing_count = 0
@@ -122,5 +125,5 @@ class FunctionParser:
             elif definition[i] == ")":
                 closing_count += 1
             if opening_count == closing_count:
-                return definition[start_index + 1: i]
+                return i
         raise ValueError("Invalid Format: " + str(definition))

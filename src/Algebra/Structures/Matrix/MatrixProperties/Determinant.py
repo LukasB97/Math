@@ -1,4 +1,3 @@
-
 from src.Algebra.Structures.Matrix import Matrix
 from src.Algebra.Structures.Matrix.MatrixProperties import PropertyResult, MatrixProperty
 from src.Algebra.Structures.Matrix.MatrixProperties.Triangular import Triangular

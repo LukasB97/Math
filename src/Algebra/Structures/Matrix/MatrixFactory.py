@@ -1,7 +1,7 @@
 from numpy import zeros, random
 
-from src.AbstractFactory import AbstractFactory
 from src.Algebra.Structures.Matrix.Matrix import Matrix, BaseMatrix
+from src.Core.AbstractFactory import AbstractFactory
 
 
 class MatrixFactory(AbstractFactory):

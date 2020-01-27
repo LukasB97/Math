@@ -1,9 +1,12 @@
-from typing import Set
-
 from src.Algebra.Structures.Function.Evaluable import Evaluable
 
 
 class Variable(Evaluable):
+
+    def get_derivative(self, variable):
+        if self.name == variable:
+            return 1
+        return
 
     def get_variable_context(self):
         return self.name.lower()
@@ -17,4 +20,4 @@ class Variable(Evaluable):
         return kwargs[self.name]
 
     def __repr__(self):
-        return self.name + " = " + str(self.value)
+        return self.name

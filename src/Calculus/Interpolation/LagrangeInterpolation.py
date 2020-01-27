@@ -1,6 +1,6 @@
 from typing import Tuple, List
 
-from src.Algebra.Structures.Function import FunctionParser
+from src.Algebra.Structures.Function.Parser import FunctionParser
 from src.Algebra.Structures.Function.Function import Function
 from src.Calculus.Interpolation import InterpolationAlgorithm
 

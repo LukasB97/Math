@@ -1,9 +1,9 @@
 import numpy as np
 
+from src.Algebra.LinearAlgebra.Algorithms.EquationSystem.Substitution import substitute_backwards
 from src.Algebra.LinearAlgebra.Decomposition.DecompositionStrategy import DecompositionStrategy
 from src.Algebra.Structures import Matrix
 from src.Algebra.Structures.Matrix.MatrixFactory import MatrixFactory
-from src.Substitution import substitute_backwards
 
 
 class LRDecomposition(DecompositionStrategy):

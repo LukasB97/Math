@@ -1,6 +1,5 @@
 import numpy
 
-from src.Algebra.LinearAlgebra.Decomposition import DecompositionStrategy
 from src.Algebra.Structures.Matrix.BaseMatrix import BaseMatrix
 
 
@@ -13,6 +12,12 @@ class Matrix(BaseMatrix):
         if prop not in self.matrix_properties:
             return None
         return self.matrix_properties[prop]
+
+    def sum(self):
+        return self.matrix_vectors.sum()
+
+    def sub_matrix(self, from_i, to_i, from_j, to_j):
+        return self.create(self.matrix_vectors[from_i:to_i][from_j: to_j])
 
     def set_property(self, prop, result):
         assert prop not in self.matrix_properties
@@ -35,12 +40,6 @@ class Matrix(BaseMatrix):
         if len(c) == len(c[0]) == 1:
             return c[0, 0]
         return self.create(c)
-
-    def evaluate_property(self, matrix_property):
-        if matrix_property in self.matrix_properties:
-            return self.matrix_properties[matrix_property]
-        self.matrix_properties[matrix_property] = matrix_property.evaluate(self.copy())
-        return self.matrix_properties[matrix_property]
 
     def __round__(self, n=6):
         return self.create(numpy.round(self.matrix_vectors, n))

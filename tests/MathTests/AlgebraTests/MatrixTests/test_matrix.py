@@ -1,10 +1,10 @@
 import math
 import unittest
 
+from src.Algebra.LinearAlgebra.Decomposition import QRDecomposition
 from src.Algebra.Structures import Matrix
 from src.Algebra.Structures import MatrixFactory
 from src.Algebra.Structures import Triangular, TriangularProperty
-from src.Algebra.LinearAlgebra.Decomposition import QRDecomposition
 
 
 class MatrixTestCase(unittest.TestCase):
@@ -142,10 +142,9 @@ class MatrixTestCase(unittest.TestCase):
         self.assertEqual(matrix_a.evaluate_property(Triangular()), TriangularProperty.UPPER_TRIANGULAR)
         self.assertEqual(matrix_b.evaluate_property(Triangular()), TriangularProperty.NOT_TRIANGULAR)
 
-
     def test_ausgleich(self):
-        data = [(0, 2.45), (math.pi/6, 3.1), (math.pi/3, 3.63), (math.pi/2, 4.25), (2 * math.pi/3, 4.7)
-                , (math.pi * 5/6, 5.1), (math.pi, 6)]
+        data = [(0, 2.45), (math.pi / 6, 3.1), (math.pi / 3, 3.63), (math.pi / 2, 4.25), (2 * math.pi / 3, 4.7)
+            , (math.pi * 5 / 6, 5.1), (math.pi, 6)]
         A = Matrix([
             [data[0][0] ** 2, data[0][0] * math.sin(data[0][0]), 1],
             [data[1][0] ** 2, data[1][0] * math.sin(data[1][0]), 1],
@@ -167,7 +166,7 @@ class MatrixTestCase(unittest.TestCase):
         ])
         res = QRDecomposition().solve(A.transpose() * A, A.transpose() * b)
         for p in data:
-            print("f(", p[0], ")= ", self.fn(res[0,0], res[1,0], res[2,0], p[0]))
+            print("f(", p[0], ")= ", self.fn(res[0, 0], res[1, 0], res[2, 0], p[0]))
             print("angabe: ", p[1])
 
     def fn(self, l1, l2, l3, x):

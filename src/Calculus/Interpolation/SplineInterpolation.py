@@ -1,4 +1,4 @@
-from typing import Set, Tuple, List
+from typing import Set, Tuple
 
 from src.Algebra.Structures.Function.Function import Function
 from src.Calculus.Interpolation import InterpolationAlgorithm
@@ -10,7 +10,7 @@ class SplineInterpolation(InterpolationAlgorithm):
         self.k = k
 
     def first_derivative(self, b, c, d, x_j, x):
-        return b + 2 * c *(x - x_j) + 3 * d * (x - x_j) ** 2
+        return b + 2 * c * (x - x_j) + 3 * d * (x - x_j) ** 2
 
     def second_derivative(self, c, d, x_j, x):
         return 2 * c + 6 * d * (x - x_j)
@@ -26,7 +26,6 @@ class SplineInterpolation(InterpolationAlgorithm):
 
     def create_base_condition(self, x, next_x, y):
         return [1, next_x - x, (next_x - x) ** 2, (next_x - x) ** 3], self.base_function()
-
 
     def get_coefficients(self, x, a, b, c, d, next_x, next_y):
         """
@@ -48,8 +47,13 @@ class SplineInterpolation(InterpolationAlgorithm):
             first_der_cond,
             second_der_cond
         ]
+        b = [
+            [1],
+            [],
+            [],
+            []
+        ]
         pass
-
 
     def create_polynomial(self, data_points: Set[Tuple]) -> Function:
         pass

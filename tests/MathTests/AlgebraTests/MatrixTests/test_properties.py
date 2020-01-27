@@ -1,8 +1,8 @@
 import unittest
 
+from src.Algebra.Structures import Eigenvectors
 from src.Algebra.Structures import Matrix
 from src.Algebra.Structures import QRAlgorithm
-from src.Algebra.Structures import Eigenvectors
 from src.Algebra.Structures.Matrix.MatrixProperties.MainDiagonalProduct import MainDiagonalProduct
 
 

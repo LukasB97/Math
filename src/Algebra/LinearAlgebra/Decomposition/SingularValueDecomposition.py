@@ -1,5 +1,6 @@
 from math import sqrt
 
+from src.Algebra.LinearAlgebra.Algorithms.EigenvalueAlgorithm.QRAlgorithm import QRAlgorithm
 from src.Algebra.LinearAlgebra.Decomposition.DecompositionStrategy import DecompositionStrategy
 
 
@@ -12,10 +13,12 @@ class SingularValueDecomposition(DecompositionStrategy):
         u, d, v = self.decompose(matrix)
 
     @classmethod
-    def get_singular_values(cls, triangular_matrix):
+    def get_singular_values(cls, regular_matrix):
+        eigenvalues = QRAlgorithm(0.001)
+        eigenvalues = eigenvalues.evaluate(regular_matrix)
         singular_values = []
-        for i in range(triangular_matrix.row_count):
-            singular_values.append(sqrt(triangular_matrix[i, i]))
+        for eigenvalue in eigenvalues:
+            singular_values.append(sqrt(eigenvalue))
         return singular_values
 
     def build_diagonal_matrix(self, singular_values):

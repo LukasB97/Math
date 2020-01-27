@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from datetime import datetime
 
 from src.Core.Strategy import Strategy

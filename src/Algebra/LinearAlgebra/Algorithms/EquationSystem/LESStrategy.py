@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 
 from src.Algebra.LinearAlgebra.Algorithms.EquationSystem.IterativeAlgorithm import IterativeAlgorithm
 
@@ -10,4 +10,3 @@ class LESStrategy(IterativeAlgorithm, ABC):
 
     def execute(self, matrix, b):
         return self.run(self.create_state(matrix, b))
-

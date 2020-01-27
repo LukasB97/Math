@@ -6,9 +6,6 @@ from src.Algebra.LinearAlgebra.Algorithms.EquationSystem.GaussSeidelMethod impor
 from src.Algebra.LinearAlgebra.Algorithms.EquationSystem.JacobiMethod import JacobiMethod
 from src.Algebra.LinearAlgebra.Algorithms.EquationSystem.LESStrategy import LESStrategy
 from src.Algebra.Structures.Matrix.UnitTestMatrix import UnitTestMatrix
-from src.Algebra.LinearAlgebra.Decomposition import CholeskyDecomposition
-from src.Algebra.LinearAlgebra.Decomposition import LRDecomposition
-from src.Algebra.LinearAlgebra.Decomposition import QRDecomposition
 from tests.MathTests.AlgebraTests.MatrixTests import MatrixCollection
 
 
@@ -20,6 +17,7 @@ class LESTests(unittest.TestCase):
             b = MatrixCollection.create_target_vector(matrix.column_count)
             solution_vector = strategy.execute(matrix, b)
             self.assertEqual(matrix * solution_vector, b)
+
     #
     # def test_qr(self):
     #     decomposition = QRDecomposition()
@@ -50,10 +48,6 @@ class LESTests(unittest.TestCase):
         for A in MatrixCollection.intersection(MatrixCollection.positive_definite, MatrixCollection.symmetric):
             A = UnitTestMatrix(A, 10)
             self.solve(A, jacobi)
-
-        
-
-
 
 
 if __name__ == '__main__':

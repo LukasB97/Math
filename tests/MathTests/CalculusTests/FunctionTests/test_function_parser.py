@@ -9,6 +9,19 @@ from tests.MathTests.CalculusTests.FunctionTests import Functions
 
 class ComputationalGraphTests(unittest.TestCase):
 
+    def _test_build_section_operation(self, definition):
+        def_list = FunctionParser.build_definition_list(definition)
+        graph = FunctionParser.build_section_graph(def_list)
+        self.assertEqual(graph, definition)
+
+    def test_build_section_operation(self):
+        definition = "x + y"
+        self._test_build_section_operation(definition)
+
+
+
+
+
     def test_linear_function(self, x=2.1, a=4, y=3.4):
         graph = FunctionParser.parse_string("(x^3*4+(4/y*(13+2)))*5")
         result = graph.evaluate(x=x, y=y)

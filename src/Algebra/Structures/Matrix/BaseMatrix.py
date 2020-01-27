@@ -3,8 +3,8 @@ from numbers import Number
 
 from numpy import transpose
 
-from src.AbstractFactory import AbstractFactory
 from src.Algebra.Structures.Matrix.BaseMatrixData import BaseMatrixData
+from src.Core.AbstractFactory import AbstractFactory
 
 
 class BaseMatrix(BaseMatrixData):

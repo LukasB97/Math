@@ -2,8 +2,8 @@ import unittest
 
 from src.BackwardsSubstitution import substitute_backwards
 
-from src.Algebra.Structures import Matrix
 from src.Algebra.LinearAlgebra.Decomposition import QRDecomposition
+from src.Algebra.Structures import Matrix
 
 
 class FinitePolynomialFieldTests(unittest.TestCase):

@@ -5,7 +5,7 @@ from src.Algebra.Structures.Function.Function import Function
 from src.Calculus.Interpolation import InterpolationAlgorithm
 
 
-class NewtonInterpolation(InterpolationAlgorithm):
+class HermiteInterpolation(InterpolationAlgorithm):
 
     def create_polynomial(self, data_points: List[Tuple]) -> Function:
         basis = []

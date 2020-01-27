@@ -2,11 +2,11 @@ import unittest
 
 import numpy
 
-from src.Algebra.LinearAlgebra.Algorithms.EquationSystem.JacobiMethod import JacobiMethod
-from src.Algebra.Structures import UnitTestMatrix
-from src.Algebra.LinearAlgebra.Decomposition import CholeskyDecomposition
-from src.Algebra.LinearAlgebra.Decomposition import LRDecomposition
-from src.Algebra.LinearAlgebra.Decomposition import QRDecomposition
+from src.Algebra.LinearAlgebra.Decomposition.CholeskyDecomposition import CholeskyDecomposition
+from src.Algebra.LinearAlgebra.Decomposition.LRDecomposition import LRDecomposition
+from src.Algebra.LinearAlgebra.Decomposition.QRDecomposition import QRDecomposition
+from src.Algebra.LinearAlgebra.Decomposition.SingularValueDecomposition import SingularValueDecomposition
+from src.Algebra.Structures.Matrix.UnitTestMatrix import UnitTestMatrix
 from tests.MathTests.AlgebraTests.MatrixTests import MatrixCollection
 
 
@@ -14,7 +14,7 @@ class DecompositionTests(unittest.TestCase):
     numpy.set_printoptions(precision=100)
 
     def decomposition(self, matrix, decomposition, test_solve=True):
-        decomposed_matrices = matrix.decompose(decomposition)
+        decomposed_matrices = decomposition.decompose(matrix)
         decomposed_product = decomposed_matrices[0] * decomposed_matrices[1]
         for i in range(2, len(decomposed_matrices)):
             decomposed_product *= decomposed_matrices[i]
@@ -44,15 +44,11 @@ class DecompositionTests(unittest.TestCase):
             A = UnitTestMatrix(A, 10)
             self.decomposition(A, decomposition)
 
-    def test_jacobi(self):
-        jacobi = JacobiMethod(0.5)
-        for A in MatrixCollection.intersection(MatrixCollection.positive_definite, MatrixCollection.symmetric):
+    def test_singular_value(self):
+        decomposition = SingularValueDecomposition()
+        for A in MatrixCollection.all:
             A = UnitTestMatrix(A, 10)
             self.decomposition(A, decomposition)
-
-
-
-
 
 
 if __name__ == '__main__':

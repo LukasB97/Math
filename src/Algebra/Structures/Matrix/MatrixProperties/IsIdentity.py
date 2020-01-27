@@ -1,4 +1,3 @@
-
 from src.Algebra.Structures.Matrix import Matrix
 from src.Algebra.Structures.Matrix.MatrixProperties import PropertyResult
 from src.Algebra.Structures.Matrix.MatrixProperties.MatrixProperty import MatrixProperty

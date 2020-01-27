@@ -2,10 +2,10 @@ from math import sqrt
 
 from numpy import zeros
 
+from src.Algebra.LinearAlgebra.Algorithms.EquationSystem.Substitution import substitute_backwards
+from src.Algebra.LinearAlgebra.Algorithms.EquationSystem.Substitution import substitute_forward
 from src.Algebra.LinearAlgebra.Decomposition.DecompositionStrategy import DecompositionStrategy
 from src.Algebra.Structures import Matrix
-from src.Substitution import substitute_backwards
-from src.Substitution import substitute_forward
 
 
 class CholeskyDecomposition(DecompositionStrategy):

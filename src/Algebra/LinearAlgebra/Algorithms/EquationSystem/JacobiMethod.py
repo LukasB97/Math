@@ -1,6 +1,8 @@
 import numpy
+
 from src.Algebra.LinearAlgebra.Algorithms.EquationSystem.LESStrategy import LESStrategy
 from src.Algebra.Structures.Matrix.Matrix import Matrix
+
 
 class JacobiMethod(LESStrategy):
 
@@ -34,7 +36,3 @@ class JacobiMethod(LESStrategy):
     def check_break_condition(self, matrix, x, b, **kwargs):
         difference = (matrix * x) - b
         return difference.transpose() * difference <= self.delta
-
-
-
-

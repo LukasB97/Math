@@ -7,9 +7,6 @@ class FixedPointIteration(ABC):
     def __init__(self, function_to_evaluate: Callable):
         self.function_to_evaluate = function_to_evaluate
 
-    def call_function(self, value):
-        return self.function_to_evaluate(x=value)
-
     @abstractmethod
     def calc_next_step(self, value):
         pass
@@ -20,4 +17,4 @@ class FixedPointIteration(ABC):
             if new_value == start_value:
                 return new_value
             start_value = new_value
-        return new_value
+        return start_value

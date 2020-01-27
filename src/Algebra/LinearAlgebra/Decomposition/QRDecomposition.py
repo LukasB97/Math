@@ -2,11 +2,11 @@ from math import sqrt
 
 import numpy
 
+from src.Algebra.LinearAlgebra.Algorithms.EquationSystem.Substitution import substitute_backwards
 from src.Algebra.LinearAlgebra.Decomposition.DecompositionStrategy import DecompositionStrategy
-from src.Algebra.Structures import Matrix
 from src.Algebra.Structures.Function.Norm import Norm
+from src.Algebra.Structures.Matrix.Matrix import Matrix
 from src.Algebra.Structures.Matrix.MatrixFactory import MatrixFactory
-from src.Substitution import substitute_backwards
 
 
 class QRDecomposition(DecompositionStrategy):

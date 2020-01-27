@@ -28,10 +28,15 @@ regular = [
 ]
 a = m.spd_3x3_2
 
+all = [
+    *regular
+]
+
 
 def create_target_vector(size):
     data = numpy.random.randint(-100, 100, ((size, 1)))
     return Matrix(data)
+
 
 def intersection(*args, **kwargs):
     res = []
