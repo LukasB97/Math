@@ -3,7 +3,7 @@ import unittest
 from time import time
 
 from src.Algebra.Structures.Function.Parser.FunctionParser import FunctionParser
-from src.Algebra.Structures.Function.Operator import ComputationalGraphPart
+from src.Algebra.Structures.Function.Operation import ComputationalGraphPart
 from tests.MathTests.CalculusTests.FunctionTests import Functions
 
 

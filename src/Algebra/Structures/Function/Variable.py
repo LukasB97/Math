@@ -3,6 +3,9 @@ from src.Algebra.Structures.Function.Evaluable import Evaluable
 
 class Variable(Evaluable):
 
+    def __len__(self) -> int:
+        return 1
+
     def get_derivative(self, variable):
         if self.name == variable:
             return 1

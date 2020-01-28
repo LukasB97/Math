@@ -1,4 +1,4 @@
-from src.Algebra.Structures.Function.Operator.ComputationalGraphPart import ComputationalGraphPart
+from src.Algebra.Structures.Function.Operation.ComputationalGraphPart import ComputationalGraphPart
 
 
 class Mul(ComputationalGraphPart):
@@ -13,4 +13,5 @@ class Mul(ComputationalGraphPart):
         return first_op * second_derivative + first_derivative * second_op
 
     def evaluate(self, *args, **kwargs) -> float:
-        pass
+        left, right = self._get_values(*args, **kwargs)
+        return left * right

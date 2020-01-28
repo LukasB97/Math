@@ -1,7 +1,7 @@
 from typing import List
 
-from src.Algebra.Structures.Function.Operator import OperatorMapping
-from src.Algebra.Structures.Function.Operator.ComputationalGraphPart import ComputationalGraphPart
+from src.Algebra.Structures.Function.Operation import OperatorMapping
+from src.Algebra.Structures.Function.Operation.ComputationalGraphPart import ComputationalGraphPart
 from src.Algebra.Structures.Function.Variable import Variable
 
 
@@ -80,7 +80,6 @@ class FunctionParser:
                         definition_string[:i + 1] + "*" + definition_string[i + 1:])
                     break
         return definition_string
-
 
     @classmethod
     def get_highest_priority_operation_index(cls, definition: list):
