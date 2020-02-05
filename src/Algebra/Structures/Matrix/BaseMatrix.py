@@ -1,5 +1,6 @@
 from abc import abstractmethod
 from numbers import Number
+from typing import Tuple
 
 from numpy import transpose
 
@@ -27,6 +28,10 @@ class BaseMatrix(BaseMatrixData):
     @property
     def is_quadratic(self) -> bool:
         return self.row_count == self.column_count
+
+    @property
+    def shape(self) -> Tuple[int]:
+        return (self.row_count, self.column_count)
 
     def __mul__(self, other):
         if isinstance(other, BaseMatrix):

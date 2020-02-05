@@ -1,5 +1,6 @@
 from typing import List
 
+from src.Algebra.Structures.Function import TranscendentalFunctionMapping
 from src.Algebra.Structures.Function.Operation import OperatorMapping
 from src.Algebra.Structures.Function.Operation.ComputationalGraphPart import ComputationalGraphPart
 from src.Algebra.Structures.Function.Variable import Variable
@@ -18,7 +19,6 @@ class FunctionParser:
             last_end = start + end_index + 1
             definition.append(cls.parse_list(definition_input[start + 1: end_index]))
         definition += definition_input[last_end + 1:]
-        assert "(" not in definition and ")" not in definition
         return definition
 
     @classmethod
@@ -61,24 +61,28 @@ class FunctionParser:
         return definition
 
     @classmethod
+    def split(cls, def_str):
+        defl = []
+        last_index = 0
+        for i in range(len(def_str)):
+            if def_str[i] in OperatorMapping.operators:
+                defl.append(def_str[last_index: i])
+                defl.append(def_str[i])
+                last_index = i + 1
+        defl.append(def_str[last_index:])
+
+    @classmethod
     def preprocess_string(cls, definition_string: str) -> str:
         definition_string = definition_string.replace(" ", "")
+        definition_string = cls.replace_transcendental_functions(definition_string)
         definition_string = cls.preprocess_multiply(definition_string)
+
         return definition_string
 
     @classmethod
-    def preprocess_multiply(cls, definition_string: str) -> str:
-        for i in range(len(definition_string) - 1):
-            if definition_string[i].isalpha():
-                if definition_string[i + 1].isalnum() or definition_string[i + 1] == "(":
-                    definition_string = cls.preprocess_multiply(
-                        definition_string[:i + 1] + "*" + definition_string[i + 1:])
-                    break
-            if definition_string[i] == ")":
-                if definition_string[i + 1].isalnum() or definition_string[i + 1] == "(":
-                    definition_string = cls.preprocess_multiply(
-                        definition_string[:i + 1] + "*" + definition_string[i + 1:])
-                    break
+    def replace_transcendental_functions(cls, definition_string):
+        for expression, replacement in TranscendentalFunctionMapping.replacement.items():
+            definition_string = definition_string.replace(expression, replacement)
         return definition_string
 
     @classmethod
@@ -100,13 +104,9 @@ class FunctionParser:
         assert len(definition) == 1
         return definition[0]
 
-
     @classmethod
     def build_operation(cls, left_op, operation, right_op):
         return OperatorMapping.operator_mapping[operation](left_op, right_op)
-
-
-
 
     @classmethod
     def get_bracket_section(cls, definition: list, start_index):

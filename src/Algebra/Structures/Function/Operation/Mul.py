@@ -8,9 +8,8 @@ class Mul(ComputationalGraphPart):
         pass
 
     def get_derivative(self, variable):
-        first_derivative = self.derive_op(variable, first_op)
-        second_derivative = self.derive_op(variable, second_op)
-        return first_op * second_derivative + first_derivative * second_op
+        first_derivative, second_derivative = self.derive_ops(variable)
+        return self.left_op * second_derivative + first_derivative * self.right_op
 
     def evaluate(self, *args, **kwargs) -> float:
         left, right = self._get_values(*args, **kwargs)

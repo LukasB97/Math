@@ -1,8 +1,8 @@
 import random
 
 from src.Cryptography.Ciphers.Asymmetric.AsymmetricCipher import AsymmetricCipher
-from src.NumberTheory.PrimeGenerator import PrimeGenerator
 from src.NumberTheory.utils import power
+from src.Tools.NumberGenerator.PrimeGenerator import PrimeGenerator
 
 
 class Elgamal(AsymmetricCipher):

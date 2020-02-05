@@ -1,10 +1,11 @@
 import math
 import unittest
 
-from src.Algebra.LinearAlgebra.Decomposition import QRDecomposition
-from src.Algebra.Structures import Matrix
-from src.Algebra.Structures import MatrixFactory
-from src.Algebra.Structures import Triangular, TriangularProperty
+from src.Algebra.LinearAlgebra.Decomposition.CholeskyDecomposition import CholeskyDecomposition
+from src.Algebra.LinearAlgebra.Decomposition.QRDecomposition import QRDecomposition
+from src.Algebra.Structures.Matrix.Matrix import Matrix
+from Core.Factories.MatrixFactory import MatrixFactory
+from src.Algebra.Structures.Matrix.MatrixProperties.Triangular import Triangular, TriangularProperty
 
 
 class MatrixTestCase(unittest.TestCase):
@@ -81,6 +82,33 @@ class MatrixTestCase(unittest.TestCase):
         print(a * a.transpose())
         print(a.transpose() * a)
 
+    def test_chol(self):
+        a = 3.1
+        m = Matrix([
+            [1, 0, 1],
+            [0, 9, a],
+            [1, a, 2]
+        ])
+        print(CholeskyDecomposition().decompose(m))
+
+    def test_chol3(self):
+        a = 9
+        m = Matrix([
+            [4, 2, 6],
+            [2, a, 4],
+            [6, 4, (8*a)/(a-1)]
+        ])
+        print(CholeskyDecomposition().decompose(m))
+
+    def test_chol2(self):
+        a = 3.1
+        m = Matrix([
+            [1, -1, 1],
+            [-1, 5, -1],
+            [1, -1, 5]
+        ])
+        print(CholeskyDecomposition().decompose(m))
+
     def test_n_n_mul(self):
         a = Matrix(
             [
@@ -139,8 +167,9 @@ class MatrixTestCase(unittest.TestCase):
                 [5, 7.0, 1]
             ]
         )
-        self.assertEqual(matrix_a.evaluate_property(Triangular()), TriangularProperty.UPPER_TRIANGULAR)
-        self.assertEqual(matrix_b.evaluate_property(Triangular()), TriangularProperty.NOT_TRIANGULAR)
+        triangular = Triangular()
+        self.assertEqual(triangular.evaluate(matrix_a), TriangularProperty.UPPER_TRIANGULAR)
+        self.assertEqual(triangular.evaluate(matrix_b), TriangularProperty.NOT_TRIANGULAR)
 
     def test_ausgleich(self):
         data = [(0, 2.45), (math.pi / 6, 3.1), (math.pi / 3, 3.63), (math.pi / 2, 4.25), (2 * math.pi / 3, 4.7)

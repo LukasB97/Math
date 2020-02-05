@@ -7,5 +7,5 @@ function_derivative = {
 }
 
 simple_funtions = {
-    1,2,3
+    1, 2, 3
 }

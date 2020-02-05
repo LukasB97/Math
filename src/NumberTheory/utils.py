@@ -1,5 +1,5 @@
-from src.NumberTheory.AbstractNumberGenerator import NumberGenerator
 from src.NumberTheory.EuclideanAlgorithm import extended_euclidean_algorithm, greatest_common_divisor
+from src.Tools.NumberGenerator.AbstractNumberGenerator import NumberGenerator
 
 
 def square_multiply():
@@ -28,7 +28,7 @@ def power(x, y, n):  # Exponentialfunktion mod n
     # Ausgabe: (x**y)%n
     z = i = 1
     p = x % n
-    while (i <= y):  # Invariante: p = (x^i)%n
+    while i <= y:  # Invariante: p = (x^i)%n
         if i & y > 0:
             z = (z * p) % n
         i = i + i

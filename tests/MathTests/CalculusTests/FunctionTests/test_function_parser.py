@@ -2,8 +2,8 @@ import parser
 import unittest
 from time import time
 
-from src.Algebra.Structures.Function.Parser.FunctionParser import FunctionParser
 from src.Algebra.Structures.Function.Operation import ComputationalGraphPart
+from src.Algebra.Structures.Function.Parser.FunctionParser import FunctionParser
 from tests.MathTests.CalculusTests.FunctionTests import Functions
 
 
@@ -17,10 +17,6 @@ class ComputationalGraphTests(unittest.TestCase):
     def test_build_section_operation(self):
         definition = "x + y"
         self._test_build_section_operation(definition)
-
-
-
-
 
     def test_linear_function(self, x=2.1, a=4, y=3.4):
         graph = FunctionParser.parse_string("(x^3*4+(4/y*(13+2)))*5")

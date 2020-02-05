@@ -1,6 +1,7 @@
 import random
 
 from src.Cryptography.Ciphers.Asymmetric.AsymmetricCipher import AsymmetricCipher
+from src.NumberTheory.PrimeNumberTests import miller_rabin_test
 from src.NumberTheory.utils import power
 
 
@@ -21,7 +22,7 @@ class DiffieHellman(AsymmetricCipher):
         i = 0
         lower = 2 ** l
         upper = (2 ** (l + 1)) - 1
-        while not IsPrime(p) or not IsPrime((p - 1) // 2):
+        while not miller_rabin_test(p) or not miller_rabin_test((p - 1) // 2):
             p = random.randint(lower, upper)
         while True:
             g = random.randint(2, p - 1)

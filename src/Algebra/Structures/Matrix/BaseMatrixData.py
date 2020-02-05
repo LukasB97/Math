@@ -28,11 +28,11 @@ class BaseMatrixData(ABC):
         return self.data_type
 
     @property
-    def row_count(self):
+    def row_count(self) -> int:
         return len(self.matrix_vectors)
 
     @property
-    def column_count(self):
+    def column_count(self) -> int:
         return len(self.matrix_vectors[0])
 
     def __setitem__(self, key, value):

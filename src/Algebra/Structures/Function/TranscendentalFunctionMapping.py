@@ -7,3 +7,10 @@ mappings = {
     "cos": cos,
     "tan": tan
 }
+
+replacement = {
+    "pi": "~",
+    "sin": "§",
+    "cos": "°",
+    "tan": "?"
+}

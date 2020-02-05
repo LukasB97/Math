@@ -3,7 +3,7 @@ import random
 from src.Cryptography.Ciphers.Cipher import Cipher
 from src.NumberTheory import utils
 from src.NumberTheory.EuclideanAlgorithm import extended_euclidean_algorithm
-from src.NumberTheory.PrimeGenerator import PrimeGenerator
+from src.Tools.NumberGenerator.PrimeGenerator import PrimeGenerator
 
 
 class RSA(Cipher):

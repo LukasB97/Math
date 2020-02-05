@@ -16,6 +16,9 @@ class ComputationalGraphPart(Evaluable, Derivable, Sized):
     def evaluate(self, *args, **kwargs):
         pass
 
+    def derive_ops(self, variable):
+        return 1, 1
+
     def _get_values(self, *args, **kwargs):
         left_op = None
         right_op = None
@@ -28,7 +31,6 @@ class ComputationalGraphPart(Evaluable, Derivable, Sized):
         else:
             right_op = self.right_op
         return left_op, right_op
-
 
     @property
     def sign(self):
@@ -55,4 +57,3 @@ class ComputationalGraphPart(Evaluable, Derivable, Sized):
         else:
             length += 1
         return length
-

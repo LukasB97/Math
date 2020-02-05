@@ -1,9 +1,7 @@
 import unittest
 
-from src.Algebra.Structures import Eigenvectors
-from src.Algebra.Structures import Matrix
-from src.Algebra.Structures import QRAlgorithm
-from src.Algebra.Structures.Matrix.MatrixProperties.MainDiagonalProduct import MainDiagonalProduct
+from src.Algebra.Structures.Matrix.Matrix import Matrix
+from src.Algebra.Structures.Matrix.MatrixProperties import Eigenvectors, Eigenvalues
 
 
 class PropertyTests(unittest.TestCase):
@@ -29,33 +27,12 @@ class PropertyTests(unittest.TestCase):
         self.assertEqual(matrix_a.evaluate_property(MainDiagonalProduct()), 3)
         self.assertEqual(matrix_b.evaluate_property(MainDiagonalProduct()), -30)
 
-    def test_determinant(self):
-        matrix = Matrix(
-            [
-                [1, 3, 6],
-                [9, 3, -6],
-                [5, 8, 1]
-            ]
-        )
-        transposed_matrix = Matrix(
-            [
-                [1, 9, 5],
-                [3, 3, 8],
-                [6, -6, 1]
-            ]
-        )
 
     def test_eigenvectors(self):
-        matrix = Matrix(
-            [
-                [1, 3, 6],
-                [9, 3, -6],
-                [5, 8, 1]
-            ]
-        )
-        print(matrix.evaluate_property(Eigenvectors()))
+        eigenvector_property = Eigenvectors.Eigenvectors()
 
     def test_eigenvalues(self):
+        eigenvalue_property = Eigenvalues.Eigenvalues()
         matrix = Matrix(
             [
                 [-2, -4, 2],

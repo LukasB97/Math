@@ -1,75 +1,28 @@
+import string
 import unittest
+from random import random
 
-from src.Algebra.Structures import Matrix
+from src.Cryptography.Ciphers.Asymmetric.AsymmetricCipher import AsymmetricCipher
+from src.Cryptography.Ciphers.Cipher import Cipher
 
 
 class CypherTests(unittest.TestCase):
 
-    def test_equal(self):
-        matrix_a = Matrix(
-            [
-                [1, 3, 2],
-                [-5, 3, -3.0],
-                [5, 7.0, 1]
-            ]
-        )
-        matrix_b = Matrix(
-            [
-                [1.0, 3, 2.0],
-                [-5, 3, -3],
-                [5, 7.0, 1]
-            ]
-        )
-        self.assertEqual(matrix_a, matrix_b)
+    def test_keys(self, cipher: AsymmetricCipher, sk, pk):
+        pass
 
-    def test_transpose(self):
-        matrix = Matrix(
-            [
-                [1, 3, 6],
-                [9, 3, -6],
-                [5, 8, 1]
-            ]
-        )
-        transposed_matrix = Matrix(
-            [
-                [1, 9, 5],
-                [3, 3, 8],
-                [6, -6, 1]
-            ]
-        )
-        self.assertEqual(matrix.transpose(), transposed_matrix)
+    def create_random_string(self, n=32):
+        return ''.join(random.choices(string.ascii_uppercase + string.digits, k=n))
 
-    def test_householder(self):
-        matrix = Matrix(
-            [
-                [1, 3, 6],
-                [9, 3, -6],
-                [5, 8, 1]
-            ]
-        )
-        q, r = matrix.decompose(QRDecomposition())
-        print(r)
-        print(q)
-        print(q * q.transpose())
-        print(q * r)
+    def test_single_cipher(self, text, crypto_scheme: Cipher):
+        encrypted_text = crypto_scheme.encrypt(text)
+        self.assertNotEqual(text, encrypted_text)
+        decrypted_text = crypto_scheme.decrypt(encrypted_text)
+        self.assertEqual(text, decrypted_text)
 
-    def test_lr(self):
-        matrix = Matrix(
-            [
-                [1, 3, 6],
-                [9, 3, -6],
-                [5, 8, 1]
-            ]
-        )
-        b = Matrix(
-            [
-                [3],
-                [4],
-                [5]
-            ]
-        )
-        q, r = matrix.decompose(QRDecomposition())
-        print(substitute_backwards(r, q.transpose() * b))
+    def test_cipher(self, cipher: Cipher, iterations=100):
+        for i in range(iterations):
+            self.test_single_cipher(self.create_random_string(), cipher)
 
 
 if __name__ == '__main__':

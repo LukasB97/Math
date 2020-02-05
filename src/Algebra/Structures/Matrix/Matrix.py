@@ -26,7 +26,7 @@ class Matrix(BaseMatrix):
     def scalar_multiplication(self, scalar):
         return self.create(scalar * self.matrix_vectors)
 
-    def matrix_multiplication(self, right_matrix: 'BaseMatrix') -> 'BaseMatrix':
+    def matrix_multiplication(self, right_matrix: 'Matrix') -> 'Matrix':
         c = numpy.empty((self.row_count, right_matrix.column_count), dtype=self.value_type)
         for new_row_index in range(self.row_count):
             for new_col_index in range(right_matrix.column_count):

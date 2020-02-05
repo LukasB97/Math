@@ -1,3 +1,4 @@
+from Algebra.Structures.Polynomial import Polynomial
 from src.Algebra.Structures.Function.Parser.FunctionParser import FunctionParser
 from src.Calculus.Integration.IntegrationAlgorithm import IntegrationAlgorithm
 
@@ -22,7 +23,7 @@ class QuadratureAlgorithm(IntegrationAlgorithm):
         return weights
 
     def create_lagrange_polynomial(self, index):
-        polynomial = FunctionParser.parse_string("1*1")
+        polynomial = Polynomial()
         for j in range(self.degree):
             if j == index:
                 continue

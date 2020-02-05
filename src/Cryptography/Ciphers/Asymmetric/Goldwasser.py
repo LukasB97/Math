@@ -1,6 +1,6 @@
 from src.Cryptography.Ciphers.Asymmetric.AsymmetricCipher import AsymmetricCipher
-from src.NumberTheory.PrimeGenerator import PrimeGenerator
 from src.NumberTheory.utils import random_mul_group
+from src.Tools.NumberGenerator.PrimeGenerator import PrimeGenerator
 
 
 class Goldwasser(AsymmetricCipher):

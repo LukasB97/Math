@@ -13,7 +13,8 @@ class Cipher(CryptographicScheme, ABC):
     def decrypt(self, chiffretext):
         pass
 
-    def str2int(self, s):  # codiert einen String als Zahl (zum Testen von RSA)
+    @staticmethod
+    def str2int(s):  # codiert einen String als Zahl (zum Testen von RSA)
         # Aufruf: str2int('Das ist ein Test.')
         # Ausgabe: 23268733837745479405720608239248647353390
         x = 0
@@ -21,7 +22,8 @@ class Cipher(CryptographicScheme, ABC):
             x = (x << 8) + ord(s[i])
         return x
 
-    def int2str(self, x):  # codiert eine Zahl als String (zum Testen von RSA)
+    @staticmethod
+    def int2str(x):  # codiert eine Zahl als String (zum Testen von RSA)
         # Aufruf: int2str(23268733837745479405720608239248647353390)
         # Ausgabe: 'Das ist ein Test.'
         s = ''

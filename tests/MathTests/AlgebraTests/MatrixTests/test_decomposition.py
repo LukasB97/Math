@@ -28,27 +28,27 @@ class DecompositionTests(unittest.TestCase):
 
     def test_qr(self):
         decomposition = QRDecomposition()
-        for A in MatrixCollection.regular:
-            A = UnitTestMatrix(A, 10)
-            self.decomposition(A, decomposition)
+        for matrix in MatrixCollection.regular:
+            matrix = UnitTestMatrix(matrix, 10)
+            self.decomposition(matrix, decomposition)
 
     def test_lr(self):
         decomposition = LRDecomposition()
-        for A in MatrixCollection.regular:
-            A = UnitTestMatrix(A, 10)
-            self.decomposition(A, decomposition)
+        for matrix in MatrixCollection.regular:
+            matrix = UnitTestMatrix(matrix, 10)
+            self.decomposition(matrix, decomposition)
 
     def test_cholesky(self):
         decomposition = CholeskyDecomposition()
-        for A in MatrixCollection.intersection(MatrixCollection.positive_definite, MatrixCollection.symmetric):
-            A = UnitTestMatrix(A, 10)
-            self.decomposition(A, decomposition)
+        for matrix in MatrixCollection.intersection(MatrixCollection.positive_definite, MatrixCollection.symmetric):
+            matrix = UnitTestMatrix(matrix, 10)
+            self.decomposition(matrix, decomposition)
 
     def test_singular_value(self):
         decomposition = SingularValueDecomposition()
-        for A in MatrixCollection.all:
-            A = UnitTestMatrix(A, 10)
-            self.decomposition(A, decomposition)
+        for matrix in MatrixCollection.coll:
+            matrix = UnitTestMatrix(matrix, 10)
+            self.decomposition(matrix, decomposition)
 
 
 if __name__ == '__main__':

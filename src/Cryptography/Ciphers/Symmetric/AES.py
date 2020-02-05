@@ -1,6 +1,6 @@
 import numpy
 
-from src.Algebra.Structures import Matrix
+from src.Algebra.Structures.Matrix.Matrix import Matrix
 from src.Cryptography.Ciphers.Cipher import Cipher
 from src.Cryptography.FinitePolynomialFieldFactory import FinitePolynomialFieldFactory
 
@@ -36,12 +36,12 @@ class AES(Cipher):
     polynomial_factory: FinitePolynomialFieldFactory(8, numpy.array([1, 1, 0, 1, 1, 0, 0, 0, 1]))
 
     @classmethod
-    def sub_bytes(cls, A):
-        B = numpy.zeros((4, 4))
+    def sub_bytes(cls, matrix):
+        result = numpy.zeros((4, 4))
         for i in range(0, 4):
             for j in range(0, 4):
-                B[i][j] = cls.sub_byte_table[A[i, j]]
-        return Matrix(B, cls.polynomial_factory.create)
+                result[i][j] = cls.sub_byte_table[matrix[i, j]]
+        return Matrix(result, cls.polynomial_factory.create)
 
     @classmethod
     def shift_row(cls, to_shift):

@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import, Any
 
 from src.Algebra.Structures.Matrix import Matrix
 from src.Algebra.Structures.Matrix.MatrixProperties import PropertyResult
@@ -18,7 +19,7 @@ class MatrixProperty(ABC):
         return prop
 
     @abstractmethod
-    def _evaluate(self, matrix: Matrix) -> PropertyResult:
+    def _evaluate(self, matrix: Matrix) -> Any:
         pass
 
     def value_equality(self, a, b):

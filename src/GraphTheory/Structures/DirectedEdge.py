@@ -1,7 +1,4 @@
-from typing import Set
-
 from src.GraphTheory.Structures.Edge import Edge
-from src.GraphTheory.Structures.Node import Node
 
 
 class DirectedEdge(Edge):
@@ -16,6 +13,3 @@ class DirectedEdge(Edge):
     @property
     def end(self):
         return self.nodes[1]
-
-
-

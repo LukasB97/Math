@@ -1,23 +1,24 @@
 from typing import Callable
 
 from src.NumberTheory import PrimeNumberTests
-from src.NumberTheory.AbstractNumberGenerator import AbstractNumberGenerator, NumberGenerator, SecureNumberGenerator
+from src.Tools.NumberGenerator.AbstractNumberGenerator import AbstractNumberGenerator, NumberGenerator, \
+    SecureNumberGenerator
 
 
 class PrimeGenerator:
 
     def __init__(self, random_generator: AbstractNumberGenerator,
-                 prime_test: Callable[[int], bool] = PrimeNumberTests.MillerRabinTest):
+                 prime_test: Callable[[int], bool] = PrimeNumberTests.miller_rabin_test):
         self.random_generator: AbstractNumberGenerator = random_generator
         self.prime_test: Callable[[int], bool] = prime_test
 
     @classmethod
     def std_insecure(cls):
-        return PrimeGenerator(NumberGenerator(), PrimeNumberTests.MillerRabinTest)
+        return PrimeGenerator(NumberGenerator(), PrimeNumberTests.miller_rabin_test)
 
     @classmethod
     def std_secure(cls):
-        return PrimeGenerator(SecureNumberGenerator(), PrimeNumberTests.MillerRabinTest)
+        return PrimeGenerator(SecureNumberGenerator(), PrimeNumberTests.miller_rabin_test)
 
     def generate_prime(self, from_inclusive, to_inclusive) -> int:
         n = self.random_generator.generate_random_integer(from_inclusive, to_inclusive)

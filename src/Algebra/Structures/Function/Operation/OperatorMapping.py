@@ -12,6 +12,8 @@ operator_mapping = {
     "-": Sub
 }
 
+operators = ("^", "*", "/", "+", "-")
+
 operator_priority = [
     "^", "*", "/", "+", "-"
 ]

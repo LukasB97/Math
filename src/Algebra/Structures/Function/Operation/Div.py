@@ -2,15 +2,15 @@ from src.Algebra.Structures.Function.Operation.ComputationalGraphPart import Com
 
 
 class Div(ComputationalGraphPart):
+
     def get_anti_derivative(self, variable):
         pass
 
     _sign = "/"
 
-    def get_derivative(self, variable, first_op, second_op):
-        first_derivative = self.derive_op(variable, first_op)
-        second_derivative = self.derive_op(variable, second_op)
-        return (first_derivative * second_op - first_op * second_derivative) / (second_op * second_op)
+    def get_derivative(self, variable):
+        first_derivative, second_derivative = self.derive_ops(variable)
+        return (first_derivative * self.right_op - self.left_op * second_derivative) / (self.left_op ** 2)
 
     def evaluate(self, *args, **kwargs) -> float:
         left, right = self._get_values(*args, **kwargs)

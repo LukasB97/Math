@@ -1,7 +1,4 @@
-from typing import Set
-
 from src.Algebra.Structures.Function import TranscendentalFunctionMapping
-from src.Algebra.Structures.Function.AbstractFunction import AbstractFunction
 from src.Algebra.Structures.Function.Evaluable import Evaluable
 from src.Algebra.Structures.Function.Operation.ComputationalGraphPart import ComputationalGraphPart
 from src.Algebra.Structures.Function.Parser.ParseException import ParseException

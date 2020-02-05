@@ -1,12 +1,12 @@
 import numpy
 
+from src.Algebra.LinearAlgebra.Algorithms.EigenvalueAlgorithm.EigenvalueStrategy import EigenvalueStrategy
 from src.Algebra.LinearAlgebra.Decomposition.QRDecomposition import QRDecomposition
 from src.Algebra.Structures.Function.MatrixNorm import MatrixNorm
-from src.Algebra.Structures.Matrix.MatrixProperties.Eigenvalues import Eigenvalues
 from src.Algebra.Structures.Matrix.MatrixProperties.Triangular import Triangular, TriangularProperty
 
 
-class QRAlgorithm(Eigenvalues):
+class QRAlgorithm(EigenvalueStrategy):
 
     def check_for_convergene(self, new_sum, last_sum, quotient):
         return new_sum <= abs(quotient * last_sum)

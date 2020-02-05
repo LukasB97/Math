@@ -5,7 +5,7 @@ from numpy import zeros
 from src.Algebra.LinearAlgebra.Algorithms.EquationSystem.Substitution import substitute_backwards
 from src.Algebra.LinearAlgebra.Algorithms.EquationSystem.Substitution import substitute_forward
 from src.Algebra.LinearAlgebra.Decomposition.DecompositionStrategy import DecompositionStrategy
-from src.Algebra.Structures import Matrix
+from src.Algebra.Structures.Matrix.Matrix import Matrix
 
 
 class CholeskyDecomposition(DecompositionStrategy):
@@ -23,31 +23,31 @@ class CholeskyDecomposition(DecompositionStrategy):
         return x
 
     def decompose(self, matrix):
-        L = zeros((matrix.row_count, matrix.row_count))
+        triangular_matrix = zeros((matrix.row_count, matrix.row_count))
         for j in range(matrix.row_count):
             for i in range(matrix.row_count):
                 if i < j:
-                    L[i, j] = 0
+                    triangular_matrix[i, j] = 0
                 elif i == j:
-                    L[i, j] = CholeskyDecomposition.calc_diagonal_elem(matrix, L, i)
+                    triangular_matrix[i, j] = CholeskyDecomposition.calc_diagonal_elem(matrix, triangular_matrix, i)
                 else:
-                    L[i, j] = CholeskyDecomposition.calc_lower_triangle(matrix, L, i, j)
-        L = Matrix(L)
-        return L, L.transpose()
+                    triangular_matrix[i, j] = CholeskyDecomposition.calc_lower_triangle(matrix, triangular_matrix, i, j)
+        triangular_matrix = Matrix(triangular_matrix)
+        return triangular_matrix, triangular_matrix.transpose()
 
     @classmethod
-    def calc_lower_triangle(cls, A, L, i, j):
+    def calc_lower_triangle(cls, matrix_to_decompose, current_triangular_matrix, i, j):
         series = 0
         for k in range(j):
-            series += L[i, k] * L[j, k]
-        return (1 / L[j, j]) * (A[i, j] - series)
+            series += current_triangular_matrix[i, k] * current_triangular_matrix[j, k]
+        return (1 / current_triangular_matrix[j, j]) * (matrix_to_decompose[i, j] - series)
 
     @classmethod
-    def calc_diagonal_elem(cls, A, L, i):
+    def calc_diagonal_elem(cls, matrix_to_decompose, current_triangular_matrix, i):
         series = 0
         for k in range(i):
-            series += L[i, k] ** 2
-        to_square = A[i, i] - series
+            series += current_triangular_matrix[i, k] ** 2
+        to_square = matrix_to_decompose[i, i] - series
         if to_square < 0:
             raise ValueError("Matrix is not positive definite")
         return sqrt(to_square)

@@ -1,10 +1,13 @@
+from typing import List, Tuple
+
 import numpy
 
+from Algebra.Structures.Matrix.Vector import Vector
 from src.Algebra.LinearAlgebra.Algorithms.EquationSystem import Substitution
-from src.Algebra.LinearAlgebra.Decomposition import QRDecomposition
+from src.Algebra.LinearAlgebra.Decomposition.QRDecomposition import QRDecomposition
 from src.Algebra.Structures.Matrix.Matrix import Matrix
-from src.Algebra.Structures.Matrix.MatrixFactory import MatrixFactory
-from src.Algebra.Structures.Matrix.MatrixProperties import PropertyResult, Eigenvalues
+from Core.Factories.MatrixFactory import MatrixFactory
+from src.Algebra.Structures.Matrix.MatrixProperties import Eigenvalues
 from src.Algebra.Structures.Matrix.MatrixProperties.MatrixProperty import MatrixProperty
 
 
@@ -14,7 +17,7 @@ class Eigenvectors(MatrixProperty):
         super().__init__()
         self.eigenvalue_strategy = eigenvalue_strategy
 
-    def _evaluate(self, matrix: Matrix) -> PropertyResult:
+    def _evaluate(self, matrix: Matrix) -> List[Tuple[Vector, float]]:
         eigenvalues = self.eigenvalue_strategy.evaluate(matrix)
         b = Matrix(numpy.zeros((matrix.row_count, 1)))
         eigenvectors = []

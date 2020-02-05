@@ -1,12 +1,10 @@
-from math import sqrt
-
 import numpy
 
 from src.Algebra.LinearAlgebra.Algorithms.EquationSystem.Substitution import substitute_backwards
 from src.Algebra.LinearAlgebra.Decomposition.DecompositionStrategy import DecompositionStrategy
 from src.Algebra.Structures.Function.Norm import Norm
 from src.Algebra.Structures.Matrix.Matrix import Matrix
-from src.Algebra.Structures.Matrix.MatrixFactory import MatrixFactory
+from Core.Factories.MatrixFactory import MatrixFactory
 
 
 class QRDecomposition(DecompositionStrategy):
@@ -34,29 +32,15 @@ class QRDecomposition(DecompositionStrategy):
         return self.create_householder_matrix(to_project)
 
     def decompose(self, matrix):
-        Q = MatrixFactory.create_identity_matrix(size=matrix.row_count)
+        orthogonal_matrix = MatrixFactory.create_identity_matrix(size=matrix.row_count)
         for j in range(matrix.column_count - 1):
             e = numpy.zeros((matrix.column_count - j, 1))
             e[0, 0] = 1
             e = Matrix(e)
             h = self.create_householder_reflection(matrix.get_column_vector(j, j), e)
-            h = MatrixFactory.build_block_matrix(d=h, row_count=Q.row_count, col_count=Q.row_count)
+            h = MatrixFactory.build_block_matrix(d=h, row_count=orthogonal_matrix.row_count, col_count=orthogonal_matrix.row_count)
             for i in range(j):
                 h.matrix_vectors[i, i] = 1
             matrix = h * matrix
-            Q = h * Q
-        return Q.transpose(), matrix
-
-    @classmethod
-    def calc_lower_triangle(cls, A, L, i, j):
-        series = 0
-        for k in range(j):
-            series += L[i][k] * L[j][k]
-        return (1 / L[j][j]) * (A[i][j] - series)
-
-    @classmethod
-    def calc_diagonal_elem(cls, A, L, i, j):
-        series = 0
-        for k in range(i):
-            series += L[i][k] ** 2
-        return sqrt(A[i][i] - series)
+            orthogonal_matrix = h * orthogonal_matrix
+        return orthogonal_matrix.transpose(), matrix

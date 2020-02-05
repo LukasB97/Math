@@ -12,7 +12,7 @@ from src.Algebra.Structures.Function.Operation.Sub import Sub
 
 class AbstractFunction(Evaluable, Derivable):
 
-    def __init__(self, operation):
+    def __init__(self, operation: Evaluable):
         self.root_operation = operation
 
     @abstractmethod

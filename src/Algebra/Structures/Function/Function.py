@@ -6,6 +6,9 @@ from src.Algebra.Structures.Function.Evaluable import Evaluable
 
 class Function(AbstractFunction):
 
+    def __len__(self) -> int:
+        pass
+
     def get_derivative(self, variable):
         if variable in self.context:
             return self
@@ -43,7 +46,6 @@ class Function(AbstractFunction):
     def __call__(self, *args, **kwargs):
         return self.evaluate(*args, **kwargs)
 
-    def __init__(self, operator, operands: List[Evaluable]):
-        self.operator = operator
-        self.operands = operands
+    def __init__(self, root_operation: Evaluable):
+        super().__init__(root_operation)
         self.context = self.get_variable_context()

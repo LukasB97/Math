@@ -2,8 +2,8 @@ import parser
 import unittest
 from time import time
 
-from src.Algebra.Structures.Function.Parser.FunctionParser import FunctionParser
 from src.Algebra.Structures.Function.Operation import ComputationalGraphPart
+from src.Algebra.Structures.Function.Parser.FunctionParser import FunctionParser
 from tests.MathTests.CalculusTests.FunctionTests import Functions
 
 
