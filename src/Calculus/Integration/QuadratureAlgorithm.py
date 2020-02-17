@@ -5,8 +5,8 @@ from src.Calculus.Integration.IntegrationAlgorithm import IntegrationAlgorithm
 
 class QuadratureAlgorithm(IntegrationAlgorithm):
 
-    def __init__(self, degree, deg):
-        super().__init__(deg)
+    def __init__(self, degree):
+        super().__init__(degree)
         self.weights = self.calculate_weights()
 
     def approximate_integral(self, fun, start, end):
@@ -23,12 +23,14 @@ class QuadratureAlgorithm(IntegrationAlgorithm):
         return weights
 
     def create_lagrange_polynomial(self, index):
-        polynomial = Polynomial()
+        denominator = Polynomial([1])
+        numerator = Polynomial([1])
         for j in range(self.degree):
             if j == index:
                 continue
-            polynomial *= FunctionParser.parse_string("(x-" + str(j) + ")/" + str(index - j))
-        return polynomial
+            numerator *= Polynomial([-j, 1])
+            denominator *= Polynomial([index - j])
+        return numerator / denominator
 
     def calculate_single_weight(self, index):
         polynomial = self.create_lagrange_polynomial(index)

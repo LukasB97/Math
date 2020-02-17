@@ -1,6 +1,6 @@
 import math
 
-from src.Algebra.Structures.Function.Evaluable import Evaluable
+from Algebra.Structures.Function.Interfaces.Evaluable import Evaluable
 from src.Algebra.Structures.Function.Function import Function
 from src.Algebra.Structures.Function.Parser.FunctionParser import FunctionParser
 from src.Algebra.Structures.Polynomial import Polynomial

@@ -1,7 +1,7 @@
-from typing import List, Set
+from typing import Set
 
-from src.Algebra.Structures.Function.AbstractFunction import AbstractFunction
-from src.Algebra.Structures.Function.Evaluable import Evaluable
+from Algebra.Structures.Function.Interfaces.AbstractFunction import AbstractFunction
+from Algebra.Structures.Function.Interfaces.Evaluable import Evaluable
 
 
 class Function(AbstractFunction):

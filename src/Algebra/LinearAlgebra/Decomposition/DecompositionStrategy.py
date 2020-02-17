@@ -1,10 +1,17 @@
 from abc import ABC, abstractmethod
 
+from Core.Factories.VectorFactory import VectorFactory
+
 
 class DecompositionStrategy(ABC):
 
-    @abstractmethod
     def solve(self, matrix, target_vector):
+        if target_vector == 0:
+            target_vector = VectorFactory.null_vector(matrix.row_count)
+        return self._solve(matrix, target_vector)
+
+    @abstractmethod
+    def _solve(self, matrix, target_vector):
         pass
 
     @abstractmethod

@@ -30,8 +30,8 @@ class BaseMatrix(BaseMatrixData):
         return self.row_count == self.column_count
 
     @property
-    def shape(self) -> Tuple[int]:
-        return (self.row_count, self.column_count)
+    def shape(self) -> Tuple[int, int]:
+        return self.row_count, self.column_count
 
     def __mul__(self, other):
         if isinstance(other, BaseMatrix):

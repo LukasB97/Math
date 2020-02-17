@@ -1,8 +1,8 @@
 from abc import abstractmethod
 from collections import Sized
 
-from src.Algebra.Structures.Function.Derivable import Derivable
-from src.Algebra.Structures.Function.Evaluable import Evaluable
+from Algebra.Structures.Function.Interfaces.Derivable import Derivable
+from Algebra.Structures.Function.Interfaces.Evaluable import Evaluable
 
 
 class ComputationalGraphPart(Evaluable, Derivable, Sized):

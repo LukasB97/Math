@@ -1,4 +1,4 @@
-from src.Algebra.Structures.Function import Evaluable
+from Algebra.Structures.Function.Interfaces import Evaluable
 
 
 def differential_quotient(f: Evaluable, x):

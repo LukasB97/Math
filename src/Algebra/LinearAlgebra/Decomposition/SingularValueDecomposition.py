@@ -20,6 +20,7 @@ class SingularValueDecomposition(DecompositionStrategy):
         u, d, v = self.decompose(matrix)
 
     def build_u(self):
+        pass
 
     def get_singular_values(self, regular_matrix) -> List[float]:
         eigenvalues = Eigenvalues()

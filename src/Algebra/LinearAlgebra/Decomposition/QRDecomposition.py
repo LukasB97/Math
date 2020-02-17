@@ -9,7 +9,7 @@ from Core.Factories.MatrixFactory import MatrixFactory
 
 class QRDecomposition(DecompositionStrategy):
 
-    def solve(self, matrix, target_vector):
+    def _solve(self, matrix, target_vector):
         q, r = self.decompose(matrix)
         return substitute_backwards(r, q.transpose() * target_vector)
 

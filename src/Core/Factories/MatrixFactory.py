@@ -1,5 +1,7 @@
+import numpy
 from numpy import zeros, random
 
+from Algebra.Structures.Matrix.Vector import Vector
 from src.Algebra.Structures.Matrix.Matrix import Matrix, BaseMatrix
 from src.Core.AbstractFactory import AbstractFactory
 
@@ -54,3 +56,14 @@ class MatrixFactory(AbstractFactory):
         data = zeros((size, 1))
         data[i, 0] = 1
         return Matrix(data)
+
+    @classmethod
+    def matrix_of_row_vectors(cls, *vectors):
+        matrix_vectors = numpy.zeros((len(vectors), vectors[0].row_count))
+        for i, vector in enumerate(vectors):
+            matrix_vectors[i] = vector.matrix_vectors.reshape((1, vector.row_count))
+        return Matrix(matrix_vectors)
+
+    @classmethod
+    def matrix_of_column_vectors(cls, *vectors: Vector):
+        return cls.matrix_of_row_vectors(*vectors).transpose()
