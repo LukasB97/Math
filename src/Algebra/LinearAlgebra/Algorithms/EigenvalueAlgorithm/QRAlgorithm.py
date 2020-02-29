@@ -3,7 +3,7 @@ import numpy
 from src.Algebra.LinearAlgebra.Algorithms.EigenvalueAlgorithm.EigenvalueStrategy import EigenvalueStrategy
 from src.Algebra.LinearAlgebra.Decomposition.QRDecomposition import QRDecomposition
 from src.Algebra.Structures.Function.MatrixNorm import MatrixNorm
-from src.Algebra.Structures.Matrix.MatrixProperties.Triangular import Triangular, TriangularProperty
+from src.Algebra.Structures.Matrix.MatrixProperties.TriangularProperty import TriangularProperty, TriangularState
 
 
 class QRAlgorithm(EigenvalueStrategy):
@@ -28,8 +28,8 @@ class QRAlgorithm(EigenvalueStrategy):
         while True:
             Q, R = qr_decomposition.decompose(temp)
             temp = R * Q
-            a = Triangular().evaluate(temp.sub_matrix(0, temp.row_count - 1, 0, temp.column_count - 1))
-            if a == TriangularProperty.UPPER_TRIANGULAR:
+            a = TriangularProperty().evaluate(temp.sub_matrix(0, temp.row_count - 1, 0, temp.column_count - 1))
+            if a == TriangularState.UPPER_TRIANGULAR:
                 print("Number of Factorizations: " + str(i + 1))
                 break
             else:

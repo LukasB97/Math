@@ -2,14 +2,23 @@ import numpy
 from numpy import zeros, random
 
 from Algebra.Structures.Matrix.Vector import Vector
+from Core.Factories.MatrixStructureFactory import MatrixStructureFactory
+from Core.Lina.VectorFactory import VectorFactory
 from src.Algebra.Structures.Matrix.Matrix import Matrix, BaseMatrix
 from src.Core.AbstractFactory import AbstractFactory
 
 
 class MatrixFactory(AbstractFactory):
 
-    def create_instance(self, *args, **kwargs):
-        pass
+    matrix_structure_factory : MatrixStructureFactory = MatrixStructureFactory()
+
+    def create_orthogonal_basis(self, matrix: Matrix=None, vectors=None):
+        if
+
+    def create_instance(self, data):
+        data = self.matrix_structure_factory.create_instance(data)
+        return Matrix(data)
+
 
     @classmethod
     def create_identity_matrix(cls, size) -> Matrix:
@@ -51,17 +60,13 @@ class MatrixFactory(AbstractFactory):
                 to_fill[i, j] = fill_with[i - from_i, j - from_j]
         return to_fill
 
-    @classmethod
-    def create_unit_vector(cls, size, i):
-        data = zeros((size, 1))
-        data[i, 0] = 1
-        return Matrix(data)
 
     @classmethod
     def matrix_of_row_vectors(cls, *vectors):
-        matrix_vectors = numpy.zeros((len(vectors), vectors[0].row_count))
+        vector_length = len(VectorFactory.reshape_data(vectors[0], 1))
+        matrix_vectors = numpy.zeros((len(vectors), vector_length))
         for i, vector in enumerate(vectors):
-            matrix_vectors[i] = vector.matrix_vectors.reshape((1, vector.row_count))
+            matrix_vectors[i] = VectorFactory.reshape_data(vector, 1)
         return Matrix(matrix_vectors)
 
     @classmethod

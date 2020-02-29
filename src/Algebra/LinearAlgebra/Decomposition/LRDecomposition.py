@@ -3,7 +3,7 @@ import numpy as np
 from src.Algebra.LinearAlgebra.Algorithms.EquationSystem.Substitution import substitute_backwards
 from src.Algebra.LinearAlgebra.Decomposition.DecompositionStrategy import DecompositionStrategy
 from src.Algebra.Structures.Matrix.Matrix import Matrix
-from Core.Factories.MatrixFactory import MatrixFactory
+from Core.Lina.MatrixFactory import MatrixFactory
 
 
 class LRDecomposition(DecompositionStrategy):

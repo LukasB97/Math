@@ -4,7 +4,7 @@ from src.Algebra.LinearAlgebra.Algorithms.EquationSystem.Substitution import sub
 from src.Algebra.LinearAlgebra.Decomposition.DecompositionStrategy import DecompositionStrategy
 from src.Algebra.Structures.Function.Norm import Norm
 from src.Algebra.Structures.Matrix.Matrix import Matrix
-from Core.Factories.MatrixFactory import MatrixFactory
+from Core.Lina.MatrixFactory import MatrixFactory
 
 
 class QRDecomposition(DecompositionStrategy):

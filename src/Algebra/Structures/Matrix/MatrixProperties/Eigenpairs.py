@@ -6,12 +6,12 @@ from Algebra.Structures.Matrix.Vector import Vector
 from src.Algebra.LinearAlgebra.Algorithms.EquationSystem import Substitution
 from src.Algebra.LinearAlgebra.Decomposition.QRDecomposition import QRDecomposition
 from src.Algebra.Structures.Matrix.Matrix import Matrix
-from Core.Factories.MatrixFactory import MatrixFactory
+from Core.Lina.MatrixFactory import MatrixFactory
 from src.Algebra.Structures.Matrix.MatrixProperties import Eigenvalues
 from src.Algebra.Structures.Matrix.MatrixProperties.MatrixProperty import MatrixProperty
 
 
-class Eigenvectors(MatrixProperty):
+class Eigenpairs(MatrixProperty):
 
     def __init__(self, eigenvalue_strategy=Eigenvalues.Eigenvalues()):
         super().__init__()

@@ -1,7 +1,7 @@
 import unittest
 
 from src.Algebra.Structures.Matrix.Matrix import Matrix
-from src.Algebra.Structures.Matrix.MatrixProperties import Eigenvectors, Eigenvalues
+from src.Algebra.Structures.Matrix.MatrixProperties import Eigenpairs, Eigenvalues
 
 
 class PropertyTests(unittest.TestCase):
@@ -29,7 +29,7 @@ class PropertyTests(unittest.TestCase):
 
 
     def test_eigenvectors(self):
-        eigenvector_property = Eigenvectors.Eigenvectors()
+        eigenvector_property = Eigenpairs.Eigenpairs()
 
     def test_eigenvalues(self):
         eigenvalue_property = Eigenvalues.Eigenvalues()

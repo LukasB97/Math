@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from Core.Factories.VectorFactory import VectorFactory
+from Core.Lina.VectorFactory import VectorFactory
 
 
 class DecompositionStrategy(ABC):

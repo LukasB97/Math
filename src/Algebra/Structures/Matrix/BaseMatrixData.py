@@ -28,6 +28,10 @@ class BaseMatrixData(ABC):
         return self.data_type
 
     @property
+    def data_representation(self):
+        pass
+
+    @property
     def row_count(self) -> int:
         return len(self.matrix_vectors)
 

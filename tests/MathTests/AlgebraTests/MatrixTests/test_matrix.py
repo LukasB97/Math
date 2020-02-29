@@ -4,8 +4,8 @@ import unittest
 from src.Algebra.LinearAlgebra.Decomposition.CholeskyDecomposition import CholeskyDecomposition
 from src.Algebra.LinearAlgebra.Decomposition.QRDecomposition import QRDecomposition
 from src.Algebra.Structures.Matrix.Matrix import Matrix
-from Core.Factories.MatrixFactory import MatrixFactory
-from src.Algebra.Structures.Matrix.MatrixProperties.Triangular import Triangular, TriangularProperty
+from Core.Lina.MatrixFactory import MatrixFactory
+from src.Algebra.Structures.Matrix.MatrixProperties.TriangularProperty import TriangularProperty, TriangularState
 
 
 class MatrixTestCase(unittest.TestCase):
@@ -167,9 +167,9 @@ class MatrixTestCase(unittest.TestCase):
                 [5, 7.0, 1]
             ]
         )
-        triangular = Triangular()
-        self.assertEqual(triangular.evaluate(matrix_a), TriangularProperty.UPPER_TRIANGULAR)
-        self.assertEqual(triangular.evaluate(matrix_b), TriangularProperty.NOT_TRIANGULAR)
+        triangular = TriangularProperty()
+        self.assertEqual(triangular.evaluate(matrix_a), TriangularState.UPPER_TRIANGULAR)
+        self.assertEqual(triangular.evaluate(matrix_b), TriangularState.NOT_TRIANGULAR)
 
     def test_ausgleich(self):
         data = [(0, 2.45), (math.pi / 6, 3.1), (math.pi / 3, 3.63), (math.pi / 2, 4.25), (2 * math.pi / 3, 4.7)

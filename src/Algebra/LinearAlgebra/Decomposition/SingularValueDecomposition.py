@@ -5,14 +5,14 @@ import numpy
 
 from Algebra.Structures.Matrix.Matrix import Matrix
 from Algebra.Structures.Matrix.MatrixProperties.Eigenvalues import Eigenvalues
-from Algebra.Structures.Matrix.MatrixProperties.Eigenvectors import Eigenvectors
+from Algebra.Structures.Matrix.MatrixProperties.Eigenpairs import Eigenpairs
 from src.Algebra.LinearAlgebra.Algorithms.EigenvalueAlgorithm.QRAlgorithm import QRAlgorithm
 from src.Algebra.LinearAlgebra.Decomposition.DecompositionStrategy import DecompositionStrategy
 
 
 class SingularValueDecomposition(DecompositionStrategy):
 
-    def __init__(self, eigenvector_strategy: Eigenvectors = None, regularization=None):
+    def __init__(self, eigenvector_strategy: Eigenpairs = None, regularization=None):
         self.eigenector_strategy = eigenvector_strategy
         self.regularization = regularization
 

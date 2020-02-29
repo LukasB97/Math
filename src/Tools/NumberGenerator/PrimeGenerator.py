@@ -1,9 +1,11 @@
+import random
 from typing import Callable
 
 from src.NumberTheory import PrimeNumberTests
 from src.Tools.NumberGenerator.AbstractNumberGenerator import AbstractNumberGenerator, NumberGenerator, \
     SecureNumberGenerator
 
+prime_summand = [1, 7, 11, 13, 17, 19, 23, 29]
 
 class PrimeGenerator:
 
@@ -24,6 +26,17 @@ class PrimeGenerator:
         n = self.random_generator.generate_random_integer(from_inclusive, to_inclusive)
         while not self.prime_test(n):
             n = self.random_generator.generate_random_integer(from_inclusive, to_inclusive)
+        return n
+
+    def generate_prime_theory(self, from_inclusive, to_inclusive) -> int:
+        from_factor = from_inclusive // 30
+        to_factor = to_inclusive // 30
+        to_summand = to_inclusive % 30
+        n = 30 * self.random_generator.generate_random_integer(from_factor, to_factor)
+        n += random.choice(prime_summand)
+        while not self.prime_test(n):
+            n = 30 * self.random_generator.generate_random_integer(from_factor, to_factor)
+            n += random.choice(prime_summand)
         return n
 
     def generate_safe_prime(self, from_inclusive, to_inclusive) -> int:

@@ -10,7 +10,11 @@ def substitute_backwards(a, b):
         for j in range(b.row_count - 1, i - 1, -1):
             row_sum += x[j, 0] * a[i, j]
         to_add = b[i, 0] - row_sum
-        x[i, 0] = to_add / a[i, i]
+        if a[i, i] != 0:
+            x[i, 0] = to_add / a[i, i]
+        else:
+            x[i, 0] = 1
+            print("singular matrix => x[", i, "]=1")
     res = Matrix(x)
     #    assert a * res == b
     return res
