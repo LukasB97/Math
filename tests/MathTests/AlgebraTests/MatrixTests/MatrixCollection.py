@@ -28,7 +28,7 @@ regular = [
 ]
 a = m.spd_3x3_2
 
-coll = [
+complete = [
     *regular
 ]
 

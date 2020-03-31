@@ -13,8 +13,15 @@ class Matrix(BaseMatrix):
             return None
         return self.matrix_properties[prop]
 
-    def sum(self):
-        return self.matrix_vectors.sum()
+    def sum(self, iterator=None):
+        if iterator is None:
+            return self.matrix_vectors.sum()
+
+    def product(self, iterator):
+        res = 1
+        for entry in iterator:
+            res *= self[entry]
+        return res
 
     def sub_matrix(self, from_i, to_i, from_j, to_j):
         return self.create(self.matrix_vectors[from_i:to_i][from_j: to_j])

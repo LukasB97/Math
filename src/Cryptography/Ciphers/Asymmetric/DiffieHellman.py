@@ -1,13 +1,13 @@
 import random
 
+from Tools.NumberGenerator.PrimeGenerator import PrimeGenerator
 from src.Cryptography.Ciphers.Asymmetric.AsymmetricCipher import AsymmetricCipher
-from src.NumberTheory.PrimeNumberTests import miller_rabin_test
 from src.NumberTheory.utils import power
 
 
 class DiffieHellman(AsymmetricCipher):
 
-    def get_public_key(self):
+    def public_key(self):
         pass
 
     def encrypt(self, message):
@@ -16,26 +16,14 @@ class DiffieHellman(AsymmetricCipher):
     def decrypt(self, chiffretext):
         pass
 
-    def create_key(self, l, *args, **kwargs):
-        p = 10
+    def create_key(self, key_length=256, prime_generator=PrimeGenerator.std_insecure(), *args, **kwargs):
         g = 0
         i = 0
-        lower = 2 ** l
-        upper = (2 ** (l + 1)) - 1
-        while not miller_rabin_test(p) or not miller_rabin_test((p - 1) // 2):
-            p = random.randint(lower, upper)
+        lower = 2 ** key_length
+        upper = (2 ** (key_length + 1)) - 1
+        safe_prime = prime_generator.generate_safe_prime(lower, upper)
         while True:
-            g = random.randint(2, p - 1)
-            if power(g, (p - 1) // 2, p) != 1:
+            g = random.randint(2, safe_prime - 1)
+            if power(g, (safe_prime - 1) // 2, safe_prime) != 1:
                 break
-        return g, p
-
-
-def DHTest():  # Diffie-Hellman-Test
-    (g, p) = DiffieHellman()
-    pk1 = power(g, 14, p)
-    pk2 = power(g, 22, p)
-    return power(pk1, 22, p)
-
-
-DHTest()
+        return g, safe_prime

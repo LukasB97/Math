@@ -1,4 +1,4 @@
-from typing import Dict, Set, Collection
+from typing import Dict, Set
 
 from src.GraphTheory.Structures.AbstractGraph import AbstractGraph
 from src.GraphTheory.Structures.Edge import Edge
@@ -39,7 +39,6 @@ class Graph(AbstractGraph):
                 changes_made = True
         return changes_made
 
-
     def add_edge(self, edge: Edge = None, first_node: Node = None, second_node: Node = None):
         if not (edge is None ^ (first_node is second_node is None)):
             raise ValueError("Parameter error")
@@ -52,10 +51,6 @@ class Graph(AbstractGraph):
         for node in edge.nodes:
             self.node_to_edge_id[node].add(self.__edge_id)
         self.__edge_id += 1
-
-
-
-
 
     def remove_edge(self, edge: Edge, first_node, second_node):
         if not (edge is None ^ (first_node is second_node is None)):

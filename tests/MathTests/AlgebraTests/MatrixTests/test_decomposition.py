@@ -8,6 +8,7 @@ from src.Algebra.LinearAlgebra.Decomposition.QRDecomposition import QRDecomposit
 from src.Algebra.LinearAlgebra.Decomposition.SingularValueDecomposition import SingularValueDecomposition
 from src.Algebra.Structures.Matrix.UnitTestMatrix import UnitTestMatrix
 from tests.MathTests.AlgebraTests.MatrixTests import MatrixCollection
+from tests.MathTests.Settings import precision_digits
 
 
 class DecompositionTests(unittest.TestCase):
@@ -29,25 +30,25 @@ class DecompositionTests(unittest.TestCase):
     def test_qr(self):
         decomposition = QRDecomposition()
         for matrix in MatrixCollection.regular:
-            matrix = UnitTestMatrix(matrix, 10)
+            matrix = UnitTestMatrix(matrix, precision_digits)
             self.decomposition(matrix, decomposition)
 
     def test_lr(self):
         decomposition = LRDecomposition()
         for matrix in MatrixCollection.regular:
-            matrix = UnitTestMatrix(matrix, 10)
+            matrix = UnitTestMatrix(matrix, precision_digits)
             self.decomposition(matrix, decomposition)
 
     def test_cholesky(self):
         decomposition = CholeskyDecomposition()
         for matrix in MatrixCollection.intersection(MatrixCollection.positive_definite, MatrixCollection.symmetric):
-            matrix = UnitTestMatrix(matrix, 10)
+            matrix = UnitTestMatrix(matrix, precision_digits)
             self.decomposition(matrix, decomposition)
 
     def test_singular_value(self):
         decomposition = SingularValueDecomposition()
         for matrix in MatrixCollection.coll:
-            matrix = UnitTestMatrix(matrix, 10)
+            matrix = UnitTestMatrix(matrix, precision_digits)
             self.decomposition(matrix, decomposition)
 
 

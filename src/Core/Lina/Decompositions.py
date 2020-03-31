@@ -1,0 +1,9 @@
+from Algebra.LinearAlgebra.Decomposition.CholeskyDecomposition import CholeskyDecomposition
+from Algebra.LinearAlgebra.Decomposition.LRDecomposition import LRDecomposition
+from Algebra.LinearAlgebra.Decomposition.QRDecomposition import QRDecomposition
+from Algebra.LinearAlgebra.Decomposition.SingularValueDecomposition import SingularValueDecomposition
+
+lr_decomposition = LRDecomposition()
+cholesky_decomposition = CholeskyDecomposition()
+singular_value_decomposition = SingularValueDecomposition()
+qr_decomposition = QRDecomposition()

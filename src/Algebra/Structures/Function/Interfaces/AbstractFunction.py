@@ -14,4 +14,3 @@ class AbstractFunction(Evaluable, VariableContext, Arithmetic):
     @abstractmethod
     def get_variable_context(self) -> Set[str]:
         pass
-

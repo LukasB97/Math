@@ -1,8 +1,8 @@
 from typing import Tuple, List
 
 from src.Algebra.Structures.Function.Function import Function
-from src.Algebra.Structures.Function.Parser import FunctionParser
-from src.Calculus.Interpolation import InterpolationAlgorithm
+from src.Algebra.Structures.Function.Parser.FunctionParser import FunctionParser
+from src.Calculus.Interpolation.InterpolationAlgorithm import InterpolationAlgorithm
 
 
 class LagrangeInterpolation(InterpolationAlgorithm):

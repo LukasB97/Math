@@ -4,9 +4,8 @@ from typing import Tuple, List
 import numpy
 
 from Algebra.Structures.Matrix.Matrix import Matrix
-from Algebra.Structures.Matrix.MatrixProperties.Eigenvalues import Eigenvalues
 from Algebra.Structures.Matrix.MatrixProperties.Eigenpairs import Eigenpairs
-from src.Algebra.LinearAlgebra.Algorithms.EigenvalueAlgorithm.QRAlgorithm import QRAlgorithm
+from Algebra.Structures.Matrix.MatrixProperties.Eigenvalues import Eigenvalues
 from src.Algebra.LinearAlgebra.Decomposition.DecompositionStrategy import DecompositionStrategy
 
 
@@ -30,14 +29,11 @@ class SingularValueDecomposition(DecompositionStrategy):
             singular_values.append(sqrt(eigenvalue))
         return singular_values.sort(reverse=True)
 
-
-
     def build_diagonal_matrix(self, singular_values, size: Tuple[int]):
         matrix = numpy.zeros(size)
         for i in range(len(singular_values)):
             matrix[i, i] = singular_values[i]
         return Matrix(matrix)
-
 
     def build_u(self, matrix, eigenvectors):
         """
@@ -51,8 +47,6 @@ class SingularValueDecomposition(DecompositionStrategy):
 
     def build_eigenbasis(self, eigenpairs) -> Matrix:
         pass
-
-
 
     def decompose(self, matrix):
         matrix_t_matrix = matrix.transpose() * matrix

@@ -7,6 +7,7 @@ from src.Algebra.LinearAlgebra.Algorithms.EquationSystem.JacobiMethod import Jac
 from src.Algebra.LinearAlgebra.Algorithms.EquationSystem.LESStrategy import LESStrategy
 from src.Algebra.Structures.Matrix.UnitTestMatrix import UnitTestMatrix
 from tests.MathTests.AlgebraTests.MatrixTests import MatrixCollection
+from tests.MathTests.Settings import precision_digits
 
 
 class LESTests(unittest.TestCase):
@@ -18,35 +19,16 @@ class LESTests(unittest.TestCase):
             solution_vector = strategy.execute(matrix, b)
             self.assertEqual(matrix * solution_vector, b)
 
-    #
-    # def test_qr(self):
-    #     decomposition = QRDecomposition()
-    #     for A in MatrixCollection.regular:
-    #         A = UnitTestMatrix(A, 10)
-    #         self.decomposition(A, decomposition)
-    #
-    # def test_lr(self):
-    #     decomposition = LRDecomposition()
-    #     for A in MatrixCollection.regular:
-    #         A = UnitTestMatrix(A, 10)
-    #         self.decomposition(A, decomposition)
-    #
-    # def test_cholesky(self):
-    #     decomposition = CholeskyDecomposition()
-    #     for A in MatrixCollection.intersection(MatrixCollection.positive_definite, MatrixCollection.symmetric):
-    #         A = UnitTestMatrix(A, 10)
-    #         self.decomposition(A, decomposition)
-
     def test_jacobi(self):
         jacobi = JacobiMethod(0.000000000000001)
         for A in MatrixCollection.intersection(MatrixCollection.positive_definite, MatrixCollection.symmetric):
-            A = UnitTestMatrix(A, 10)
+            A = UnitTestMatrix(A, precision_digits)
             self.solve(A, jacobi)
 
     def test_gauss_seidel(self):
         jacobi = GaussSeidelMethod(0.000000000000001)
         for A in MatrixCollection.intersection(MatrixCollection.positive_definite, MatrixCollection.symmetric):
-            A = UnitTestMatrix(A, 10)
+            A = UnitTestMatrix(A, precision_digits)
             self.solve(A, jacobi)
 
 

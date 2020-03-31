@@ -9,6 +9,7 @@ def scalar_product(v, u):
     return sum(v[i] * u[i] for i in range(len(v)))
 
 
+
 def create_orthonormal_vector(*vectors: Vector):
     missing_column_vectors = vectors[0].row_count - len(vectors)
     null_vectors = []
@@ -18,4 +19,3 @@ def create_orthonormal_vector(*vectors: Vector):
     qr_decomposition = QRDecomposition()
     created_vector = qr_decomposition.solve(matrix.transpose(), 0)
     return created_vector * (1 / Norm.euclidean_norm(created_vector))
-

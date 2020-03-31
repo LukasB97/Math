@@ -2,6 +2,7 @@ from math import sqrt
 
 from numpy import zeros
 
+from Algebra.Structures.Matrix.MatrixProperties.MainDiagonalProduct import MainDiagonalProduct
 from src.Algebra.LinearAlgebra.Algorithms.EquationSystem.Substitution import substitute_backwards
 from src.Algebra.LinearAlgebra.Algorithms.EquationSystem.Substitution import substitute_forward
 from src.Algebra.LinearAlgebra.Decomposition.DecompositionStrategy import DecompositionStrategy
@@ -9,6 +10,10 @@ from src.Algebra.Structures.Matrix.Matrix import Matrix
 
 
 class CholeskyDecomposition(DecompositionStrategy):
+
+    def calculate_determinant(self, matrix):
+        l, lt = self.decompose(matrix)
+        return MainDiagonalProduct().evaluate(l) ** 2
 
     def solve(self, matrix, target_vector):
         """

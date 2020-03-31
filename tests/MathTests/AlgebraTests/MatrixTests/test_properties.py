@@ -1,46 +1,50 @@
 import unittest
 
+from Algebra.Structures.Matrix.UnitTestMatrix import UnitTestMatrix
 from src.Algebra.Structures.Matrix.Matrix import Matrix
-from src.Algebra.Structures.Matrix.MatrixProperties import Eigenpairs, Eigenvalues
+import src.Core.Lina.Properties as Properties
+from tests.MathTests.AlgebraTests.MatrixTests import MatrixCollection
+from tests.MathTests.Settings import precision_digits
 
 
 class PropertyTests(unittest.TestCase):
 
+    def test_orthogonality(self):
+        for matrix in MatrixCollection.complete:
+            matrix = UnitTestMatrix(matrix, precision_digits)
+            eigenpairs = Properties.orthogonality.evaluate(matrix)
+            for value, vector in eigenpairs:
+                stretched_vector = matrix * vector
+                self.assertEqual(stretched_vector, vector * value)
+
+    def test_inverse(self):
+        for matrix in MatrixCollection.regular:
+            matrix = UnitTestMatrix(matrix, precision_digits)
+            inverse = Properties.inverse.evaluate(matrix)
+            self.assertEqual(matrix, inverse)
+
     def test_symmetric(self):
-        pass
-
-    def test_main_diagonal_product(self):
-        matrix_a = Matrix(
-            [
-                [1, 3, 2, 0],
-                [-5, 3, -3.0, 0],
-                [5, 7.0, 1, 1]
-            ]
-        )
-        matrix_b = Matrix(
-            [
-                [-5, 3, 2.0],
-                [-5, 3, -3],
-                [5, 7.0, 2]
-            ]
-        )
-        self.assertEqual(matrix_a.evaluate_property(MainDiagonalProduct()), 3)
-        self.assertEqual(matrix_b.evaluate_property(MainDiagonalProduct()), -30)
+        for matrix in MatrixCollection.complete:
+            matrix_object = Matrix(matrix)
+            symmetric = Properties.symmetrical.evaluate(matrix_object)
+            self.assertEqual(symmetric, matrix in MatrixCollection.symmetric)
 
 
-    def test_eigenvectors(self):
-        eigenvector_property = Eigenpairs.Eigenpairs()
+    def test_eigenpairs(self):
+        for matrix in MatrixCollection.regular:
+            matrix = Matrix(matrix, precision_digits)
+            eigenpairs = Properties.eigenpairs.evaluate(matrix)
+            for value, vector in eigenpairs:
+                stretched_vector = matrix * vector
+                self.assertEqual(stretched_vector, vector * value)
 
     def test_eigenvalues(self):
-        eigenvalue_property = Eigenvalues.Eigenvalues()
-        matrix = Matrix(
-            [
-                [-2, -4, 2],
-                [-2, 1, 2],
-                [4, 2, 5]
-            ]
-        )
-        print(matrix.evaluate_property(QRAlgorithm()))
+        for matrix in MatrixCollection.regular:
+            matrix = Matrix(matrix, precision_digits)
+            eigenpairs = Properties.eigenvalues.evaluate(matrix)
+            for value, vector in eigenpairs:
+                stretched_vector = matrix * vector
+                self.assertEqual(stretched_vector, vector * value)
 
 
 if __name__ == '__main__':

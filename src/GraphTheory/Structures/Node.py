@@ -15,5 +15,3 @@ class AbstractNode(ABC, Hashable):
     @abstractmethod
     def __eq__(self, other):
         pass
-
-

@@ -34,29 +34,3 @@ class Elgamal(AsymmetricCipher):
         b = random.randint(0, p - 2)
         B = power(g, b, p)
         return (p, g, B), (p, g, b)
-
-
-def ElgamalTest():
-    ms = 'Geheimnis'
-    m = str2int(ms)
-    print("Klartext als String:           " + ms)
-    print("Klartext als Zahl:             " + str(m))
-    (pk, sk) = ElgamalKeyGen(90)
-    print("Public Key:                    " + str(pk))
-    print("Private Key:                   " + str(sk))
-    c1, A1 = ElgamalEncrypt(pk, m)
-    c2, A2 = ElgamalEncrypt(pk, m)
-    print("1. Chiffretext:                " + str(c1))
-    print("2. Chiffretext:                " + str(c2))
-    b1 = ElgamalDecrypt(sk, c1, A1)
-    b2 = ElgamalDecrypt(sk, c2, A2)
-    print("1. Chiffretext entschluesselt: " + str(b1))
-    print("2. Chiffretext entschluesselt: " + str(b2))
-    b1s = int2str(b1)
-    b2s = int2str(b2)
-    print("1. Chiffretext entschluesselt: " + b1s)
-    print("2. Chiffretext entschluesselt: " + b2s)
-    return
-
-
-ElgamalTest()

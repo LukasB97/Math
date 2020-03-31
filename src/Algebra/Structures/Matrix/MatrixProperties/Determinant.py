@@ -1,9 +1,12 @@
-from src.Algebra.Structures.Matrix import Matrix
+from Algebra.LinearAlgebra.Decomposition.QRDecomposition import QRDecomposition
+from src.Algebra.Structures.Matrix.Matrix import Matrix
 from src.Algebra.Structures.Matrix.MatrixProperties import PropertyResult, MatrixProperty
-from src.Algebra.Structures.Matrix.MatrixProperties.TriangularProperty import TriangularProperty
 
 
 class Determinant(MatrixProperty):
 
+    def __init__(self, decomposition_algorithm=QRDecomposition):
+        self.decomposition = decomposition_algorithm
+
     def _evaluate(self, matrix: Matrix) -> PropertyResult:
-        triangular_property = matrix.evaluate_property(TriangularProperty())
+        return self.decomposition.calculate_determinant(matrix)

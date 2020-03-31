@@ -7,6 +7,7 @@ from src.Tools.NumberGenerator.AbstractNumberGenerator import AbstractNumberGene
 
 prime_summand = [1, 7, 11, 13, 17, 19, 23, 29]
 
+
 class PrimeGenerator:
 
     def __init__(self, random_generator: AbstractNumberGenerator,

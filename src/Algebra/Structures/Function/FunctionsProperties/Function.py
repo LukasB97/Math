@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from src.Algebra.Structures.Matrix import Matrix
 
 
-class MatrixProperty(ABC):
+class FunctionProperty(ABC):
 
     def __init__(self, delta=0):
         self.delta = delta

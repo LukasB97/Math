@@ -12,9 +12,11 @@ class OperationTests(unittest.TestCase):
     def _test_scalar_product(self, v1, v2):
         self.assertEqual(Operations.scalar_product(v1, v2), v2.transpose() * v1)
 
-    def test_
+    def test_ss(self):
+        pass
 
     def test_create_orthogonal_vector(self):
+        pass
 
 
     def test_singular_value(self):

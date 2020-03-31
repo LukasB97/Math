@@ -3,10 +3,10 @@ from typing import List, Tuple
 import numpy
 
 from Algebra.Structures.Matrix.Vector import Vector
+from Core.Lina.MatrixFactory import MatrixFactory
 from src.Algebra.LinearAlgebra.Algorithms.EquationSystem import Substitution
 from src.Algebra.LinearAlgebra.Decomposition.QRDecomposition import QRDecomposition
 from src.Algebra.Structures.Matrix.Matrix import Matrix
-from Core.Lina.MatrixFactory import MatrixFactory
 from src.Algebra.Structures.Matrix.MatrixProperties import Eigenvalues
 from src.Algebra.Structures.Matrix.MatrixProperties.MatrixProperty import MatrixProperty
 

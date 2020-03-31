@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 
 from src.GraphTheory.Structures.Edge import Edge
-from src.GraphTheory.Structures.Node import AbstractNode
 
 
 class AbstractGraph(ABC):

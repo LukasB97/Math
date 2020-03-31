@@ -22,4 +22,3 @@ class Arithmetic(ABC):
     @abstractmethod
     def __sub__(self, other):
         pass
-

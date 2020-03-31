@@ -1,5 +1,4 @@
 from Algebra.Structures.Polynomial import Polynomial
-from src.Algebra.Structures.Function.Parser.FunctionParser import FunctionParser
 from src.Calculus.Integration.IntegrationAlgorithm import IntegrationAlgorithm
 
 

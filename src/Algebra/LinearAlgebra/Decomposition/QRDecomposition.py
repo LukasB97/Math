@@ -1,13 +1,18 @@
 import numpy
 
+from Algebra.Structures.Matrix.MatrixProperties.MainDiagonalProduct import MainDiagonalProduct
+from Core.Lina.MatrixFactory import MatrixFactory
 from src.Algebra.LinearAlgebra.Algorithms.EquationSystem.Substitution import substitute_backwards
 from src.Algebra.LinearAlgebra.Decomposition.DecompositionStrategy import DecompositionStrategy
 from src.Algebra.Structures.Function.Norm import Norm
 from src.Algebra.Structures.Matrix.Matrix import Matrix
-from Core.Lina.MatrixFactory import MatrixFactory
 
 
 class QRDecomposition(DecompositionStrategy):
+
+    def calculate_determinant(self, matrix):
+        q, r = self.decompose(matrix)
+        return MainDiagonalProduct().evaluate(r)
 
     def _solve(self, matrix, target_vector):
         q, r = self.decompose(matrix)
@@ -38,7 +43,8 @@ class QRDecomposition(DecompositionStrategy):
             e[0, 0] = 1
             e = Matrix(e)
             h = self.create_householder_reflection(matrix.get_column_vector(j, j), e)
-            h = MatrixFactory.build_block_matrix(d=h, row_count=orthogonal_matrix.row_count, col_count=orthogonal_matrix.row_count)
+            h = MatrixFactory.build_block_matrix(d=h, row_count=orthogonal_matrix.row_count,
+                                                 col_count=orthogonal_matrix.row_count)
             for i in range(j):
                 h.matrix_vectors[i, i] = 1
             matrix = h * matrix

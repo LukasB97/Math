@@ -82,10 +82,3 @@ class Polynomial(AbstractFunction, Derivable, ElementaryAntiDerivative):
                 coefficients.append(ith_coefficient)
             return Polynomial(coefficients)
         raise NotImplementedError()
-
-
-
-
-
-
-

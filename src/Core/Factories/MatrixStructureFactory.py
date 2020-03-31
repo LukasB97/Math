@@ -7,7 +7,6 @@ class MatrixStructureFactory(AbstractFactory):
         input_str = input_str.replace(" ", "")
         input_str = input_str.replace("{", "[")
         input_str = input_str.replace("}", "]")
-        chars = set(input_str)
         input_str = input_str.replace("][", "],[")
         if input_str[:2] != "[[":
             input_str = "[[" + input_str[1:]
@@ -15,15 +14,10 @@ class MatrixStructureFactory(AbstractFactory):
             input_str = input_str[-1:] + "]]"
         return input_str
 
-
-
-
     def _parse_bracket_separator(self, input_str):
         assert input_str.count("[") == input_str.count("]")
-        input_str = input_str.
-        input_str = input_str.replace(";", ",")
-
-
+        # input_str = input_str.
+        # input_str = input_str.replace(";", ",")
 
     def _parse_semicolon_seperator(self, input_str):
         pass
@@ -41,4 +35,3 @@ class MatrixStructureFactory(AbstractFactory):
         if isinstance(input_to_parse, str):
             return self.parse_string(input_to_parse)
         return self.parse_array(input_to_parse)
-

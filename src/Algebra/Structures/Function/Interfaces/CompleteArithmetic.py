@@ -24,4 +24,3 @@ class CompleteArithmetic(Arithmetic):
     @abstractmethod
     def __rsub__(self, other):
         pass
-

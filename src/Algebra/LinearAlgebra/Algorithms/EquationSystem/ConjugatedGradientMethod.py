@@ -1,5 +1,5 @@
-from src.Algebra.Structures.Function.Norm import Norm
 from Core.Lina.MatrixFactory import MatrixFactory
+from src.Algebra.Structures.Function.Norm import Norm
 
 
 class ConjugatedGradientMethod:

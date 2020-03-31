@@ -1,12 +1,17 @@
 import numpy as np
 
+from Algebra.Structures.Matrix.MatrixProperties.MainDiagonalProduct import MainDiagonalProduct
+from Core.Lina.MatrixFactory import MatrixFactory
 from src.Algebra.LinearAlgebra.Algorithms.EquationSystem.Substitution import substitute_backwards
 from src.Algebra.LinearAlgebra.Decomposition.DecompositionStrategy import DecompositionStrategy
 from src.Algebra.Structures.Matrix.Matrix import Matrix
-from Core.Lina.MatrixFactory import MatrixFactory
 
 
 class LRDecomposition(DecompositionStrategy):
+
+    def calculate_determinant(self, matrix):
+        l, r = self.decompose(matrix)
+        return MainDiagonalProduct().evaluate(l) * MainDiagonalProduct().evaluate(r)
 
     def solve(self, matrix, target_vector):
         l, r = self.decompose(matrix)

@@ -1,17 +1,21 @@
 import random
 
-from src.Cryptography.Ciphers.Cipher import Cipher
+from Cryptography.Ciphers.Asymmetric.AsymmetricCipher import AsymmetricCipher
 from src.NumberTheory import utils
-from src.NumberTheory.EuclideanAlgorithm import extended_euclidean_algorithm
+from src.NumberTheory.EuclideanAlgorithm import greatest_common_divisor
 from src.Tools.NumberGenerator.PrimeGenerator import PrimeGenerator
 
 
-class RSA(Cipher):
+class RSA(AsymmetricCipher):
 
-    def __init__(self, r=None, sk=None, pk=None, *args, **kwargs):
-        if sk is None:
-            sk, self.pk = self.create_key(r)
-        super().__init__(sk, *args, **kwargs)
+    @property
+    def public_key(self):
+        pass
+
+    def __init__(self, key_length=None, sk=None, pk=None, *args, **kwargs):
+        if not ((key_length is None) ^ (sk is pk is None)):
+            raise ValueError()
+        super().__init__(sk, pk, *args, **kwargs)
 
     def encrypt(self, message):
         message = self.str2int(message)
@@ -20,30 +24,19 @@ class RSA(Cipher):
     def decrypt(self, ciphertext):
         return self.int2str(utils.power(ciphertext, self.sk[1], self.sk[0]))
 
-    def create_key(self, r, *args, **kwargs):
-        l = (r + 2) // 2
+    def create_key(self, key_length=256, *args, **kwargs):
+        min_bits = (key_length + 2) // 2
+        from_ = 2 ** min_bits
+        to_ = 2 ** (min_bits + 1) - 1
         prime_generator = PrimeGenerator.std_insecure()
-        p = prime_generator.generate_prime(2 ** l, 2 ** (l + 1) - 1)
-        while (q := prime_generator.generate_prime(2 ** l, 2 ** (l + 1) - 1)) == p:
-            pass
-        n = q * p
+        p = prime_generator.generate_prime(from_, to_)
+        q = p
+        while q == p:
+            q = prime_generator.generate_prime(from_, to_)
+        prime_product = q * p
         phin = (q - 1) * (p - 1)
-        while extended_euclidean_algorithm(e := random.randint(2, phin), phin)[0] != 1:
-            pass
-        return (n, e), (n, utils.get_inverse_element(e, phin))
-
-
-def RSATest():
-    ms = 'NSA aus USA hasst RSA.'
-    m = ms
-    print("Klartext als String:      " + ms)
-    r = 1024  # len() - 2  # Laenge des Klartexts bestimmen
-    rsa = RSA(r)
-    c = rsa.encrypt(m)
-    print("Chiffretext als Zahl:     " + str(c))
-    b = rsa.decrypt(c)
-    print("entschl. Text als String: " + b)
-    return
-
-
-RSATest()
+        random_relatively_prime = random.randint(2, phin)
+        while greatest_common_divisor(random_relatively_prime, phin) != 1:
+            random_relatively_prime = random.randint(2, phin)
+        return (prime_product, random_relatively_prime), (
+        prime_product, utils.inverse_mod_n(random_relatively_prime, phin))
