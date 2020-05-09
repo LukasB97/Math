@@ -26,6 +26,7 @@ class IntegrationAlgorithm(ABC):
     def error_magnitude(self):
         pass
 
-    def integrate_polynomial(self, fun, start, end):
+    @staticmethod
+    def integrate_polynomial(fun, start, end):
         anti_derivative = fun.get_anti_derivative()
         return anti_derivative(end) - anti_derivative(start)

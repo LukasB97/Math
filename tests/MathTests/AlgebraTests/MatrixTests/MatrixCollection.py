@@ -1,7 +1,7 @@
 import numpy
 
 from src.Algebra.Structures.Matrix.Matrix import Matrix
-from tests.MathTests.AlgebraTests.MatrixTests import Matrices as m
+from tests.MathTests.AlgebraTests.MatrixTests import Matrices
 
 u_triangular = [
 
@@ -16,17 +16,17 @@ diagonal = [
 ]
 
 positive_definite = [
-    m.spd_3x3_1, m.spd_3x3_2, m.spd_3x3_3, m.spd_5x5_1
+    Matrices.spd_3x3_1, Matrices.spd_3x3_2, Matrices.spd_3x3_3, Matrices.spd_5x5_1
 ]
 
 symmetric = [
-    m.spd_3x3_1, m.spd_3x3_2, m.spd_3x3_3
+    Matrices.spd_3x3_1, Matrices.spd_3x3_2, Matrices.spd_3x3_3
 ]
 
 regular = [
-    *positive_definite, m.reg_4x4_1
+    *positive_definite, Matrices.reg_4x4_1
 ]
-a = m.spd_3x3_2
+a = Matrices.spd_3x3_2
 
 complete = [
     *regular
@@ -38,10 +38,10 @@ def create_target_vector(size):
     return Matrix(data)
 
 
-def intersection(*args, **kwargs):
+def intersection(*args):
     res = []
-    for l in args:
-        for matrix in l:
+    for collection in args:
+        for matrix in collection:
             interset = True
             for others in args:
                 if matrix not in others:
@@ -49,5 +49,4 @@ def intersection(*args, **kwargs):
                     break
             if interset and matrix not in res:
                 res.append(matrix)
-            interset = True
     return res

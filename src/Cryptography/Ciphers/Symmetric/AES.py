@@ -2,21 +2,24 @@ from typing import List
 
 import numpy
 
-from Cryptography.Ciphers.Symmetric.AESResources import sub_byte_table, mix_col_matrix
 from src.Algebra.Structures.Matrix.Matrix import Matrix
 from src.Cryptography.Ciphers.Cipher import Cipher
+from src.Cryptography.Ciphers.Symmetric.AESResources import sub_byte_table, mix_col_matrix
 from src.Cryptography.FinitePolynomialFieldFactory import FinitePolynomialFieldFactory
 
 
 class AES(Cipher):
     polynomial_factory: FinitePolynomialFieldFactory(8, numpy.array([1, 1, 0, 1, 1, 0, 0, 0, 1]))
 
+    def __init__(self, secret_key=None, *args, **kwargs):
+        super().__init__(secret_key, *args, **kwargs)
+
     def encrypt(self, message):
         blocks: List[Matrix] = self.blocks_from_string(message)
         encrypted_blocks = [self._encrypt_matrix(blocks[0])]
         for i in range(1, len(blocks)):
             encrypted_blocks.append(
-                self._encrypt_matrix(blocks[i], encrypted_blocks[i-1])
+                self._encrypt_matrix(blocks[i], encrypted_blocks[i - 1])
             )
         return self.string_from_blocks(encrypted_blocks)
 
@@ -29,13 +32,7 @@ class AES(Cipher):
         return self.shift_row(matrix)
 
     def decrypt(self, chiffretext):
-        blocks: List[Matrix] = self.blocks_from_string(chiffretext)
-        encrypted_blocks = [self._encrypt_matrix(blocks[0])]
-        for i in range(1, len(blocks)):
-            encrypted_blocks.append(
-                self._encrypt_matrix(blocks[i], encrypted_blocks[i - 1])
-            )
-        return self.string_from_blocks(encrypted_blocks)
+        pass
 
     def create_key(self, *args, **kwargs):
         pass
@@ -62,36 +59,32 @@ class AES(Cipher):
         ], self.polynomial_factory.create
         )
 
-    def mix_col(self, matrix_to_mix):
+    @staticmethod
+    def mix_col(matrix_to_mix):
         return mix_col_matrix * matrix_to_mix
 
-    def blocks_from_string(self, chriffretext):
+    @staticmethod
+    def blocks_from_string(chriffretext):
         text_bytes = bytearray(chriffretext, "utf-8")
         blocks = []
-        next_matrix = [[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0]]
+        next_matrix = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
         i = 0
         for b in text_bytes:
             next_matrix[i // 4][i % 4] = b
             i += 1
             if i == 16:
                 blocks.append(Matrix(next_matrix))
-                next_matrix = [[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0]]
+                next_matrix = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
                 i = 0
         if i != 0:
             blocks.append(Matrix(next_matrix))
         return blocks
 
-
-
-
-
-    def string_from_blocks(self, blocks: List[Matrix]):
+    @staticmethod
+    def string_from_blocks(blocks: List[Matrix]):
         result = []
         for block in blocks:
             for i in range(4):
                 for j in range(4):
                     result.append(block[i, j])
         return bytearray(result).decode("utf-8")
-
-
-

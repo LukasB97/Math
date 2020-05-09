@@ -8,7 +8,8 @@ from src.Algebra.Structures.Matrix.MatrixProperties.TriangularProperty import Tr
 
 class QRAlgorithm(EigenvalueStrategy):
 
-    def check_for_convergene(self, new_sum, last_sum, quotient):
+    @staticmethod
+    def check_for_convergence(new_sum, last_sum, quotient):
         return new_sum <= abs(quotient * last_sum)
 
     def check_break(self, matrix, old_sums, quotient=0.5):
@@ -16,7 +17,7 @@ class QRAlgorithm(EigenvalueStrategy):
         convergence = False
         for i in range(matrix.column_count - 1):
             new_sums.append(matrix.get_column_vector(i, i + 1).sum())
-            if self.check_for_convergene(new_sums[i], old_sums[i], quotient):
+            if self.check_for_convergence(new_sums[i], old_sums[i], quotient):
                 convergence = True
         return convergence, new_sums
 
@@ -26,8 +27,8 @@ class QRAlgorithm(EigenvalueStrategy):
         last_lower_column_sum = numpy.full((matrix.column_count, 1), MatrixNorm.column_sum(matrix))
         i = 0
         while True:
-            Q, R = qr_decomposition.decompose(temp)
-            temp = R * Q
+            q, r = qr_decomposition.decompose(temp)
+            temp = r * q
             a = TriangularProperty().evaluate(temp.sub_matrix(0, temp.row_count - 1, 0, temp.column_count - 1))
             if a == TriangularState.UPPER_TRIANGULAR:
                 print("Number of Factorizations: " + str(i + 1))

@@ -11,26 +11,25 @@ class Elgamal(AsymmetricCipher):
         pass
 
     def encrypt(self, message):
-        a = random.randint(1, self.pk[0] - 1)
-        A = power(self.pk[1], a, self.pk[0])
-        c = power(self.pk[2], a, self.pk[0])
-        c = (c * message) % self.pk[0]
-        return c, A
+        a = random.randint(1, self.public_key[0] - 1)
+        kp = power(self.public_key[1], a, self.public_key[0])
+        c = power(self.public_key[2], a, self.public_key[0])
+        c = (c * message) % self.public_key[0]
+        return c, kp
 
-    def decrypt(self, chiffretext, A):
-        x = self.sk[0] - 1 - self.sk[2]
-        m = power(A, x, self.sk[0])
-        return (m * chiffretext) % self.sk[0]
+    def decrypt(self, chiffretext, a):
+        x = self.secret_key[0] - 1 - self.secret_key[2]
+        m = power(a, x, self.secret_key[0])
+        return (m * chiffretext) % self.secret_key[0]
 
     def create_key(self, *args, **kwargs):
-        l = kwargs["l"]
+        key_length = kwargs["l"]
         prime_generator = PrimeGenerator.std_insecure()
-        p = prime_generator.generate_safe_prime(2 ** l, 2 ** (l + 1) - 1)
-        g = 0
+        p = prime_generator.generate_safe_prime(2 ** key_length, 2 ** (key_length + 1) - 1)
         while True:
             g = random.randint(2, p - 1)
             if power(g, (p - 1) // 2, p) != 1:
                 break
         b = random.randint(0, p - 2)
-        B = power(g, b, p)
-        return (p, g, B), (p, g, b)
+        kp = power(g, b, p)
+        return (p, g, kp), (p, g, b)

@@ -1,13 +1,12 @@
-from Algebra.LinearAlgebra.Decomposition.QRDecomposition import QRDecomposition
-from Algebra.Structures.Function.Norm import Norm
-from Algebra.Structures.Matrix.Vector import Vector
-from Core.Lina.MatrixFactory import MatrixFactory
-from Core.Lina.VectorFactory import VectorFactory
+from src.Algebra.LinearAlgebra.Decomposition.QRDecomposition import QRDecomposition
+from src.Algebra.Structures.Function.Norm import Norm
+from src.Algebra.Structures.Matrix.Vector import Vector
+from src.Core.Lina.MatrixFactory import MatrixFactory
+from src.Core.Lina.VectorFactory import VectorFactory
 
 
 def scalar_product(v, u):
     return sum(v[i] * u[i] for i in range(len(v)))
-
 
 
 def create_orthonormal_vector(*vectors: Vector):

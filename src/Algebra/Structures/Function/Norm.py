@@ -1,7 +1,15 @@
-from src.Algebra.Structures.Function.Function import Function
+from typing import Set
+
+from src.Algebra.Structures.Function.Interfaces.Function import Function
 
 
 class Norm(Function):
+
+    def get_variable_context(self) -> Set[str]:
+        pass
+
+    def evaluate(self, *args, **kwargs) -> float:
+        pass
 
     @staticmethod
     def euclidean_norm(v):

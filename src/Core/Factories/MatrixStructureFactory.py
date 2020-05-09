@@ -1,32 +1,24 @@
-from Core.AbstractFactory import AbstractFactory
+import re
+
+from src.Core.AbstractFactory import AbstractFactory
 
 
 class MatrixStructureFactory(AbstractFactory):
 
-    def _replacements(self, input_str: str):
+    @staticmethod
+    def parse_string(input_str: str):
         input_str = input_str.replace(" ", "")
-        input_str = input_str.replace("{", "[")
-        input_str = input_str.replace("}", "]")
-        input_str = input_str.replace("][", "],[")
-        if input_str[:2] != "[[":
-            input_str = "[[" + input_str[1:]
-        if input_str[-2:] != "]]":
-            input_str = input_str[-1:] + "]]"
-        return input_str
-
-    def _parse_bracket_separator(self, input_str):
-        assert input_str.count("[") == input_str.count("]")
-        # input_str = input_str.
-        # input_str = input_str.replace(";", ",")
-
-    def _parse_semicolon_seperator(self, input_str):
-        pass
-
-    def parse_string(self, input_str):
-        input_str = self._replacements(input_str)
-        if "[" in input_str:
-            return self._parse_bracket_separator(input_str)
-        return self._parse_semicolon_seperator(input_str)
+        input_str = input_str.replace(";", ",")
+        input_str = re.sub('[{(]+', '[', input_str)
+        input_str = re.sub('[})]+', ']', input_str)
+        input_str = input_str.replace("],[", "];[")
+        input_str = input_str.replace("[[", "[")
+        input_str = input_str.replace("]]", "]")
+        rows = input_str.split(";")
+        for i in range(len(rows)):
+            rows[i] = rows[i][1:-1].split(",")
+            rows[i] = [float(x) for x in rows[i]]
+        return rows
 
     def parse_array(self, input_arr):
         pass

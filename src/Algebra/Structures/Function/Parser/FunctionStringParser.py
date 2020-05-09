@@ -1,6 +1,6 @@
-from Algebra.Structures.Function.Parser.Replacements import replace_with
 from src.Algebra.Structures.Function import TranscendentalFunctionMapping
 from src.Algebra.Structures.Function.Operation import OperatorMapping
+from src.Algebra.Structures.Function.Parser.Replacements import replace_with
 from src.Algebra.Structures.Function.Variable import Variable
 
 
@@ -10,7 +10,8 @@ class FunctionStringParser:
         definition_string = self.preprocess_string(definition_string)
         return self.build_definition_list(definition_string)  #
 
-    def _parse_number(self, is_number, current_number, current_char) -> (bool, bool, str):
+    @staticmethod
+    def _parse_number(is_number, current_number, current_char) -> (bool, bool, str):
         finished = False
         if current_char.isnumeric() or (current_char in [",", "."] and is_number):
             current_number += current_char
@@ -50,7 +51,8 @@ class FunctionStringParser:
         new_definition = self.replace_transcendental_functions(new_definition)
         return new_definition
 
-    def replace_transcendental_functions(self, definition_string):
+    @staticmethod
+    def replace_transcendental_functions(definition_string):
         for expression, replacement in TranscendentalFunctionMapping.replacement.items():
             definition_string = definition_string.replace(expression, replacement)
         return definition_string

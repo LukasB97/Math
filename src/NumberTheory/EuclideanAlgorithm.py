@@ -1,8 +1,8 @@
-def extended_euclidean_algorithm(ld, d):  # erweiterter Euklidischer Algorithmus
-    # Aufruf: egcd(a,b) mit natuerlichen Zahlen a,b>0
-    # Ausgabe: (d,x,y) mit:
-    #     d ist groesster gemeinsamer Teiler von a und b
-    #     x,y sind ganze Zahlen mit d = x*a + y*b
+def extended_euclidean_algorithm(ld, d):  # erweiterter euclidean algorithm
+    # call: egcd(a,b) mit natural numbers a,b>0
+    # return: (d,x,y) mit:
+    #     d ist greatest common Teiler von a und b
+    #     x,y sind ganze numbers mit d = x*a + y*b
     (lx, x) = (1, 0)
     (ly, y) = (0, 1)
     while d != 0:
@@ -13,7 +13,7 @@ def extended_euclidean_algorithm(ld, d):  # erweiterter Euklidischer Algorithmus
     return ld, lx, ly
 
 
-def greatest_common_divisor(a, b):  # groesster gemeinsamer Teiler
-    # Aufruf: gcd(a,b) mit natuerlichen Zahlen a,b>0
-    # Ausgabe: groesster gemeinsamer Teiler von a und b
+def greatest_common_divisor(a, b):  # greatest common Teiler
+    # call: gcd(a,b) mit natural numbers a,b>0
+    # return: greatest common Teiler von a und b
     return extended_euclidean_algorithm(a, b)[0]

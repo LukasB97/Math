@@ -21,15 +21,15 @@ class LESTests(unittest.TestCase):
 
     def test_jacobi(self):
         jacobi = JacobiMethod(0.000000000000001)
-        for A in MatrixCollection.intersection(MatrixCollection.positive_definite, MatrixCollection.symmetric):
-            A = UnitTestMatrix(A, precision_digits)
-            self.solve(A, jacobi)
+        for matrix in MatrixCollection.intersection(MatrixCollection.positive_definite, MatrixCollection.symmetric):
+            matrix = UnitTestMatrix(matrix, precision_digits)
+            self.solve(matrix, jacobi)
 
     def test_gauss_seidel(self):
         jacobi = GaussSeidelMethod(0.000000000000001)
-        for A in MatrixCollection.intersection(MatrixCollection.positive_definite, MatrixCollection.symmetric):
-            A = UnitTestMatrix(A, precision_digits)
-            self.solve(A, jacobi)
+        for matrix in MatrixCollection.intersection(MatrixCollection.positive_definite, MatrixCollection.symmetric):
+            matrix = UnitTestMatrix(matrix, precision_digits)
+            self.solve(matrix, jacobi)
 
 
 if __name__ == '__main__':

@@ -4,3 +4,7 @@
 .idea/
 
 __pycache__/
+
+venv/Lib/site-packages/
+
+venv/

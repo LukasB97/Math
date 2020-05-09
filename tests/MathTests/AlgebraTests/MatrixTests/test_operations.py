@@ -2,8 +2,8 @@ import unittest
 
 import numpy
 
-from Algebra.LinearAlgebra import Operations
-from Core.Lina.VectorFactory import VectorFactory
+from src.Algebra.LinearAlgebra import Operations
+from src.Core.Lina.VectorFactory import VectorFactory
 
 
 class OperationTests(unittest.TestCase):
@@ -17,7 +17,6 @@ class OperationTests(unittest.TestCase):
 
     def test_create_orthogonal_vector(self):
         pass
-
 
     def test_singular_value(self):
         v1 = VectorFactory.create([1, 0, 0])

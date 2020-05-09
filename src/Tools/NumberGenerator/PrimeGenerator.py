@@ -32,7 +32,6 @@ class PrimeGenerator:
     def generate_prime_theory(self, from_inclusive, to_inclusive) -> int:
         from_factor = from_inclusive // 30
         to_factor = to_inclusive // 30
-        to_summand = to_inclusive % 30
         n = 30 * self.random_generator.generate_random_integer(from_factor, to_factor)
         n += random.choice(prime_summand)
         while not self.prime_test(n):

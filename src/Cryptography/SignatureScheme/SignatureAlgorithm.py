@@ -14,7 +14,8 @@ class SignatureAlgorithm(CryptographicScheme):
     def verify_signature(self, message, signature) -> bool:
         pass
 
-    def hash(self, message):
+    @staticmethod
+    def hash(message):
         h = hashlib.sha256(bytearray(message, 'UTF8'))
         s = h.hexdigest()
         return int(s, 16)

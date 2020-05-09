@@ -27,9 +27,9 @@ class BaseMatrixData(ABC):
     def value_type(self) -> type:
         return self.data_type
 
-    @property
-    def data_representation(self):
-        pass
+    # @property
+    # def data_representation(self):
+    #     pass
 
     @property
     def row_count(self) -> int:

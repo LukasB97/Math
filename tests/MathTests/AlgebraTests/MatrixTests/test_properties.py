@@ -1,8 +1,8 @@
 import unittest
 
-from Algebra.Structures.Matrix.UnitTestMatrix import UnitTestMatrix
-from src.Algebra.Structures.Matrix.Matrix import Matrix
 import src.Core.Lina.Properties as Properties
+from src.Algebra.Structures.Matrix.Matrix import Matrix
+from src.Algebra.Structures.Matrix.UnitTestMatrix import UnitTestMatrix
 from tests.MathTests.AlgebraTests.MatrixTests import MatrixCollection
 from tests.MathTests.Settings import precision_digits
 
@@ -28,7 +28,6 @@ class PropertyTests(unittest.TestCase):
             matrix_object = Matrix(matrix)
             symmetric = Properties.symmetrical.evaluate(matrix_object)
             self.assertEqual(symmetric, matrix in MatrixCollection.symmetric)
-
 
     def test_eigenpairs(self):
         for matrix in MatrixCollection.regular:

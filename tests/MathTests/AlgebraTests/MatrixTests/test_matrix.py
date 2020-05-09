@@ -1,11 +1,10 @@
 import math
 import unittest
 
-from src.Algebra.LinearAlgebra.Decomposition.CholeskyDecomposition import CholeskyDecomposition
 from src.Algebra.LinearAlgebra.Decomposition.QRDecomposition import QRDecomposition
 from src.Algebra.Structures.Matrix.Matrix import Matrix
-from Core.Lina.MatrixFactory import MatrixFactory
 from src.Algebra.Structures.Matrix.MatrixProperties.TriangularProperty import TriangularProperty, TriangularState
+from src.Core.Lina.MatrixFactory import MatrixFactory
 
 
 class MatrixTestCase(unittest.TestCase):
@@ -48,7 +47,6 @@ class MatrixTestCase(unittest.TestCase):
                 [5, 7.0, 1]
             ]
         )
-        matrix_a.invert()
         matrix_b = Matrix(
             [
                 [1.0, 3, 2.0],
@@ -75,39 +73,13 @@ class MatrixTestCase(unittest.TestCase):
         )
         self.assertEqual(matrix.transpose(), transposed_matrix)
 
-    def test_one_n(self):
+    @staticmethod
+    def test_one_n():
         a = Matrix(
             [[1, 2, 3, 4, 5]]
         )
         print(a * a.transpose())
         print(a.transpose() * a)
-
-    def test_chol(self):
-        a = 3.1
-        m = Matrix([
-            [1, 0, 1],
-            [0, 9, a],
-            [1, a, 2]
-        ])
-        print(CholeskyDecomposition().decompose(m))
-
-    def test_chol3(self):
-        a = 9
-        m = Matrix([
-            [4, 2, 6],
-            [2, a, 4],
-            [6, 4, (8*a)/(a-1)]
-        ])
-        print(CholeskyDecomposition().decompose(m))
-
-    def test_chol2(self):
-        a = 3.1
-        m = Matrix([
-            [1, -1, 1],
-            [-1, 5, -1],
-            [1, -1, 5]
-        ])
-        print(CholeskyDecomposition().decompose(m))
 
     def test_n_n_mul(self):
         a = Matrix(
@@ -172,9 +144,9 @@ class MatrixTestCase(unittest.TestCase):
         self.assertEqual(triangular.evaluate(matrix_b), TriangularState.NOT_TRIANGULAR)
 
     def test_ausgleich(self):
-        data = [(0, 2.45), (math.pi / 6, 3.1), (math.pi / 3, 3.63), (math.pi / 2, 4.25), (2 * math.pi / 3, 4.7)
-            , (math.pi * 5 / 6, 5.1), (math.pi, 6)]
-        A = Matrix([
+        data = [(0, 2.45), (math.pi / 6, 3.1), (math.pi / 3, 3.63),
+                (math.pi / 2, 4.25), (2 * math.pi / 3, 4.7), (math.pi * 5 / 6, 5.1), (math.pi, 6)]
+        matrix = Matrix([
             [data[0][0] ** 2, data[0][0] * math.sin(data[0][0]), 1],
             [data[1][0] ** 2, data[1][0] * math.sin(data[1][0]), 1],
             [data[2][0] ** 2, data[2][0] * math.sin(data[2][0]), 1],
@@ -193,12 +165,13 @@ class MatrixTestCase(unittest.TestCase):
             [data[5][1]],
             [data[6][1]]
         ])
-        res = QRDecomposition().solve(A.transpose() * A, A.transpose() * b)
+        res = QRDecomposition().solve(matrix.transpose() * matrix, matrix.transpose() * b)
         for p in data:
             print("f(", p[0], ")= ", self.fn(res[0, 0], res[1, 0], res[2, 0], p[0]))
             print("angabe: ", p[1])
 
-    def fn(self, l1, l2, l3, x):
+    @staticmethod
+    def fn(l1, l2, l3, x):
         return l1 * (x ** 2) + l2 * (x * math.sin(x)) + l3
 
 

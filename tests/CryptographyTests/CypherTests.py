@@ -2,13 +2,13 @@ import string
 import unittest
 from random import choices
 
-from Cryptography.Ciphers.Asymmetric.DiffieHellman import DiffieHellman
-from Cryptography.Ciphers.Asymmetric.Elgamal import Elgamal
-from Cryptography.Ciphers.Asymmetric.Goldwasser import Goldwasser
-from Cryptography.Ciphers.Asymmetric.RSA import RSA
-from Cryptography.Ciphers.Symmetric.AES import AES
 from src.Cryptography.Ciphers.Asymmetric.AsymmetricCipher import AsymmetricCipher
+from src.Cryptography.Ciphers.Asymmetric.DiffieHellman import DiffieHellman
+from src.Cryptography.Ciphers.Asymmetric.Elgamal import Elgamal
+from src.Cryptography.Ciphers.Asymmetric.Goldwasser import Goldwasser
+from src.Cryptography.Ciphers.Asymmetric.RSA import RSA
 from src.Cryptography.Ciphers.Cipher import Cipher
+from src.Cryptography.Ciphers.Symmetric.AES import AES
 
 
 class CypherTests(unittest.TestCase):
@@ -16,7 +16,8 @@ class CypherTests(unittest.TestCase):
     def test_keys(self, cipher: AsymmetricCipher, sk, pk):
         pass
 
-    def create_random_string(self, n=32):
+    @staticmethod
+    def create_random_string(n=32):
         return ''.join(choices(string.ascii_uppercase + string.digits, k=n))
 
     def _test_single_cipher(self, text, crypto_scheme: Cipher):

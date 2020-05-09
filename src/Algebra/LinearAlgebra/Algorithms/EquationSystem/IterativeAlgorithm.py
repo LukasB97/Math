@@ -28,7 +28,7 @@ class IterativeAlgorithm(Strategy):
         pass
 
     @abstractmethod
-    def next_iteration(self, state):
+    def next_iteration(self, state, *args):
         pass
 
     @abstractmethod

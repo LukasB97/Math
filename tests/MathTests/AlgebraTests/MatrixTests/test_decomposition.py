@@ -47,7 +47,7 @@ class DecompositionTests(unittest.TestCase):
 
     def test_singular_value(self):
         decomposition = SingularValueDecomposition()
-        for matrix in MatrixCollection.coll:
+        for matrix in MatrixCollection.complete:
             matrix = UnitTestMatrix(matrix, precision_digits)
             self.decomposition(matrix, decomposition)
 

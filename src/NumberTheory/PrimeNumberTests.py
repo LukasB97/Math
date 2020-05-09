@@ -1,7 +1,7 @@
 import random
 
 
-def AKS(n: int) -> bool:
+def aks(n: int) -> bool:
     pass
 
 

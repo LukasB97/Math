@@ -1,4 +1,4 @@
-from Algebra.Structures.Matrix.Matrix import Matrix
+from src.Algebra.Structures.Matrix.Matrix import Matrix
 
 sub_byte_table = [
     0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
@@ -19,10 +19,10 @@ sub_byte_table = [
     0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16]
 
 mix_col_matrix = Matrix(
-        [
-            [2, 3, 1, 1],
-            [1, 2, 3, 1],
-            [1, 1, 2, 3],
-            [3, 1, 1, 2]
-        ],
-    )
+    [
+        [2, 3, 1, 1],
+        [1, 2, 3, 1],
+        [1, 1, 2, 3],
+        [3, 1, 1, 2]
+    ],
+)

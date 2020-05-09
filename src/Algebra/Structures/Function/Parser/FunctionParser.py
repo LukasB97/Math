@@ -1,10 +1,14 @@
 from typing import List
 
+from src.Algebra.Structures.Function.Interfaces.Function import Function
 from src.Algebra.Structures.Function.Operation import OperatorMapping
 from src.Algebra.Structures.Function.Operation.ComputationalGraphPart import ComputationalGraphPart
 
 
 class FunctionParser:
+
+    def parse(self, string) -> Function:
+        pass
 
     @classmethod
     def parse_brackets(cls, definition_input: list) -> List[ComputationalGraphPart]:

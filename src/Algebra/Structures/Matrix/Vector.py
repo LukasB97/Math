@@ -1,6 +1,6 @@
 import numpy
 
-from Algebra.Structures.Function.Norm import Norm
+from src.Algebra.Structures.Function.Norm import Norm
 from src.Algebra.Structures.Matrix.Matrix import Matrix
 
 

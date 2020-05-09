@@ -4,8 +4,8 @@ from src.Cryptography.SignatureScheme.SignatureAlgorithm import SignatureAlgorit
 
 class RSASignature(SignatureAlgorithm, RSA):
 
-    def __init__(self, sk=None, pk=None, *args, **kwargs):
-        super().__init__(sk, pk, *args, **kwargs)
+    def __init__(self, secret_key=None, pk=None, *args, **kwargs):
+        super().__init__(secret_key, pk, *args, **kwargs)
 
     def create_signature(self, message):
         message_hash = self.hash(message)

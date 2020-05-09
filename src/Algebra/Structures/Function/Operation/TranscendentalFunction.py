@@ -1,22 +1,54 @@
-from Algebra.Structures.Function.Interfaces.Evaluable import Evaluable
+from typing import Set
+
 from src.Algebra.Structures.Function import TranscendentalFunctionMapping
-from src.Algebra.Structures.Function.Operation.ComputationalGraphPart import ComputationalGraphPart
+from src.Algebra.Structures.Function.Interfaces.Function import Function
 from src.Algebra.Structures.Function.Parser.ParseException import ParseException
 
 
-class TranscendentalFunction(ComputationalGraphPart):
+class TranscendentalFunction(Function):
+
+    def __add__(self, other):
+        pass
+
+    def __radd__(self, other):
+        pass
+
+    def __sub__(self, other):
+        pass
+
+    def __rsub__(self, other):
+        pass
+
+    def __mul__(self, other):
+        pass
+
+    def __rmul__(self, other):
+        pass
+
+    def __truediv__(self, other):
+        pass
+
+    def __rtruediv__(self, other):
+        pass
+
+    def __pow__(self, other):
+        pass
+
+    def __rpow__(self, other):
+        pass
+
+    def __len__(self) -> int:
+        pass
 
     def __init__(self, representation, function, params):
         super().__init__(function, params)
         self.representation = representation
 
     def evaluate(self, *args, **kwargs) -> float:
-        params = None
-        if isinstance(self.right_op, Evaluable):
-            params = self.right_op.evaluate(*args, **kwargs)
-        else:
-            params = self.right_op
-        return self.left_op(params)
+        raise NotImplementedError()
+
+    def get_variable_context(self) -> Set[str]:
+        pass
 
     def get_derivative(self, variable):
         pass

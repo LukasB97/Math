@@ -1,11 +1,11 @@
 import numpy
 from numpy import zeros, random
 
-from Algebra.Structures.Matrix.Vector import Vector
-from Core.Factories.MatrixStructureFactory import MatrixStructureFactory
-from Core.Lina.VectorFactory import VectorFactory
 from src.Algebra.Structures.Matrix.Matrix import Matrix, BaseMatrix
+from src.Algebra.Structures.Matrix.Vector import Vector
 from src.Core.AbstractFactory import AbstractFactory
+from src.Core.Factories.MatrixStructureFactory import MatrixStructureFactory
+from src.Core.Lina.VectorFactory import VectorFactory
 
 
 class MatrixFactory(AbstractFactory):
@@ -24,7 +24,8 @@ class MatrixFactory(AbstractFactory):
         data = self.data_factory.create_instance(data)
         return Matrix(data)
 
-    def identity(self, size) -> Matrix:
+    @staticmethod
+    def identity(size) -> Matrix:
         v = zeros((size, size))
         for i in range(size):
             v[i][i] = 1
@@ -63,7 +64,8 @@ class MatrixFactory(AbstractFactory):
                 to_fill[i, j] = fill_with[i - from_i, j - from_j]
         return to_fill
 
-    def matrix_of_row_vectors(self, *vectors):
+    @staticmethod
+    def matrix_of_row_vectors(*vectors):
         vector_length = len(VectorFactory.reshape_data(vectors[0], 1))
         matrix_vectors = numpy.zeros((len(vectors), vector_length))
         for i, vector in enumerate(vectors):

@@ -1,17 +1,14 @@
-from abc import abstractmethod
+from abc import ABC
 
 from src.Cryptography.Ciphers.Cipher import Cipher
 
 
-class AsymmetricCipher(Cipher):
+class AsymmetricCipher(Cipher, ABC):
 
-    def __init__(self, sk=None, pk=None, *args, **kwargs):
-        super().__init__(sk, *args, **kwargs)
+    def __init__(self, secret_key=None, pk=None, *args, **kwargs):
+        super().__init__(secret_key, *args, **kwargs)
         if pk is None:
             pk = self.public_key
-        self.pk = pk
+        self.public_key = pk
 
-    @property
-    @abstractmethod
-    def public_key(self):
-        pass
+

@@ -1,8 +1,8 @@
 import random
 
-from Tools.NumberGenerator.PrimeGenerator import PrimeGenerator
 from src.Cryptography.Ciphers.Asymmetric.AsymmetricCipher import AsymmetricCipher
 from src.NumberTheory.utils import power
+from src.Tools.NumberGenerator.PrimeGenerator import PrimeGenerator
 
 
 class DiffieHellman(AsymmetricCipher):
@@ -17,8 +17,6 @@ class DiffieHellman(AsymmetricCipher):
         pass
 
     def create_key(self, key_length=256, prime_generator=PrimeGenerator.std_insecure(), *args, **kwargs):
-        g = 0
-        i = 0
         lower = 2 ** key_length
         upper = (2 ** (key_length + 1)) - 1
         safe_prime = prime_generator.generate_safe_prime(lower, upper)

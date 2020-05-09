@@ -2,27 +2,15 @@ from src.NumberTheory.EuclideanAlgorithm import extended_euclidean_algorithm, gr
 from src.Tools.NumberGenerator.AbstractNumberGenerator import NumberGenerator
 
 
-def square_multiply():
-    pass
-
-
-def order_under(order_of, under):
-    pass
-
-
-def get_prime_factorization(x):
-    pass
-
-
 def inverse_mod_n(e, n):  # Inverses mod n
-    # Aufruf: ModInv(e,n) mit natuerlichen Zahlen e,n>0 und ggT(e,n)=1
-    # Ausgabe: d aus {1,...,n-1} mit (d*e)%n = 1
+    # call: ModInv(e,n) mit natural numbers e,n>0 und ggT(e,n)=1
+    # return: d aus {1,...,n-1} mit (d*e)%n = 1
     return extended_euclidean_algorithm(e, n)[1]
 
 
 def power(x, y, n):  # Exponentialfunktion mod n
-    # Aufruf: ModExp(x,y,n) mit natuerlichen Zahlen x,y,n und n>=2
-    # Ausgabe: (x**y)%n
+    # call: ModExp(x,y,n) mit natural numbers x,y,n und n>=2
+    # return: (x**y)%n
     z = i = 1
     p = x % n
     while i <= y:  # Invariante: p = (x^i)%n
@@ -33,10 +21,10 @@ def power(x, y, n):  # Exponentialfunktion mod n
     return z
 
 
-def IsQuadraticResidue(x, p, q):  # testet, ob x quadratischer Rest mod p*q ist
-    # Aufruf: IsQuadraticResidue(x,p,q) mit Primzahlen p,q und
+def is_quadratic_residue(x, p, q):  # testet, ob x quadratic Rest mod p*q ist
+    # call: IsQuadraticResidue(x,p,q) mit prime numbers p,q und
     #         x aus {1,...,p*q-1} mit ggT(x,p*q)=1
-    # Ausgabe: True, falls es ein a aus {1,...,p*q-1} gibt mit a*a=x (mod p*q)
+    # return: True, falls es ein a aus {1,...,p*q-1} gibt mit a*a=x (mod p*q)
     #          False, sonst
     mod = p * q
     for i in range(mod - 1):

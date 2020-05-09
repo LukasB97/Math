@@ -1,7 +1,7 @@
 from collections import Hashable
 from typing import Collection
 
-from src.GraphTheory.Structures.Node import Node
+from src.Seminar.HikingMap import Node
 
 
 class Edge(Hashable):

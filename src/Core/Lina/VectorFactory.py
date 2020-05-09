@@ -1,8 +1,8 @@
 import numpy
 
-from Algebra.Structures.Matrix.Vector import Vector
-from Core.AbstractFactory import AbstractFactory
 from src.Algebra.Structures.Matrix.Matrix import Matrix
+from src.Algebra.Structures.Matrix.Vector import Vector
+from src.Core.AbstractFactory import AbstractFactory
 
 
 class VectorFactory(AbstractFactory):

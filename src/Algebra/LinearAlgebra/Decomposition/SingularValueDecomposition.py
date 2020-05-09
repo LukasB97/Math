@@ -3,10 +3,10 @@ from typing import Tuple, List
 
 import numpy
 
-from Algebra.Structures.Matrix.Matrix import Matrix
-from Algebra.Structures.Matrix.MatrixProperties.Eigenpairs import Eigenpairs
-from Algebra.Structures.Matrix.MatrixProperties.Eigenvalues import Eigenvalues
 from src.Algebra.LinearAlgebra.Decomposition.DecompositionStrategy import DecompositionStrategy
+from src.Algebra.Structures.Matrix.Matrix import Matrix
+from src.Algebra.Structures.Matrix.MatrixProperties.Eigenpairs import Eigenpairs
+from src.Algebra.Structures.Matrix.MatrixProperties.Eigenvalues import Eigenvalues
 
 
 class SingularValueDecomposition(DecompositionStrategy):
@@ -15,27 +15,31 @@ class SingularValueDecomposition(DecompositionStrategy):
         self.eigenector_strategy = eigenvector_strategy
         self.regularization = regularization
 
-    def solve(self, matrix, target_vector):
-        u, d, v = self.decompose(matrix)
-
-    def build_u(self):
+    def _solve(self, matrix, target_vector):
         pass
 
-    def get_singular_values(self, regular_matrix) -> List[float]:
+    def calculate_determinant(self, matrix):
+        pass
+
+    @staticmethod
+    def get_singular_values(regular_matrix) -> List[float]:
         eigenvalues = Eigenvalues()
         eigenvalues = eigenvalues.evaluate(regular_matrix)
         singular_values = []
         for eigenvalue in eigenvalues:
             singular_values.append(sqrt(eigenvalue))
-        return singular_values.sort(reverse=True)
+        singular_values.sort(reverse=True)
+        return singular_values
 
-    def build_diagonal_matrix(self, singular_values, size: Tuple[int]):
+    @staticmethod
+    def build_diagonal_matrix(singular_values, size: Tuple[int]):
         matrix = numpy.zeros(size)
         for i in range(len(singular_values)):
             matrix[i, i] = singular_values[i]
         return Matrix(matrix)
 
-    def build_u(self, matrix, eigenvectors):
+    @staticmethod
+    def build_u(matrix, eigenvectors):
         """
         u_n = (1 / singular_value_n) * A * eigenvector_n
         """
@@ -52,7 +56,7 @@ class SingularValueDecomposition(DecompositionStrategy):
         matrix_t_matrix = matrix.transpose() * matrix
         eigenvectors = self.eigenector_strategy.evaluate(matrix_t_matrix)
         eigenvectors.sort()
-        us = self.build_u(eigenvectors)
+        us = self.build_u(matrix, eigenvectors)
         singular_values = self.get_singular_values(matrix_t_matrix)
         diagonal_matrix = self.build_diagonal_matrix(singular_values=singular_values, size=matrix.shape)
         eigenbasis = self.build_eigenbasis(eigenvectors)

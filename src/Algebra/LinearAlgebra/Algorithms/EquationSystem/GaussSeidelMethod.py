@@ -19,7 +19,8 @@ class GaussSeidelMethod(LESStrategy):
             "x": x
         }
 
-    def calculate_single_component(self, matrix, b, x, new_x, i):
+    @staticmethod
+    def calculate_single_component(matrix, b, x, new_x, i):
         column_row_product = b[i, 0]
         for j in range(matrix.row_count):
             if j < i:
@@ -33,6 +34,9 @@ class GaussSeidelMethod(LESStrategy):
         for i in range(matrix.row_count):
             new_vector[i, 0] = self.calculate_single_component(matrix, b, x, new_vector, i)
         return self.create_state(matrix, b, Matrix(new_vector))
+
+    def _evaluate(self, *args, **kwargs):
+        pass
 
     def check_break_condition(self, matrix, x, b, **kwargs):
         difference = (matrix * x) - b

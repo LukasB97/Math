@@ -2,13 +2,13 @@ from typing import List, Tuple
 
 import numpy
 
-from Algebra.Structures.Matrix.Vector import Vector
-from Core.Lina.MatrixFactory import MatrixFactory
 from src.Algebra.LinearAlgebra.Algorithms.EquationSystem import Substitution
 from src.Algebra.LinearAlgebra.Decomposition.QRDecomposition import QRDecomposition
 from src.Algebra.Structures.Matrix.Matrix import Matrix
 from src.Algebra.Structures.Matrix.MatrixProperties import Eigenvalues
 from src.Algebra.Structures.Matrix.MatrixProperties.MatrixProperty import MatrixProperty
+from src.Algebra.Structures.Matrix.Vector import Vector
+from src.Core.Lina.MatrixFactory import MatrixFactory
 
 
 class Eigenpairs(MatrixProperty):
@@ -22,7 +22,7 @@ class Eigenpairs(MatrixProperty):
         b = Matrix(numpy.zeros((matrix.row_count, 1)))
         eigenvectors = []
         for eigenvalue in eigenvalues:
-            m = matrix - (eigenvalue * MatrixFactory().create_identity_matrix(matrix.row_count))
+            m = matrix - (eigenvalue * MatrixFactory().identity(matrix.row_count))
             r, q = m.decompose(QRDecomposition())
             eigenvectors.append(Substitution.substitute_backwards(r, q.transpose() * b))
         return eigenvectors

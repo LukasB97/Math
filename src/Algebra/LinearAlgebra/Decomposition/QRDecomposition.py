@@ -1,11 +1,12 @@
 import numpy
 
-from Algebra.Structures.Matrix.MatrixProperties.MainDiagonalProduct import MainDiagonalProduct
-from Core.Lina.MatrixFactory import MatrixFactory
 from src.Algebra.LinearAlgebra.Algorithms.EquationSystem.Substitution import substitute_backwards
 from src.Algebra.LinearAlgebra.Decomposition.DecompositionStrategy import DecompositionStrategy
 from src.Algebra.Structures.Function.Norm import Norm
 from src.Algebra.Structures.Matrix.Matrix import Matrix
+from src.Algebra.Structures.Matrix.MatrixProperties.MainDiagonalProduct import MainDiagonalProduct
+from src.Core.Lina.MatrixFactory import MatrixFactory
+from src.Core.Lina.VectorFactory import VectorFactory
 
 
 class QRDecomposition(DecompositionStrategy):
@@ -18,13 +19,14 @@ class QRDecomposition(DecompositionStrategy):
         q, r = self.decompose(matrix)
         return substitute_backwards(r, q.transpose() * target_vector)
 
-    def create_householder_matrix(self, to_project):
+    @staticmethod
+    def create_householder_matrix(to_project):
         """
         :param to_project:
         :return:
         """
-        i = MatrixFactory().create_identity_matrix(to_project.row_count)
-        unit_vector = MatrixFactory.create_unit_vector(to_project.row_count, 0)
+        i = MatrixFactory().identity(to_project.row_count)
+        unit_vector = VectorFactory.create_unit_vector(to_project.row_count, 0)
         orthogonal_projection = to_project + numpy.sign(to_project[0, 0]) * Norm.euclidean_norm(
             to_project) * unit_vector
         orthogonal_projection = orthogonal_projection * (1 / Norm.euclidean_norm(orthogonal_projection))
@@ -37,7 +39,7 @@ class QRDecomposition(DecompositionStrategy):
         return self.create_householder_matrix(to_project)
 
     def decompose(self, matrix):
-        orthogonal_matrix = MatrixFactory.create_identity_matrix(size=matrix.row_count)
+        orthogonal_matrix = MatrixFactory.identity(size=matrix.row_count)
         for j in range(matrix.column_count - 1):
             e = numpy.zeros((matrix.column_count - j, 1))
             e[0, 0] = 1

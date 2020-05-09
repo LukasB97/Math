@@ -1,8 +1,8 @@
 import unittest
 from typing import List, Tuple
 
-from src.Calculus.Interpolation import InterpolationAlgorithm
-from src.Calculus.Interpolation import NewtonInterpolation
+from src.Calculus.Interpolation.InterpolationAlgorithm import InterpolationAlgorithm
+from src.Calculus.Interpolation.NewtonInterpolation import NewtonInterpolation
 from src.Calculus.Interpolation.LagrangeInterpolation import LagrangeInterpolation
 
 d_1 = [(0, 1), (1, 2), (2, 0), (3, 1)]
@@ -21,17 +21,18 @@ class FixedPointIterationTests(unittest.TestCase):
 
     def test_lagrange(self):
         interp = LagrangeInterpolation()
-        l = [
+        data_points = [
             (0, 1), (1, 2), (2, 0), (3, 1)
         ]
-        self.test_algorithm(interp, d_2)
+        self.test_algorithm(interp, data_points)
 
-    def test_newton(self):
+    @staticmethod
+    def test_newton():
         interp = NewtonInterpolation()
-        l = [
+        data_points = [
             (0, 1), (1, 2), (2, 0), (3, 1)
         ]
-        interp.create_polynomial(l)
+        interp.create_polynomial(data_points)
 
 
 if __name__ == '__main__':

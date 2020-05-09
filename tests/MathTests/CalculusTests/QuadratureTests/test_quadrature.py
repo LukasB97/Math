@@ -1,20 +1,17 @@
-import parser
 import unittest
-from time import time
 
-from Calculus.Integration.QuadratureAlgorithm import QuadratureAlgorithm
-from src.Algebra.Structures.Function.Operation import ComputationalGraphPart
 from src.Algebra.Structures.Function.Parser.FunctionParser import FunctionParser
-from tests.MathTests.CalculusTests.FunctionTests import Functions
+from src.Calculus.Integration.QuadratureAlgorithm import QuadratureAlgorithm
 
 
 class QuadratureTest(unittest.TestCase):
 
-
-    def test_simple_derivative(self):
+    @staticmethod
+    def test_simple_derivative():
+        parser = FunctionParser()
         q = QuadratureAlgorithm(3)
-        graph = FunctionParser.parse_string("x^2+5")
-        q.approximate_integral(graph)
+        graph = parser.parse("x^2+5")
+        q.approximate_integral(graph, 1, 2)
 
 
 if __name__ == '__main__':

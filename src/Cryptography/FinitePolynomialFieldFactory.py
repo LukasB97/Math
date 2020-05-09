@@ -9,7 +9,8 @@ class FinitePolynomialFieldFactory:
         self.bits = bits
         self.generator = generator
 
-    def xor(self, first_op: numpy.array, second_op: numpy.array):
+    @staticmethod
+    def xor(first_op: numpy.array, second_op: numpy.array):
         result_length = len(first_op)
         if len(second_op) > len(first_op):
             result_length = len(second_op)

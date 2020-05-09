@@ -35,18 +35,23 @@ class Goldwasser(AsymmetricCipher):
             q = prime_generator.generate_safe_prime(2 ** (bits / 2), 2 ** ((bits / 2) + 1) - 1)
         return p, q
 
-    def encrypt_bit(self, b: bool):  # Verschluesselung fuer Goldwasser-Micali-Kryptosystem
-        # Aufruf: GMEncrypt(pk,b) mit public key pk und Klartextbit b
-        # Ausgabe: Chiffretext c = (r*r*((n-1)**b)) % pk
-        #          fuer Zufallszahl r aus {1,...,pk-1} mit ggT(r,pk)=1
-        y = random_mul_group(self.pk)
+    def encrypt_bit(self, b: bool):  # encryption for Goldwasser-Micali-Cryptosystem
+        # call: GMEncrypt(pk,b) mit public key pk und Klartextbit b
+        # return: Chiffretext c = (r*r*((n-1)**b)) % pk
+        #          fuer random r aus {1,...,pk-1} mit ggT(r,pk)=1
+        y = random_mul_group(self.public_key)
         b = 1 if b else 0
-        return ((-1) ** b * y ** 2) % self.pk
+        return ((-1) ** b * y ** 2) % self.public_key
 
-    def decrypt_bit(self, c):  # Entschluesselung fuer Goldwasser-Micali-Kryptosystem
-        # Aufruf: GMDecrypt(sk,c) mit secure key sk und chiffriertes Bit c
-        # Ausgabe: dechiffriertes Bit
-        #     0 falls c quadratischer Rest mod pk ist
-        #     1 falls c kein quadratischer Rest mod pk ist
-        IsQuadraticResidue
-        return ...
+    @staticmethod
+    def decrypt_bit(c):  # decryption for Goldwasser-Micali-Cryptosystem
+        # call: GMDecrypt(sk,c) mit secure key sk und chiffriertes Bit c
+        # return: dechiffriertes Bit
+        #     0 falls c quadratic Rest mod pk ist
+        #     1 falls c no quadratic Rest mod pk ist
+        # IsQuadraticResidue
+        pass
+
+    # @property
+    # def public_key(self):
+    #     pass

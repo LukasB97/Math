@@ -1,4 +1,4 @@
-from Algebra.Structures.Function.Interfaces.Evaluable import Evaluable
+from src.Algebra.Structures.Function.Interfaces.Evaluable import Evaluable
 
 
 class Variable(Evaluable):
