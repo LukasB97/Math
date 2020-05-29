@@ -47,13 +47,23 @@ class BaseMatrix(BaseMatrixData):
                 raise ValueError("Cannot add matrices of different dimensions")
             return type(self)(self.matrix_vectors + other.matrix_vectors)
 
+    def get_new_type(self, other_matrix):
+        if self.dtype == other_matrix.dtype:
+            return self.dtype
+        if self.preserve_dt ^ other_matrix.preserve_dt:
+            return self.dtype if self.preserve_dt else other_matrix.dtype
+        if isinstance(self.dtype, Number) and isinstance(self.dtype, Number):
+            if isinstance(self.dtype, complex) or isinstance(other_matrix.dtype, complex):
+                return complex
+            return float
+
     def __sub__(self, other):
         if isinstance(other, BaseMatrix):
             if (other.row_count != self.row_count) or (other.column_count != self.column_count):
                 raise ValueError("Cannot add matrices of different dimensions")
             if self.row_count == self.column_count == 1:
                 return self[0, 0] - other[0, 0]
-            return self.create(self.matrix_vectors - other.matrix_vectors)
+            return self.create(self.matrix_vectors - other.matrix_vectors, dtype=self.get_new_type(other))
 
     def __repr__(self):
         return str(self.matrix_vectors)

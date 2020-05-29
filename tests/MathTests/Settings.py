@@ -1,1 +1,1 @@
-precision_digits = 10
+precision_digits = 1

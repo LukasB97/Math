@@ -142,7 +142,7 @@ class Pow(ComputationalGraphPart):
         super().__init__(operands, self._sign)
 
     def add_operand(self, op: Evaluable):
-        self.operands.append(op)
+        raise NotImplementedError()
 
     def evaluate(self, *args, **kwargs) -> float:
         if isinstance(self.operands[0], Evaluable):
@@ -150,9 +150,9 @@ class Pow(ComputationalGraphPart):
         else:
             base = self.operands[0]
         if isinstance(self.operands[1], Evaluable):
-            return base * self.operands[1](*args, **kwargs)
+            return base ** self.operands[1](*args, **kwargs)
         else:
-            return base * self.operands[1]
+            return base ** self.operands[1]
 
 
 class Sub(ComputationalGraphPart):
@@ -170,10 +170,13 @@ class Sub(ComputationalGraphPart):
         self.operands.append(op)
 
     def evaluate(self, *args, **kwargs) -> float:
-        result = self.operands[0]
+        if isinstance(self.operands[0], Evaluable):
+            result = self.operands[0]()
+        else:
+            result = self.operands[0]
         for op in self.operands[1:]:
             if isinstance(op, Evaluable):
-                result += op(*args, **kwargs)
+                result -= op(*args, **kwargs)
             else:
-                result += op
+                result -= op
         return result

@@ -34,13 +34,3 @@ class FinitePolynomialFieldFactory:
         while len(bits) > self.bits:
             bits = self.xor(bits, self.generator)
         return FinitePolynomialField(numpy.concatenate((bits, numpy.zeros((self.bits - len(bits))))), self)
-
-
-fact = FinitePolynomialFieldFactory(8, numpy.array([1, 1, 0, 1, 1, 0, 0, 0, 1]))
-c = fact.create(123)
-c2 = fact.create(45)
-res = c + c2
-
-res1 = c * c2
-
-x = 10

@@ -1,26 +1,87 @@
 import parser as python_parser
 import unittest
-from numbers import Number
+from random import randint
 from time import time
 
-from src.Algebra.Structures.Function.Operation.ComputationalGraphPart import ComputationalGraphPart, Mul
 from src.Algebra.Structures.Function.Parser.FunctionParser import FunctionParser
-from src.Algebra.Structures.Function.Variable import Variable
 
 
 class FunctionParserTests(unittest.TestCase):
 
-    def check_graph_result(self, graph: ComputationalGraphPart, expected):
-        raise NotImplementedError()
+    def result_test(self, parser, expression, iterations=10):
+        code = python_parser.expr(expression).compile()
+        function = parser.parse(expression)
+        parameter = dict()
+        for i in range(iterations):
+            for variable in function.get_variable_context():
+                parameter[variable] = randint(0, 100)
+            self.assertEqual(eval(code, parameter), function(**parameter))
 
-    def check_combination(self, parser: FunctionParser, variable, number, input_value):
-        variable = parser.parse(variable)
-        number = parser.parse(number)
-        self.assertIsInstance(variable, Variable)
-        self.assertIsInstance(number, Number)
-        operation = variable * number
-        self.assertIsInstance(operation, Mul)
-        self.assertEqual(operation(input_value), input_value * number)
+    def concat_test(self, parser, eq1, eq2, sign):
+        fun1 = parser.parse(eq1)
+        fun2 = parser.parse(eq2)
+        if sign == "+":
+            fun = fun1 + fun2
+        elif sign == "-":
+            fun = fun1 - fun2
+        elif sign == "*":
+            fun = fun1 * fun2
+        elif sign == "/":
+            fun = fun1 / fun2
+        elif sign == "^":
+            fun = fun1 ** fun2
+        else:
+            raise Exception()
+        eq = "(" + eq1 + ")" + sign + "(" + eq2 + ")"
+        code = python_parser.expr(eq).compile()
+        parameter = dict()
+        for i in range(10):
+            for variable in fun.get_variable_context():
+                parameter[variable] = randint(0, 100)
+            self.assertEqual(eval(code, parameter), fun(**parameter))
+
+    def test_simple(self):
+        parser = FunctionParser()
+        self.result_test(parser, "3*18")
+        self.result_test(parser, "-2*4+5")
+        self.result_test(parser, "1/-10")
+
+    def test_simple_brackets(self):
+        parser = FunctionParser()
+        self.result_test(parser, "3*(18-7)")
+        self.result_test(parser, "-2**(4+5)")
+        self.result_test(parser, "1/(-10*2)")
+        self.result_test(parser, "(1/-10)*2")
+
+    def test_variable(self):
+        parser = FunctionParser()
+        self.result_test(parser, "x^2")
+        self.result_test(parser, "-2*x+5")
+        self.result_test(parser, "x^3+2x^2+0.3x+9")
+
+    def test_variable_brackets(self):
+        parser = FunctionParser()
+        self.result_test(parser, "x^(2/3)")
+        self.result_test(parser, "(-2)*x+5")
+        self.result_test(parser, "(x^3+2x)^2+0.3x+9")
+
+    def test_chained_brackets(self):
+        parser = FunctionParser()
+        self.result_test(parser, "3*(x*(x^2+3))")
+        self.result_test(parser, "x/(14*(x^2/x))")
+        self.result_test(parser, "(3+6*(1*7+2)/3)")
+
+    def test_concat(self):
+        parser = FunctionParser()
+        self.concat_test(parser, "3*18", "-2*4+5", "*")
+        self.concat_test(parser, "3*(x*(x^2+3))", "-2*x+5", "/")
+        self.concat_test(parser, "3*18", "-2**(4+5)", "-")
+        self.concat_test(parser, "(-2)*x+5", "(3+6*(1*7+2)/3)", "+")
+        self.concat_test(parser, "3*18", "1/-10", "^")
+        self.concat_test(parser, "x/(14*(x^2/x))", "-2*4+5", "^")
+        self.concat_test(parser, "3*18", "x^3+2x^2+0.3x+9", "*")
+        self.concat_test(parser, "x^2", "-2*4+5", "/")
+        self.concat_test(parser, "x^3+2x^2+0.3x+9", "(1/-10)*2", "+")
 
     @staticmethod
     def test_performance():

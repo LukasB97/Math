@@ -26,3 +26,5 @@ mix_col_matrix = Matrix(
         [3, 1, 1, 2]
     ],
 )
+
+revert_mix_col_matrix = None  # Properties.inverse(mix_col_matrix)

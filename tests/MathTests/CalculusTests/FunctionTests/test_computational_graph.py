@@ -1,15 +1,16 @@
+import math
 import parser as std_parser
 import unittest
 from random import randint
 
-from src.Algebra.Structures.Function.Parser.FunctionParser import FunctionParser
+from src.Algebra.Structures.Function.Operation.ComputationalGraphPart import Mul, Pow, Div, Sub, Add
+from src.Algebra.Structures.Function.Variable import Variable
 
 
 class ComputationalGraphTests(unittest.TestCase):
 
-    def result_test(self, parser, expression, iterations=10):
+    def result_test(self, graph, expression, iterations=10):
         code = std_parser.expr(expression).compile()
-        graph = parser.parse(expression)
         parameter = dict()
         for i in range(iterations):
             for variable in graph.get_variable_context():
@@ -17,37 +18,81 @@ class ComputationalGraphTests(unittest.TestCase):
             self.assertEqual(eval(code, parameter), graph(**parameter))
         eval(code)
 
-    def test_linear_function(self):
-        parser = FunctionParser()
-        self.result_test(parser, "x")
-        self.result_test(parser, "2x-5")
-        self.result_test(parser, "(-1.36)*x+4")
+    def test_mul(self):
+        mul = Mul(1, 2)
+        self.assertEqual(mul(), math.factorial(2))
+        mul.add_operand(3)
+        self.assertEqual(mul(), math.factorial(3))
+        mul *= 4
+        self.assertEqual(mul(), math.factorial(4))
 
-    def test_get_bracket_section(self):
-        input_data = list("a((c+3*5)*3)")
-        result = list("c+3*5")
-        self.assertEqual(FunctionParser.get_bracket_section(input_data, 2), result)
+    def test_div(self):
+        div = Div(math.factorial(5), 5)
+        self.assertEqual(div(), math.factorial(4))
+        div /= 4
+        self.assertEqual(div(), math.factorial(3))
+        div /= 3
+        self.assertEqual(div(), math.factorial(2))
+        with self.assertRaises(NotImplementedError):
+            div.add_operand(2)
 
-    def test_parse(self, x=2.1, a=4, y=3.4):
-        parser = FunctionParser()
-        graph = parser.parse("x y* a+ (5*2)")
-        result = graph.evaluate(x=x, y=y, a=a)
-        self.assertEqual(result, x * y * a + (5 * 2))
-        graph = parser.parse("x^2+5")
-        result = graph.evaluate(x=x)
-        self.assertEqual(result, x ** 2 + 5)
-        graph = parser.parse("x^x*3")
-        result = graph.evaluate(x=x)
-        self.assertEqual(result, x ** x * 3)
-        graph = parser.parse("a^(14*x)+13*2-1")
-        result = graph.evaluate(x=x, a=a)
-        self.assertEqual(result, a ** (14 * x) + 13 * 2 - 1)
-        graph = parser.parse("(x+2)13*x^2")
-        result = graph.evaluate(x=x)
-        self.assertEqual(result, (x + 2) * 13 * x ** 2)
-        graph = parser.parse("(x^3*4+(4/y*(13+2)))*5")
-        result = graph.evaluate(x=x, y=y)
-        self.assertEqual(result, (x ** 3 * 4 + (4 / y * (13 + 2))) * 5)
+    def test_add(self):
+        add = Add(1, 2)
+        self.assertEqual(add(), 3)
+        add.add_operand(4)
+        self.assertEqual(add(), 7)
+        add += 5
+        self.assertEqual(add(), 12)
+
+    def test_sub(self):
+        sub = Sub(12, 2)
+        self.assertEqual(sub(), 10)
+        sub.add_operand(3)
+        self.assertEqual(sub(), 7)
+        sub -= 4
+        self.assertEqual(sub(), 3)
+
+    def test_pow(self):
+        pow = Pow(2, 1)
+        self.assertEqual(pow(), 2)
+        pow **= 2
+        self.assertEqual(pow(), 4)
+        pow **= 2
+        self.assertEqual(pow(), 16)
+        with self.assertRaises(NotImplementedError):
+            pow.add_operand(2)
+
+    def test_fuzz(self):
+        operation = Add(3, 1)
+        self.assertEqual(4, operation())
+        operation **= 2
+        self.assertEqual(16, operation())
+        operation -= 3
+        self.assertEqual(13, operation())
+        operation *= 4
+        self.assertEqual(52, operation())
+        operation.add_operand(3)
+        self.assertEqual(156, operation())
+        operation /= 156
+        self.assertEqual(1, operation())
+        operation += 15
+        self.assertEqual(16, operation())
+
+    def test_fuzz_2(self):
+        operation = Add(3, Variable("x"))
+        self.assertEqual(5, operation(2))
+        operation **= 2
+        self.assertEqual(10, operation())
+        operation -= Variable("x")
+        self.assertEqual(13, operation())
+        operation *= 4
+        self.assertEqual(52, operation())
+        operation.add_operand(3)
+        self.assertEqual(156, operation())
+        operation /= 156
+        self.assertEqual(1, operation())
+        operation += 15
+        self.assertEqual(16, operation())
 
 
 if __name__ == '__main__':

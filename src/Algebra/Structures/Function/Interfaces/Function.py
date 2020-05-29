@@ -49,6 +49,3 @@ class Function(Evaluable, ABC):
     @abstractmethod
     def __rpow__(self, other):
         pass
-
-
-

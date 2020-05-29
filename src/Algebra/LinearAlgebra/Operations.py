@@ -1,6 +1,7 @@
+from src.Algebra.Structures.Matrix.Vector import Vector
+
 from src.Algebra.LinearAlgebra.Decomposition.QRDecomposition import QRDecomposition
 from src.Algebra.Structures.Function.Norm import Norm
-from src.Algebra.Structures.Matrix.Vector import Vector
 from src.Core.Lina.MatrixFactory import MatrixFactory
 from src.Core.Lina.VectorFactory import VectorFactory
 

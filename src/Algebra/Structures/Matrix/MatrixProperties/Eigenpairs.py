@@ -7,7 +7,6 @@ from src.Algebra.LinearAlgebra.Decomposition.QRDecomposition import QRDecomposit
 from src.Algebra.Structures.Matrix.Matrix import Matrix
 from src.Algebra.Structures.Matrix.MatrixProperties import Eigenvalues
 from src.Algebra.Structures.Matrix.MatrixProperties.MatrixProperty import MatrixProperty
-from src.Algebra.Structures.Matrix.Vector import Vector
 from src.Core.Lina.MatrixFactory import MatrixFactory
 
 
@@ -17,7 +16,7 @@ class Eigenpairs(MatrixProperty):
         super().__init__()
         self.eigenvalue_strategy = eigenvalue_strategy
 
-    def _evaluate(self, matrix: Matrix) -> List[Tuple[Vector, float]]:
+    def _evaluate(self, matrix: Matrix) -> List[Tuple[Matrix, float]]:
         eigenvalues = self.eigenvalue_strategy.evaluate(matrix)
         b = Matrix(numpy.zeros((matrix.row_count, 1)))
         eigenvectors = []

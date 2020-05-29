@@ -4,15 +4,17 @@ import numpy
 
 from src.Algebra.Structures.Matrix.Matrix import Matrix
 from src.Cryptography.Ciphers.Cipher import Cipher
-from src.Cryptography.Ciphers.Symmetric.AESResources import sub_byte_table, mix_col_matrix
+from src.Cryptography.Ciphers.Symmetric.AESResources import sub_byte_table, mix_col_matrix, revert_mix_col_matrix
+from src.Cryptography.FinitePolynomialField import FinitePolynomialField
 from src.Cryptography.FinitePolynomialFieldFactory import FinitePolynomialFieldFactory
 
 
 class AES(Cipher):
-    polynomial_factory: FinitePolynomialFieldFactory(8, numpy.array([1, 1, 0, 1, 1, 0, 0, 0, 1]))
+    polynomial_factory = FinitePolynomialFieldFactory(8, numpy.array([1, 1, 0, 1, 1, 0, 0, 0, 1]))
 
-    def __init__(self, secret_key=None, *args, **kwargs):
+    def __init__(self, secret_key=None, field_constructor=FinitePolynomialField.constructor(), *args, **kwargs):
         super().__init__(secret_key, *args, **kwargs)
+        self.field_constructor = field_constructor
 
     def encrypt(self, message):
         blocks: List[Matrix] = self.blocks_from_string(message)
@@ -25,14 +27,14 @@ class AES(Cipher):
 
     def _encrypt_matrix(self, matrix, previous=None):
         if previous is not None:
-            matrix = matrix | previous
+            matrix = matrix ^ previous
         for i in range(10):
             matrix = self.aes_round(matrix)
         matrix = self.sub_bytes(matrix)
         return self.shift_row(matrix)
 
     def decrypt(self, chiffretext):
-        pass
+        blocks: List[Matrix] = self.blocks_from_string(chiffretext)
 
     def create_key(self, *args, **kwargs):
         pass
@@ -44,11 +46,11 @@ class AES(Cipher):
         return self.mix_col(data_to_encrypt)
 
     def sub_bytes(self, matrix):
-        result = numpy.zeros((4, 4))
+        result = numpy.zeros((4, 4), dtype=int)
         for i in range(0, 4):
             for j in range(0, 4):
                 result[i][j] = sub_byte_table[matrix[i, j]]
-        return Matrix(result, self.polynomial_factory.create)
+        return Matrix(result, value_factory=self.field_constructor, dtype=FinitePolynomialField, preserve_dt=True)
 
     def shift_row(self, to_shift):
         return Matrix([
@@ -56,7 +58,16 @@ class AES(Cipher):
             [to_shift[1, 1], to_shift[1, 2], to_shift[1, 3], to_shift[1, 0]],
             [to_shift[2, 2], to_shift[2, 3], to_shift[2, 0], to_shift[2, 1]],
             [to_shift[3, 3], to_shift[3, 0], to_shift[3, 1], to_shift[3, 2]]
-        ], self.polynomial_factory.create
+        ], value_factory=self.field_constructor, dtype=FinitePolynomialField, preserve_dt=True
+        )
+
+    def revert_shift_row(self, to_revert):
+        return Matrix([
+            to_revert.matrix_vectors[0],
+            [to_revert[1, 3], to_revert[1, 0], to_revert[1, 1], to_revert[1, 2]],
+            [to_revert[2, 2], to_revert[2, 3], to_revert[2, 0], to_revert[2, 1]],
+            [to_revert[3, 1], to_revert[3, 2], to_revert[3, 3], to_revert[3, 0]]
+        ], value_factory=self.field_constructor, dtype=FinitePolynomialField, preserve_dt=True
         )
 
     @staticmethod
@@ -64,8 +75,11 @@ class AES(Cipher):
         return mix_col_matrix * matrix_to_mix
 
     @staticmethod
-    def blocks_from_string(chriffretext):
-        text_bytes = bytearray(chriffretext, "utf-8")
+    def revert_mix_col(matrix_to_revert):
+        return revert_mix_col_matrix * matrix_to_revert
+
+    def blocks_from_string(self, chriffretext):
+        text_bytes = bytearray(chriffretext, encoding="utf-8")
         blocks = []
         next_matrix = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
         i = 0
@@ -73,7 +87,8 @@ class AES(Cipher):
             next_matrix[i // 4][i % 4] = b
             i += 1
             if i == 16:
-                blocks.append(Matrix(next_matrix))
+                blocks.append(Matrix(next_matrix, value_factory=self.field_constructor, dtype=FinitePolynomialField,
+                                     preserve_dt=True))
                 next_matrix = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
                 i = 0
         if i != 0:
@@ -82,9 +97,9 @@ class AES(Cipher):
 
     @staticmethod
     def string_from_blocks(blocks: List[Matrix]):
-        result = []
+        result = bytearray()
         for block in blocks:
             for i in range(4):
                 for j in range(4):
                     result.append(block[i, j])
-        return bytearray(result).decode("utf-8")
+        return bytes(result)

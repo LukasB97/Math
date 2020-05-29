@@ -22,8 +22,7 @@ class Elgamal(AsymmetricCipher):
         m = power(a, x, self.secret_key[0])
         return (m * chiffretext) % self.secret_key[0]
 
-    def create_key(self, *args, **kwargs):
-        key_length = kwargs["l"]
+    def create_key(self, key_length, *args, **kwargs):
         prime_generator = PrimeGenerator.std_insecure()
         p = prime_generator.generate_safe_prime(2 ** key_length, 2 ** (key_length + 1) - 1)
         while True:

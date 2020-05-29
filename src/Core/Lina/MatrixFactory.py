@@ -2,7 +2,6 @@ import numpy
 from numpy import zeros, random
 
 from src.Algebra.Structures.Matrix.Matrix import Matrix, BaseMatrix
-from src.Algebra.Structures.Matrix.Vector import Vector
 from src.Core.AbstractFactory import AbstractFactory
 from src.Core.Factories.MatrixStructureFactory import MatrixStructureFactory
 from src.Core.Lina.VectorFactory import VectorFactory
@@ -72,5 +71,5 @@ class MatrixFactory(AbstractFactory):
             matrix_vectors[i] = VectorFactory.reshape_data(vector, 1)
         return Matrix(matrix_vectors)
 
-    def matrix_of_column_vectors(self, *vectors: Vector):
+    def matrix_of_column_vectors(self, *vectors: Matrix):
         return self.matrix_of_row_vectors(*vectors).transpose()

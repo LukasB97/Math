@@ -2,7 +2,7 @@ import numpy
 
 from src.Algebra.LinearAlgebra.Algorithms.EquationSystem.Substitution import substitute_backwards
 from src.Algebra.LinearAlgebra.Decomposition.DecompositionStrategy import DecompositionStrategy
-from src.Algebra.Structures.Function.Norm import Norm
+from src.Algebra.Structures.Function import Norm
 from src.Algebra.Structures.Matrix.Matrix import Matrix
 from src.Algebra.Structures.Matrix.MatrixProperties.MainDiagonalProduct import MainDiagonalProduct
 from src.Core.Lina.MatrixFactory import MatrixFactory
@@ -27,15 +27,15 @@ class QRDecomposition(DecompositionStrategy):
         """
         i = MatrixFactory().identity(to_project.row_count)
         unit_vector = VectorFactory.create_unit_vector(to_project.row_count, 0)
-        orthogonal_projection = to_project + numpy.sign(to_project[0, 0]) * Norm.euclidean_norm(
+        orthogonal_projection = to_project + numpy.sign(to_project[0, 0]) * Norm.VectorNorm.euclidean_norm(
             to_project) * unit_vector
-        orthogonal_projection = orthogonal_projection * (1 / Norm.euclidean_norm(orthogonal_projection))
+        orthogonal_projection = orthogonal_projection * (1 / Norm.VectorNorm.euclidean_norm(orthogonal_projection))
         res = i - 2 * orthogonal_projection * orthogonal_projection.transpose()
         return res
 
     def create_householder_reflection(self, to_project, project_onto):
-        assert Norm.euclidean_norm(project_onto) != 0
-        assert Norm.euclidean_norm(to_project) != 0
+        assert Norm.VectorNorm.euclidean_norm(project_onto) != 0
+        assert Norm.VectorNorm.euclidean_norm(to_project) != 0
         return self.create_householder_matrix(to_project)
 
     def decompose(self, matrix):

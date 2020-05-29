@@ -15,11 +15,13 @@ class MatrixIterator(Iterator):
     def chain_and(self, fn: Callable[[int, int], bool]):
         def _chain_and(i, j):
             return self.fn(i, j) and fn(i, j)
+
         return MatrixIterator(_chain_and, self.row_count, self.col_count)
 
     def chain_or(self, fn: Callable[[int, int], bool]):
         def _chain_or(i, j):
             return self.fn(i, j) or fn(i, j)
+
         return MatrixIterator(_chain_or, self.row_count, self.col_count)
 
     def _set_next_entry(self):

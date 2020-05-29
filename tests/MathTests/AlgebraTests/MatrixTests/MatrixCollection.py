@@ -32,6 +32,10 @@ complete = [
     *regular
 ]
 
+four_x_four = [
+    Matrices.reg_4x4_1
+]
+
 
 def create_target_vector(size):
     data = numpy.random.randint(-100, 100, (size, 1))

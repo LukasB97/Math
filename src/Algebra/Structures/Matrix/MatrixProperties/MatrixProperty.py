@@ -20,11 +20,14 @@ class MatrixProperty(ABC):
     def _evaluate(self, matrix: Matrix):
         pass
 
+    def __call__(self, *args, **kwargs):
+        return self.evaluate(*args, **kwargs)
+
     def value_equality(self, a, b):
         return abs(a - b) <= self.delta
 
     def is_zero(self, a):
-        return abs(a) < self.delta
+        return abs(a) <= self.delta
 
     def __eq__(self, other):
         return type(self) == type(other)
