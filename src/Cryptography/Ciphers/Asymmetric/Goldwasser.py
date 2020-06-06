@@ -26,13 +26,12 @@ class Goldwasser(AsymmetricCipher):
         return self.int2str(decrypted_bits)
 
     def create_key(self, bits=1024, *args, **kwargs):
-        prime_generator = PrimeGenerator.std_insecure()
-        p = prime_generator.generate_safe_prime(2 ** (bits / 2), 2 ** ((bits / 2) + 1) - 1)
+        p = self.rng.generate_safe_prime(2 ** (bits / 2), 2 ** ((bits / 2) + 1) - 1)
         while p % 4 != 3:
-            p = prime_generator.generate_safe_prime(2 ** (bits / 2), 2 ** ((bits / 2) + 1) - 1)
-        q = prime_generator.generate_safe_prime(2 ** (bits / 2), 2 ** ((bits / 2) + 1) - 1)
+            p = self.rng.generate_safe_prime(2 ** (bits / 2), 2 ** ((bits / 2) + 1) - 1)
+        q = self.rng.generate_safe_prime(2 ** (bits / 2), 2 ** ((bits / 2) + 1) - 1)
         while q % 4 != 3 or p == q:
-            q = prime_generator.generate_safe_prime(2 ** (bits / 2), 2 ** ((bits / 2) + 1) - 1)
+            q = self.rng.generate_safe_prime(2 ** (bits / 2), 2 ** ((bits / 2) + 1) - 1)
         return p, q
 
     def encrypt_bit(self, b: bool):  # encryption for Goldwasser-Micali-Cryptosystem

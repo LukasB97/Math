@@ -5,13 +5,29 @@ from src.Cryptography.CryptographicScheme import CryptographicScheme
 
 class Cipher(CryptographicScheme, ABC):
 
+    def __init__(self, secret_key, encoding="utf-8", *args, **kwargs):
+        self.encoding = encoding
+        super().__init__(secret_key, *args, **kwargs)
+
     @abstractmethod
-    def encrypt(self, message):
+    def encrypt_bytes(self, bytes_to_encrypt: bytes) -> bytes:
         pass
 
     @abstractmethod
-    def decrypt(self, chiffretext) -> str:
+    def decrypt_bytes(self, bytes_to_decrypt: bytes) -> bytes:
         pass
+
+
+    def encrypt(self, message: str) -> str:
+        bytes_to_encrypt = message.encode(self.encoding)
+        encrypted_bytes = self.encrypt_bytes(bytes_to_encrypt)
+        return encrypted_bytes.decode(self.encoding)
+
+
+    def decrypt(self, chiffretext: str) -> str:
+        bytes_to_decrypt = chiffretext.encode(self.encoding)
+        decrypted_bytes = self.decrypt_bytes(bytes_to_decrypt)
+        return decrypted_bytes.decode(self.encoding)
 
     @staticmethod
     def str2int(s):  # codiert einen String als Zahl (zum Testen von RSA)

@@ -16,10 +16,10 @@ class DiffieHellman(AsymmetricCipher):
     def decrypt(self, chiffretext):
         pass
 
-    def create_key(self, key_length=256, prime_generator=PrimeGenerator.std_insecure(), *args, **kwargs):
+    def create_key(self, key_length=256, *args, **kwargs):
         lower = 2 ** key_length
         upper = (2 ** (key_length + 1)) - 1
-        safe_prime = prime_generator.generate_safe_prime(lower, upper)
+        safe_prime = self.rng.generate_safe_prime(lower, upper)
         while True:
             g = random.randint(2, safe_prime - 1)
             if power(g, (safe_prime - 1) // 2, safe_prime) != 1:

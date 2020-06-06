@@ -8,14 +8,17 @@ from src.Tools.NumberGenerator.PrimeGenerator import PrimeGenerator
 
 class RSA(AsymmetricCipher):
 
-    # @property
-    # def public_key(self):
-    #     pass
+    def get_public_key(self):
+        pass
 
-    def __init__(self, key_length=None, secret_key=None, pk=None, *args, **kwargs):
-        if not ((key_length is None) ^ (secret_key is pk is None)):
-            raise ValueError()
-        super().__init__(secret_key, pk, *args, **kwargs)
+    def encrypt_bytes(self, bytes_to_encrypt: bytes) -> bytes:
+        pass
+
+    def decrypt_bytes(self, bytes_to_decrypt: bytes) -> bytes:
+        pass
+
+    def __init__(self, key_length=None, secret_key=None, rng=PrimeGenerator.std_insecure, *args, **kwargs):
+        super().__init__(secret_key=secret_key, key_length=key_length, *args, **kwargs)
 
     def encrypt(self, message):
         message = self.str2int(message)
@@ -28,11 +31,10 @@ class RSA(AsymmetricCipher):
         min_bits = (key_length + 2) // 2
         from_ = 2 ** min_bits
         to_ = 2 ** (min_bits + 1) - 1
-        prime_generator = PrimeGenerator.std_insecure()
-        p = prime_generator.generate_prime(from_, to_)
+        p = self.rng.generate_prime(from_, to_)
         q = p
         while q == p:
-            q = prime_generator.generate_prime(from_, to_)
+            q = self.rng.generate_prime(from_, to_)
         prime_product = q * p
         phin = (q - 1) * (p - 1)
         random_relatively_prime = random.randint(2, phin)
