@@ -1,4 +1,5 @@
-from src.NumberTheory.EuclideanAlgorithm import extended_euclidean_algorithm, greatest_common_divisor
+from src.NumberTheory import PrimeNumberTests
+from src.NumberTheory.EuclideanAlgorithm import extended_euclidean_algorithm, gcd
 from src.Tools.NumberGenerator.AbstractNumberGenerator import NumberGenerator
 from src.Tools.NumberGenerator.PrimeGenerator import PrimeGenerator
 
@@ -53,7 +54,7 @@ def is_quadratic_residue(x, p, q):  # testet, ob x quadratic Rest mod p*q ist
 def random_mul_group(n):
     gen = NumberGenerator()
     a = gen.generate_random_integer(1, n - 1)
-    while greatest_common_divisor(n, a) != 1:
+    while gcd(n, a) != 1:
         a = gen.generate_random_integer(1, n - 1)
     return a
 
@@ -82,9 +83,27 @@ def group_mod_has_generator(m):
         base_prime = generator.get_next_prime(4)
     return False
 
+def is_fermat_witness(to_test, witness_for):
+    return pow(to_test, witness_for - 1, witness_for) != 1
 
+def is_fermat_liar(to_test, liar_for):
+    if PrimeNumberTests.aks(liar_for):
+        return False
+    return pow(to_test, liar_for - 1, liar_for) == 1
 
-
+def is_carmichael_number(x):
+    """
+    An uneven element of N\P is a carmichael number if
+    a^(n-1) = 1 mod n for all a element of Zx
+    """
+    if x % 2 == 0:
+        return False
+    if PrimeNumberTests.aks(x):
+        return False
+    for i in range(x):
+        if pow(i, x - 1, x) != 1:
+            return False
+    return True
 
 def get_generator_mod(m):
     pass
@@ -107,7 +126,7 @@ def primitive_root_mod(m):
 def multiplicative_group_mod(mod):
     elements = set()
     for i in range(1, mod + 1):
-        if greatest_common_divisor(i, mod) == 1:
+        if gcd(i, mod) == 1:
             elements.add(i)
     return elements
 

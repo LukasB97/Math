@@ -6,24 +6,29 @@ from src.Algebra.Structures.Matrix.Matrix import Matrix
 from src.Cryptography.Ciphers.Cipher import Cipher
 from src.Cryptography.Ciphers.Symmetric.AESResources import sub_byte_table, mix_col_matrix, revert_mix_col_matrix
 from src.Cryptography.FinitePolynomialField import FinitePolynomialField
-from src.Cryptography.FinitePolynomialFieldFactory import FinitePolynomialFieldFactory
 
 
 class AES(Cipher):
-    polynomial_factory = FinitePolynomialFieldFactory(8, numpy.array([1, 1, 0, 1, 1, 0, 0, 0, 1]))
 
-    def __init__(self, secret_key=None, field_constructor=FinitePolynomialField.constructor(), *args, **kwargs):
-        super().__init__(secret_key, *args, **kwargs)
-        self.field_constructor = field_constructor
 
-    def encrypt(self, message):
-        blocks: List[Matrix] = self.blocks_from_string(message)
+    def create_key(self, *args, **kwargs):
+        pass
+
+    def encrypt_bytes(self, bytes_to_encrypt: bytes, *args, **kwargs) -> bytes:
+        blocks: List[Matrix] = self.blocks_from_bytes(bytes_to_encrypt)
         encrypted_blocks = [self._encrypt_matrix(blocks[0])]
         for i in range(1, len(blocks)):
             encrypted_blocks.append(
                 self._encrypt_matrix(blocks[i], encrypted_blocks[i - 1])
             )
         return self.string_from_blocks(encrypted_blocks)
+
+    def decrypt_bytes(self, bytes_to_decrypt: bytes, *args, **kwargs) -> bytes:
+        blocks: List[Matrix] = self.blocks_from_bytes(bytes_to_decrypt)
+
+    def __init__(self, secret_key=None, field_constructor=FinitePolynomialField.constructor(), *args, **kwargs):
+        super().__init__(secret_key, *args, **kwargs)
+        self.field_constructor = field_constructor
 
     def _encrypt_matrix(self, matrix, previous=None):
         if previous is not None:
@@ -33,11 +38,6 @@ class AES(Cipher):
         matrix = self.sub_bytes(matrix)
         return self.shift_row(matrix)
 
-    def decrypt(self, chiffretext):
-        blocks: List[Matrix] = self.blocks_from_string(chiffretext)
-
-    def create_key(self, *args, **kwargs):
-        pass
 
     # eine AES-Runde bestehend aus SubByte, ShiftRow, MixCol und AddKey
     def aes_round(self, data_to_encrypt):
@@ -78,12 +78,11 @@ class AES(Cipher):
     def revert_mix_col(matrix_to_revert):
         return revert_mix_col_matrix * matrix_to_revert
 
-    def blocks_from_string(self, chriffretext):
-        text_bytes = bytearray(chriffretext, encoding="utf-8")
+    def blocks_from_bytes(self, data_bytes):
         blocks = []
         next_matrix = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
         i = 0
-        for b in text_bytes:
+        for b in data_bytes:
             next_matrix[i // 4][i % 4] = b
             i += 1
             if i == 16:

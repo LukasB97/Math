@@ -4,11 +4,6 @@ from typing import Tuple, Dict, List, Set
 from fibheap import Fheap
 
 
-class NodeState(Enum):
-    UNKNOWN = 0
-    OPEN = 1
-    PATH = 2
-
 
 class Node:
 
@@ -114,17 +109,6 @@ class HikingMapDijkstra(HikingPathFinderMap):
         while closed_node != target:
             closed_node = self._next_step(open_nodes)
 
-    def _get_unvisited_neighbors(self, x, y):
-        to_open = Fheap()
-        if y > 1 and self.nodes[(x, y - 1)].state == NodeState.UNKNOWN:
-            to_open.insert(self.nodes[(x, y - 1)])
-        if x < self.col_count and self.nodes[(x + 1, y)].state == NodeState.UNKNOWN:
-            to_open.insert(self.nodes[(x + 1, y)])
-        if y < self.row_count and self.nodes[(x, y + 1)].state == NodeState.UNKNOWN:
-            to_open.insert(self.nodes[(x, y + 1)])
-        if x > 1 and self.nodes[(x - 1, y)].state == NodeState.UNKNOWN:
-            to_open.insert(self.nodes[(x - 1, y)])
-        return to_open
 
     def _close_node(self, x, y, open_nodes: Fheap, finished=False):
         self.nodes[(x, y)].state = NodeState.PATH

@@ -5,7 +5,7 @@ from src.Cryptography.CryptographicScheme import CryptographicScheme
 
 class Cipher(CryptographicScheme, ABC):
 
-    def __init__(self, secret_key, encoding="utf-8", *args, **kwargs):
+    def __init__(self, secret_key, encoding="cp437", *args, **kwargs):
         self.encoding = encoding
         super().__init__(secret_key, *args, **kwargs)
 
@@ -17,9 +17,9 @@ class Cipher(CryptographicScheme, ABC):
     def decrypt_bytes(self, bytes_to_decrypt: bytes, *args, **kwargs) -> bytes:
         pass
 
-    def encrypt(self, message: str) -> str:
+    def encrypt(self, message: str, *args, **kwargs) -> str:
         bytes_to_encrypt = message.encode(self.encoding)
-        encrypted_bytes = self.encrypt_bytes(bytes_to_encrypt)
+        encrypted_bytes = self.encrypt_bytes(bytes_to_encrypt, *args, **kwargs)
         return encrypted_bytes.decode(self.encoding)
 
 

@@ -4,13 +4,15 @@ from src.Cryptography.SignatureScheme.SignatureAlgorithm import SignatureAlgorit
 
 class RSASignature(SignatureAlgorithm, RSA):
 
-    def __init__(self, secret_key=None, pk=None, *args, **kwargs):
-        super().__init__(secret_key, pk, *args, **kwargs)
+    def __init__(self, secret_key=None, *args, **kwargs):
+        super().__init__(secret_key=secret_key, *args, **kwargs)
 
-    def create_signature(self, message):
+    def create_signature(self, message: str):
         message_hash = self.hash(message)
-        return self.encrypt(message_hash)
+        return self.decrypt(message_hash)
 
-    def verify_signature(self, message, signature):
+    def verify_signature(self, message, signature, signed_by_pk=None, *args, **kwargs):
+        if signed_by_pk is None:
+            signed_by_pk = self.public_key
         message_hash = self.hash(message)
-        return self.decrypt(signature) == message_hash
+        return self.encrypt(signature, signed_by_pk) == message_hash

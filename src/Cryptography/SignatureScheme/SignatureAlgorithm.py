@@ -11,11 +11,10 @@ class SignatureAlgorithm(CryptographicScheme):
         pass
 
     @abstractmethod
-    def verify_signature(self, message, signature) -> bool:
+    def verify_signature(self, message, signature, *args, **kwargs) -> bool:
         pass
 
     @staticmethod
     def hash(message):
         h = hashlib.sha256(bytearray(message, 'UTF8'))
-        s = h.hexdigest()
-        return int(s, 16)
+        return h.hexdigest()

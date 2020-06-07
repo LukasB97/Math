@@ -1,56 +1,50 @@
 from src.Cryptography.Ciphers.Asymmetric.AsymmetricCipher import AsymmetricCipher
-from src.NumberTheory.utils import random_mul_group
-from src.Tools.NumberGenerator.PrimeGenerator import PrimeGenerator
+from src.Cryptography.Constants import MOD, PUB
+from src.NumberTheory.EuclideanAlgorithm import gcd
+from src.NumberTheory.utils import is_quadratic_residue
 
 
 class Goldwasser(AsymmetricCipher):
 
-    def get_public_key(self):
-        pass
+    def encrypt_bytes(self, bytes_to_encrypt: bytes, public_key=None, *args, **kwargs) -> bytes:
+        bits = list(bin(int.from_bytes(bytes_to_encrypt, byteorder="big")).lstrip('0b'))
+        length = public_key[MOD].bit_length()
+        message_bits = 0
+        for bit in bits:
+            message_bits = message_bits << length
+            message_bits += self.encrypt_bit(int(bit), public_key)
+        return message_bits.to_bytes(length=(message_bits.bit_length() + 7) // 8, byteorder="big")
 
-    def encrypt(self, message):
-        message_bits = self.str2int(message)
-        encrypted_message = 0
-        for i in range(message_bits.bit_length()):
-            bit_i = (message_bits % 2) == 1
-            message_bits = message_bits >> 1
-            encrypted_message += self.encrypt_bit(bit_i) * 2 ** i
-        return encrypted_message
+    def decrypt_bytes(self, bytes_to_decrypt: bytes, *args, **kwargs) -> bytes:
+        message_bits = 0
+        length = self.secret_key["p"] * self.secret_key["q"]
+        bits = list(bin(int.from_bytes(bytes_to_decrypt, byteorder="big")).lstrip('0b'))
+        for bit in bits:
+            message_bits = message_bits << length
+            message_bits += self.decrypt_bit(int(bit))
+        return message_bits.to_bytes(length=(message_bits.bit_length() + 7) // 8, byteorder="big")
 
-    def decrypt(self, chiffretext):
-        decrypted_bits = 0
-        for i in range(chiffretext.bit_length()):
-            bit_i = (chiffretext % 2) == 1
-            chiffretext = chiffretext >> 1
-            decrypted_bits += self.decrypt_bit(bit_i) * 2 ** i
-        return self.int2str(decrypted_bits)
-
-    def create_key(self, bits=1024, *args, **kwargs):
-        p = self.rng.generate_safe_prime(2 ** (bits / 2), 2 ** ((bits / 2) + 1) - 1)
+    def create_key(self, key_length=256, *args, **kwargs):
+        min_bits = (key_length + 2) // 2
+        p = self.rng.generate_safe_prime(bits=min_bits)
         while p % 4 != 3:
-            p = self.rng.generate_safe_prime(2 ** (bits / 2), 2 ** ((bits / 2) + 1) - 1)
-        q = self.rng.generate_safe_prime(2 ** (bits / 2), 2 ** ((bits / 2) + 1) - 1)
+            p = self.rng.generate_safe_prime(bits=min_bits)
+        q = self.rng.generate_safe_prime(bits=min_bits)
         while q % 4 != 3 or p == q:
-            q = self.rng.generate_safe_prime(2 ** (bits / 2), 2 ** ((bits / 2) + 1) - 1)
-        return p, q
+            q = self.rng.generate_safe_prime(bits=min_bits)
+        mod = p*q
+        return {"p": p, "q": q}, {MOD: mod, PUB: mod - 1}
 
-    def encrypt_bit(self, b: bool):  # encryption for Goldwasser-Micali-Cryptosystem
+    def encrypt_bit(self, bit, encrypt_for):  # encryption for Goldwasser-Micali-Cryptosystem
         # call: GMEncrypt(pk,b) mit public key pk und Klartextbit b
         # return: Chiffretext c = (r*r*((n-1)**b)) % pk
         #          fuer random r aus {1,...,pk-1} mit ggT(r,pk)=1
-        y = random_mul_group(self.public_key)
-        b = 1 if b else 0
-        return ((-1) ** b * y ** 2) % self.public_key
+        random_element = self.rng.generate_random_integer(0, encrypt_for[MOD] - 1)
+        while gcd(random_element, encrypt_for[MOD]) != 1:
+            random_element = self.rng.generate_random_integer(0, encrypt_for[MOD] - 1)
+        return (encrypt_for[PUB] ** bit * random_element ** 2) % encrypt_for[MOD]
 
-    @staticmethod
-    def decrypt_bit(c):  # decryption for Goldwasser-Micali-Cryptosystem
-        # call: GMDecrypt(sk,c) mit secure key sk und chiffriertes Bit c
-        # return: dechiffriertes Bit
-        #     0 falls c quadratic Rest mod pk ist
-        #     1 falls c no quadratic Rest mod pk ist
-        # IsQuadraticResidue
-        pass
-
-    # @property
-    # def public_key(self):
-    #     pass
+    def decrypt_bit(self, c):
+        if is_quadratic_residue(c, self.secret_key["p"], self.secret_key["q"]):
+            return 0
+        return 1

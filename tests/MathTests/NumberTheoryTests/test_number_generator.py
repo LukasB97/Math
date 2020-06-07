@@ -14,7 +14,7 @@ class PrimeGeneratorTests(unittest.TestCase):
         p = PrimeGenerator.std_insecure()
         time1 = time()
         for i in range(1000):
-            p.generate_prime(from_, to)
+            p._generate_prime(from_, to)
         time2 = time()
         print("normal", time2 - time1)
         time1 = time()

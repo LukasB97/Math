@@ -13,7 +13,7 @@ def extended_euclidean_algorithm(ld, d):  # erweiterter euclidean algorithm
     return ld, lx, ly
 
 
-def greatest_common_divisor(a, b):  # greatest common Teiler
+def gcd(a, b):  # greatest common Teiler
     # call: gcd(a,b) mit natural numbers a,b>0
     # return: greatest common Teiler von a und b
     return extended_euclidean_algorithm(a, b)[0]

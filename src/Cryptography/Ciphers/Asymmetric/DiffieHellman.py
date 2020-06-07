@@ -13,7 +13,7 @@ class DiffieHellman(AsymmetricCipher):
         secret_key = self.rng.generate_random_integer(1, public_key[MOD] - 1)
         return secret_key, public_key
 
-    def encrypt(self, **kwargs):
+    def encrypt(self, message):
         return utils.exp(self.public_key[GEN], self.public_key[MOD], self.secret_key)
 
     def decrypt(self, other_exp):

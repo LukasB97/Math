@@ -9,15 +9,15 @@ class Elgamal(AsymmetricCipher):
 
 
 
-    def encrypt_bytes(self, bytes_to_encrypt: bytes, recipient_public_key, **kwargs) -> bytes:
+    def encrypt_bytes(self, bytes_to_encrypt: bytes, recipient_public_key=None, *args, **kwargs) -> bytes:
         data = int.from_bytes(bytes_to_encrypt)
         rand_exp = self.rng.generate_random_integer(0, self.secret_key[MOD] - 1)
         rand_element = self.secret_key[GEN] ** rand_exp
-        c1 = recipient_public_key[PUB] ** rand_exp * dat
+        c1 = recipient_public_key[PUB] ** rand_exp * data
 
 
     def decrypt_bytes(self, bytes_to_decrypt: bytes) -> bytes:
-        pass
+        data = int.from_bytes(bytes_to_decrypt)
 
     def create_random_generator(self, mod):
         while True:
