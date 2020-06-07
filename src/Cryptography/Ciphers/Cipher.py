@@ -10,13 +10,12 @@ class Cipher(CryptographicScheme, ABC):
         super().__init__(secret_key, *args, **kwargs)
 
     @abstractmethod
-    def encrypt_bytes(self, bytes_to_encrypt: bytes) -> bytes:
+    def encrypt_bytes(self, bytes_to_encrypt: bytes, *args, **kwargs) -> bytes:
         pass
 
     @abstractmethod
-    def decrypt_bytes(self, bytes_to_decrypt: bytes) -> bytes:
+    def decrypt_bytes(self, bytes_to_decrypt: bytes, *args, **kwargs) -> bytes:
         pass
-
 
     def encrypt(self, message: str) -> str:
         bytes_to_encrypt = message.encode(self.encoding)

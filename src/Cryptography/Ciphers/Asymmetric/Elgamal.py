@@ -1,33 +1,41 @@
 import random
 
 from src.Cryptography.Ciphers.Asymmetric.AsymmetricCipher import AsymmetricCipher
+from src.Cryptography.Constants import MOD, GEN, PUB, PRIV
 from src.NumberTheory.utils import power
-from src.Tools.NumberGenerator.PrimeGenerator import PrimeGenerator
 
 
 class Elgamal(AsymmetricCipher):
 
-    def get_public_key(self):
+
+
+    def encrypt_bytes(self, bytes_to_encrypt: bytes, recipient_public_key, **kwargs) -> bytes:
+        data = int.from_bytes(bytes_to_encrypt)
+        rand_exp = self.rng.generate_random_integer(0, self.secret_key[MOD] - 1)
+        rand_element = self.secret_key[GEN] ** rand_exp
+        c1 = recipient_public_key[PUB] ** rand_exp * dat
+
+
+    def decrypt_bytes(self, bytes_to_decrypt: bytes) -> bytes:
         pass
 
-    def encrypt(self, message):
-        a = random.randint(1, self.public_key[0] - 1)
-        kp = power(self.public_key[1], a, self.public_key[0])
-        c = power(self.public_key[2], a, self.public_key[0])
-        c = (c * message) % self.public_key[0]
-        return c, kp
-
-    def decrypt(self, chiffretext, a):
-        x = self.secret_key[0] - 1 - self.secret_key[2]
-        m = power(a, x, self.secret_key[0])
-        return (m * chiffretext) % self.secret_key[0]
+    def create_random_generator(self, mod):
+        while True:
+            generator = random.randint(2, mod - 1)
+            if power(generator, (mod - 1) // 2, mod) != 1:
+                break
+        return generator
 
     def create_key(self, key_length, *args, **kwargs):
-        p = self.rng.generate_safe_prime(2 ** key_length, 2 ** (key_length + 1) - 1)
-        while True:
-            g = random.randint(2, p - 1)
-            if power(g, (p - 1) // 2, p) != 1:
-                break
-        b = random.randint(0, p - 2)
-        kp = power(g, b, p)
-        return (p, g, kp), (p, g, b)
+        mod = self.rng.generate_safe_prime(bits=key_length)
+        generator = self.create_random_generator(mod)
+        secret = random.randint(0, mod - 2)
+        public_secret = power(generator, secret, mod)
+        return {MOD: mod, GEN: generator, PRIV: secret}, {MOD: mod, GEN: generator, PUB: public_secret}
+
+    def create_public_key(self):
+        return {
+            MOD: self.secret_key[MOD],
+            GEN: self.secret_key[GEN],
+            PUB: power(self.secret_key[GEN], self.secret_key[PRIV], self.secret_key[MOD])
+        }

@@ -1,27 +1,39 @@
 import random
 
 from src.Cryptography.Ciphers.Asymmetric.AsymmetricCipher import AsymmetricCipher
+from src.Cryptography.Constants import GEN,MOD
+from src.NumberTheory import utils
 from src.NumberTheory.utils import power
-from src.Tools.NumberGenerator.PrimeGenerator import PrimeGenerator
 
 
 class DiffieHellman(AsymmetricCipher):
 
-    def public_key(self):
-        pass
-
-    def encrypt(self, message):
-        pass
-
-    def decrypt(self, chiffretext):
-        pass
-
     def create_key(self, key_length=256, *args, **kwargs):
-        lower = 2 ** key_length
-        upper = (2 ** (key_length + 1)) - 1
-        safe_prime = self.rng.generate_safe_prime(lower, upper)
+        public_key = self.create_public_key(key_length, *args, **kwargs)
+        secret_key = self.rng.generate_random_integer(1, public_key[MOD] - 1)
+        return secret_key, public_key
+
+    def encrypt(self, **kwargs):
+        return utils.exp(self.public_key[GEN], self.public_key[MOD], self.secret_key)
+
+    def decrypt(self, other_exp):
+        return pow(other_exp, self.secret_key, self.public_key[MOD])
+
+    def create_random_generator(self, mod):
         while True:
-            g = random.randint(2, safe_prime - 1)
-            if power(g, (safe_prime - 1) // 2, safe_prime) != 1:
+            generator = random.randint(2, mod - 1)
+            if power(generator, (mod - 1) // 2, mod) != 1:
                 break
-        return g, safe_prime
+        return generator
+
+    def create_public_key(self, key_length=256, *args, **kwargs):
+        safe_prime = self.rng.generate_safe_prime(bits=key_length)
+        generator = self.create_random_generator(safe_prime)
+        return {
+            GEN: generator,
+            MOD: safe_prime
+        }
+
+
+    def get_secret_key(self, other_exp):
+        return pow(other_exp, self.secret_key, self.public_key[MOD])
