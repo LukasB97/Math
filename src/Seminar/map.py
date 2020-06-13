@@ -1,5 +1,5 @@
 from enum import Enum
-from queue import Queue, PriorityQueue
+from queue import PriorityQueue
 from typing import Dict, Tuple
 
 
@@ -30,10 +30,6 @@ class Node:
 
     def __repr__(self):
         return "x:{} , y: {}, height: {}".format(*self.coord, self.height)
-
-
-
-
 
 
 class MinGraph:
@@ -103,7 +99,7 @@ def get_lowest_predecessor(graph: MinGraph, to_node: Node, paths: Dict[Tuple, in
     @return:
     """
     neighbors = graph.get_neighbors(to_node.coord)
-    min_height = 10 ** 6
+    min_height = 1000000  # 10**6
     min_node = to_node
     for neighbor in neighbors:
         if paths.get(neighbor.coord, min_height) < min_height: #Überprüfe Pfadhöhe des nachbarn. Falls noch unbekannt gebe minheight zurück

@@ -9,14 +9,14 @@ class Elgamal(AsymmetricCipher):
 
 
 
-    def encrypt_bytes(self, bytes_to_encrypt: bytes, recipient_public_key=None, *args, **kwargs) -> bytes:
-        data = int.from_bytes(bytes_to_encrypt)
+    def encrypt_bytes(self, bytes_to_encrypt: bytes, **kwargs) -> bytes:
+        to_encrypt = int.from_bytes(bytes_to_encrypt, "big")
         rand_exp = self.rng.generate_random_integer(0, self.secret_key[MOD] - 1)
         rand_element = self.secret_key[GEN] ** rand_exp
-        c1 = recipient_public_key[PUB] ** rand_exp * data
+        c1 = recipient_public_key[PUB] ** rand_exp * to_encrypt
 
 
-    def decrypt_bytes(self, bytes_to_decrypt: bytes) -> bytes:
+    def decrypt_bytes(self, bytes_to_decrypt: bytes, **kwargs) -> bytes:
         data = int.from_bytes(bytes_to_decrypt)
 
     def create_random_generator(self, mod):
@@ -29,7 +29,7 @@ class Elgamal(AsymmetricCipher):
     def create_key(self, key_length, *args, **kwargs):
         mod = self.rng.generate_safe_prime(bits=key_length)
         generator = self.create_random_generator(mod)
-        secret = random.randint(0, mod - 2)
+        secret = self.rng.generate_random_integer(1, mod - 1)
         public_secret = power(generator, secret, mod)
         return {MOD: mod, GEN: generator, PRIV: secret}, {MOD: mod, GEN: generator, PUB: public_secret}
 

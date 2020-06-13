@@ -1,5 +1,5 @@
 from src.Cryptography.Ciphers.Asymmetric.AsymmetricCipher import AsymmetricCipher
-from src.Cryptography.Constants import MOD, PUB
+from src.Cryptography.Constants import MOD, PUB, P, Q
 from src.NumberTheory.EuclideanAlgorithm import gcd
 from src.NumberTheory.utils import is_quadratic_residue
 
@@ -17,7 +17,7 @@ class Goldwasser(AsymmetricCipher):
 
     def decrypt_bytes(self, bytes_to_decrypt: bytes, *args, **kwargs) -> bytes:
         message_bits = 0
-        length = self.secret_key["p"] * self.secret_key["q"]
+        length = self.secret_key[P] * self.secret_key[Q]
         bits = list(bin(int.from_bytes(bytes_to_decrypt, byteorder="big")).lstrip('0b'))
         for bit in bits:
             message_bits = message_bits << length
@@ -33,7 +33,7 @@ class Goldwasser(AsymmetricCipher):
         while q % 4 != 3 or p == q:
             q = self.rng.generate_safe_prime(bits=min_bits)
         mod = p*q
-        return {"p": p, "q": q}, {MOD: mod, PUB: mod - 1}
+        return {P: p, Q: q}, {MOD: mod, PUB: mod - 1}
 
     def encrypt_bit(self, bit, encrypt_for):  # encryption for Goldwasser-Micali-Cryptosystem
         # call: GMEncrypt(pk,b) mit public key pk und Klartextbit b
@@ -45,6 +45,6 @@ class Goldwasser(AsymmetricCipher):
         return (encrypt_for[PUB] ** bit * random_element ** 2) % encrypt_for[MOD]
 
     def decrypt_bit(self, c):
-        if is_quadratic_residue(c, self.secret_key["p"], self.secret_key["q"]):
+        if is_quadratic_residue(c, self.secret_key[P], self.secret_key[Q]):
             return 0
         return 1

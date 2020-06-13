@@ -21,8 +21,8 @@ class LRDecomposition(DecompositionStrategy):
     def create_column_elimination_matrix(cls, matrix, column):
         elimination_matrix = np.zeros((matrix.row_count, matrix.column_count), dtype=matrix.dtype)
         for i in range(column + 1, matrix.row_count):
-            print(matrix)
-            print(matrix[i, column], "/", matrix[column, column], " = ", matrix[i, column] / matrix[column, column])
+           # print(matrix)
+          #  print(matrix[i, column], "/", matrix[column, column], " = ", matrix[i, column] / matrix[column, column])
             elimination_matrix[i, column] = matrix[i, column] / matrix[column, column]
         return MatrixFactory().identity(matrix.column_count) - Matrix(elimination_matrix, dtype=matrix.dtype, preserve_dt=True)
 

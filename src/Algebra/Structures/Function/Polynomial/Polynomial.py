@@ -5,8 +5,7 @@ from src.Algebra.Structures.Function.Interfaces.Function import Function
 
 class Polynomial(Function):
 
-    def __init__(self, coefficients: List[float] = None, variable_name="x"):
-        self.variable_name = variable_name
+    def __init__(self, coefficients: List[float] = None):
         if coefficients is None:
             coefficients = []
         self.coefficients = coefficients
@@ -32,14 +31,12 @@ class Polynomial(Function):
 
     def __sub__(self, other):
         if isinstance(other, Polynomial):
-            if len(self) >= len(other):
-                coefficients = self.coefficients.copy()
-                for i in range(len(other)):
+            coefficients = self.coefficients.copy()
+            for i in range(max(len(self), len(other))):
+                if len(coefficients) > i and len(other) > i:
                     coefficients[i] -= other.coefficients[i]
-            else:
-                coefficients = other.coefficients.copy()
-                for i in range(len(self)):
-                    coefficients[i] -= self.coefficients[i]
+                elif len(other) > i:
+                    coefficients.append(-other[i])
             return Polynomial(coefficients)
         raise NotImplementedError()
 
@@ -59,16 +56,13 @@ class Polynomial(Function):
         return len(self) - 1
 
     def get_variable_context(self) -> Set[str]:
-        return set(self.variable_name)
+        return set("x")
 
-    def evaluate(self, *args, **kwargs) -> float:
-        if len(args) == 1:
-            parameter = args[1]
-        else:
-            parameter = kwargs[self.variable_name]
-        result = self.coefficients[0]
-        for i in range(1, len(self)):
-            result = result * parameter + self.coefficients[i]
+    def evaluate(self, x, *args, **kwargs) -> float:
+        result = self.coefficients[-1]
+        for i in range(len(self)-2, -1, -1):
+            result *= x
+            result += self.coefficients[i]
         return result
 
     def get_derivative(self, variable: str):
